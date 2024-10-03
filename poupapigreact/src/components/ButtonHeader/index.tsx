@@ -2,20 +2,22 @@
 import React, { useState } from "react";
 
 //Style, assets e icons
-import { Container, Title } from "./style";
+import { Container, Title, Icon } from "./style";
 import theme from "../../styles/theme";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 interface ButtonHeaderProps {
   title?: string;
+  icon?: any;
   type?: "config" | "notif";
 }
 
-export function ButtonHeader({ title, type }: ButtonHeaderProps) {
+export function ButtonHeader({ title, type, icon }: ButtonHeaderProps) {
   return (
     <Container>
-      {title && <Title></Title>}
+      {title && <Title>{title}</Title>}
+      {icon && <Icon>{icon}</Icon>}
       {type &&
         (type === "config" ? (
           <SettingsIcon

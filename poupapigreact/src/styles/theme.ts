@@ -4,6 +4,7 @@ const theme = {
     blueE5F: "#E5F3FF",
     blue93C: "#93C5FD",
     blue038: "#0383EE",
+    blue468: "#4682B4",
     green065: "#065F0F",
     green0FB: "#0FB920",
     greenAEC: "#AECF9F",
@@ -30,12 +31,6 @@ const theme = {
     fontWeightMedium: 500,
     fontWeight600: 600,
     fontWeightBold: 700,
-  },
-  fontstyle: {
-    normal: "normal",
-  },
-  width: {
-    widthMain: "1264px",
   },
 };
 

@@ -10,15 +10,18 @@ export const Container = styled.div`
   justify-content: center;
 
   cursor: pointer;
-
-  &:hover {
-    background-color: #031b34;
+  @media (min-width: 800px) {
+    &:hover {
+      background-color: #031b34;
+    }
   }
 `;
 
 export const Title = styled.div`
   font-family: ${theme.fonts.fontOpenSans};
-  font-size: 20px;
+  font-size: 15px;
   font-weight: ${theme.fonts.fontWeightRegular};
   color: ${theme.colors.whiteF2F};
 `;
+
+export const Icon = styled.div``;
