@@ -9,23 +9,73 @@ import {
   Subtitle,
   SubtitleSecond,
   Section,
-  Image,
+  ImageOne,
   TextDivOne,
   BackgroundOne,
   TextOne,
   BackgroundTwo,
-  ImageDouble,
+  ImageTwo,
   TextTwo,
   TextDivTwo,
+  IconDivInfo,
+  ContainerInfo,
+  TextInfo,
+  SectionColumn,
+  Text,
+  LineInfo,
+  ImageThree,
 } from "./style";
+import theme from "../../styles/theme";
 import LogoOficial from "../../assets/svg/logooficial.svg";
 import Landpage1 from "../../assets/svg/landpage1.svg";
 import Landpage2 from "../../assets/svg/landpage2.svg";
 import Landpage3 from "../../assets/svg/landpage3.svg";
 import Blob1 from "../../assets/svg/blob1.svg";
 import Blob2 from "../../assets/svg/blob2.svg";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import CalculateIcon from "@mui/icons-material/Calculate";
+import { Button } from "../../components/Button";
 
 export function Landpage() {
+  const cardInfo = (
+    type: "control" | "money" | "investment" | "calculus",
+    text: string
+  ) => {
+    const iconsDiv =
+      type === "control" ? (
+        <IconDivInfo>
+          <ArrowUpwardIcon
+            style={{ color: theme.colors.redF63, height: 35, width: 35 }}
+          />
+          <ArrowDownwardIcon
+            style={{ color: theme.colors.green0FB, height: 35, width: 35 }}
+          />
+        </IconDivInfo>
+      ) : type === "money" ? (
+        <AttachMoneyIcon
+          style={{ color: theme.colors.green065, height: 35, width: 35 }}
+        />
+      ) : type === "investment" ? (
+        <TrendingUpIcon
+          style={{ color: theme.colors.greenAEC, height: 35, width: 35 }}
+        />
+      ) : (
+        <CalculateIcon
+          style={{ color: theme.colors.orangeEE7, height: 35, width: 35 }}
+        />
+      );
+
+    return (
+      <ContainerInfo>
+        {iconsDiv}
+        <TextInfo>{text}</TextInfo>
+      </ContainerInfo>
+    );
+  };
+
   return (
     <Container>
       <LandpageHeader>
@@ -38,7 +88,7 @@ export function Landpage() {
         </SubtitleSecond>
       </LandpageHeader>
       <Section>
-        <Image src={Landpage1} alt="PoupaPig" />
+        <ImageOne src={Landpage1} alt="PoupaPig" />
         <TextDivOne>
           <BackgroundOne src={Blob1} alt="PoupaPig" />
           <TextOne>
@@ -52,7 +102,7 @@ export function Landpage() {
       <Section>
         <TextDivTwo>
           <BackgroundTwo src={Blob2} alt="PoupaPig" />
-          <TextTwo style={{ top: 120 }}>
+          <TextTwo>
             Aqui você pode se organizar e planejar suas finanças com facilidade.
             Quer realizar o sonho de abrir um negócio, comprar sua casa própria,
             adquirir um carro novo ou até mesmo transformar seu visual? O
@@ -60,7 +110,34 @@ export function Landpage() {
             agora mesmo!
           </TextTwo>
         </TextDivTwo>
-        <ImageDouble src={Landpage2} alt="PoupaPig" />
+        <ImageTwo src={Landpage2} alt="PoupaPig" />
+      </Section>
+      <SectionColumn>
+        <Text>Com o poupaPig você consegue....</Text>
+        <LineInfo>
+          {cardInfo("control", "Manter o controle de entradas e saídas")}
+          {cardInfo("money", "Criar categorias e limitar valores de gastos")}
+          {cardInfo(
+            "investment",
+            "Criar metas e investimentos para manter controle"
+          )}
+          {cardInfo("calculus", "Entender melhor a sua situação financeira")}
+        </LineInfo>
+      </SectionColumn>
+      <Section>
+        <ImageThree src={Landpage3} alt="PopuaPig" />
+        <SectionColumn>
+          <Text>
+            Venha ter poder sobre o seu próprio dinheiro, crie sua conta no
+            piggyBuddget agora!
+          </Text>
+          <Button
+            title="Criar conta"
+            height="80px"
+            minWidth="300px"
+            fontSize="25px"
+          />
+        </SectionColumn>
       </Section>
     </Container>
   );
