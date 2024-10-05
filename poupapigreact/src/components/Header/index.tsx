@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //importações internas
 import { ButtonHeader } from "../ButtonHeader";
@@ -25,25 +26,35 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 
 interface HeaderProps {
-  type: "landpage" | "login" | "default";
+  type: "landpage" | "signin" | "default";
 }
 
 export function Header({ type }: HeaderProps) {
   const isMobileScreen = useMobileScreen();
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
-
-  const MobileMenuLandpage = (
-    <ContainerMobileMenuLandpage>
-      <ButtonsDivLandpageMobile>
-        <ButtonHeader title="Criar conta" />
-        <ButtonHeader title="Entrar" />
-      </ButtonsDivLandpageMobile>
-    </ContainerMobileMenuLandpage>
-  );
+  const navigate = useNavigate();
 
   const handleOpenMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
   };
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleSignIn = () => {
+    console.log("oi?");
+    navigate("/sign-in");
+  };
+
+  const MobileMenuLandpage = (
+    <ContainerMobileMenuLandpage>
+      <ButtonsDivLandpageMobile>
+        <ButtonHeader title="Criar conta" onClick={handleSignIn} />
+        <ButtonHeader title="Entrar" onClick={handleLogin} />
+      </ButtonsDivLandpageMobile>
+    </ContainerMobileMenuLandpage>
+  );
 
   const bodyLandpage = (
     <ContainerLandpage>
@@ -60,14 +71,14 @@ export function Header({ type }: HeaderProps) {
       ) : (
         <ButtonsDiv>
           <ButtonHeader title="Criar conta" />
-          <ButtonHeader title="Entrar" />
+          <ButtonHeader title="Entrar" onClick={handleLogin} />
         </ButtonsDiv>
       )}
       {showMobileMenu && MobileMenuLandpage}
     </ContainerLandpage>
   );
 
-  const bodyLogin = (
+  const bodySignIn = (
     <ContainerLogin>
       <LogoLogin src={LogoTitulo} alt="poupapig" />
     </ContainerLogin>
@@ -93,7 +104,7 @@ export function Header({ type }: HeaderProps) {
   return (
     <Container>
       {type === "landpage" && bodyLandpage}
-      {type === "login" && bodyLogin}
+      {type === "signin" && bodySignIn}
       {type === "default" && bodyDefault}
     </Container>
   );

@@ -9,6 +9,7 @@ interface ButtonProps {
   height?: string;
   minWidth?: string;
   fontSize?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export function Button({
@@ -18,9 +19,14 @@ export function Button({
   height,
   minWidth,
   fontSize,
+  onClick,
 }: ButtonProps) {
+  const handleClick = (e: any) => {
+    if (onClick) onClick(e);
+  };
   return (
     <Container
+      onClick={handleClick}
       $backgroundColor={backgroundColor}
       $borderColor={borderColor}
       $height={height}

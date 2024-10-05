@@ -16,8 +16,8 @@ export const Container = styled.div<ButtonStyleProps>`
     props.$backgroundColor ? props.$backgroundColor : theme.colors.greenAEC};
   border: ${(props) =>
     props.$borderColor
-      ? `5px solid ${props.$borderColor}`
-      : `5px solid ${theme.colors.green065}`};
+      ? `3px solid ${props.$borderColor}`
+      : `3px solid ${theme.colors.green065}`};
   border-radius: 20px;
 
   display: flex;

@@ -11,11 +11,21 @@ interface ButtonHeaderProps {
   title?: string;
   icon?: any;
   type?: "config" | "notif";
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export function ButtonHeader({ title, type, icon }: ButtonHeaderProps) {
+export function ButtonHeader({
+  title,
+  type,
+  icon,
+  onClick,
+}: ButtonHeaderProps) {
+  const handleClick = (e: any) => {
+    if (onClick) onClick(e);
+  };
+
   return (
-    <Container>
+    <Container onClick={handleClick}>
       {title && <Title>{title}</Title>}
       {icon && <Icon>{icon}</Icon>}
       {type &&

@@ -29,7 +29,9 @@ const RouteRender: React.FC<RouteRenderProps> = ({
   screenProps,
   ...rest
 }) => {
-  const [type, setType] = useState<"landpage" | "login" | "default">("default");
+  const [type, setType] = useState<"landpage" | "signin" | "default" | "none">(
+    "default"
+  );
 
   useEffect(() => {
     console.log("screenProps?.nameScreen", screenProps?.nameScreen);
@@ -39,10 +41,13 @@ const RouteRender: React.FC<RouteRenderProps> = ({
     }
     if (
       screenProps?.nameScreen === "404" ||
-      screenProps?.nameScreen === "login" ||
       screenProps?.nameScreen === "sign-in"
     ) {
-      setType("login");
+      setType("signin");
+      return;
+    }
+    if (screenProps?.nameScreen === "login") {
+      setType("none");
       return;
     }
   }, [screenProps?.nameScreen]);
@@ -52,7 +57,7 @@ const RouteRender: React.FC<RouteRenderProps> = ({
       <Container>
         <Section1>
           <HeaderContainer>
-            <Header type={type} />
+            {type !== "none" && <Header type={type} />}
           </HeaderContainer>
         </Section1>
         <BodyMain $isLandpage={screenProps?.nameScreen === "landpage"}>

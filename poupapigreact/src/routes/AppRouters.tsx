@@ -4,7 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MobileScreenProvider from "./MobileScreenProvider";
 import RouteRender from "./RouteRender";
 import ScrollToTop from "./ScrollToTop";
+
+//pages
 import { Landpage } from "../pages/Landpage";
+import { Login } from "../pages/Login";
+import { SignIn } from "../pages/SignIn";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -32,39 +36,39 @@ const AppRoutes: React.FC = () => {
             }
           />
           ; */}
-          {/* <Route
+          <Route
             path="/"
             element={
               <RouteRender
-                // Component={Login}
+                Component={Login}
                 isPrivate
                 screenProps={{ nameScreen: "" }}
               />
             }
           />
-          ; */}
-          {/* <Route
+          ;
+          <Route
             path="/login"
             element={
               <RouteRender
-                // Component={Login}
+                Component={Login}
                 isPrivate
                 screenProps={{ nameScreen: "login" }}
               />
             }
           />
-          ; */}
-          {/* <Route
+          ;
+          <Route
             path="/sign-in"
             element={
               <RouteRender
-                // Component={SignIn}
+                Component={SignIn}
                 isPrivate
                 screenProps={{ nameScreen: "sign-in" }}
               />
             }
           />
-          ; */}
+          ;
           {/* <Route
             path="/home"
             element={
