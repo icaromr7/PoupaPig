@@ -48,6 +48,20 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "System.Linq": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "linq2db": {
+              "target": "Package",
+              "version": "[5.4.1, )"
+            },
+            "linq2db.SqlServer": {
+              "target": "Package",
+              "version": "[5.4.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

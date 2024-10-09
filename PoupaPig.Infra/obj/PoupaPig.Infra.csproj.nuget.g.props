@@ -13,4 +13,7 @@
     <SourceRoot Include="C:\Users\icaro\.nuget\packages\" />
     <SourceRoot Include="F:\VisualStudioSDks\NuGetPackages\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Pkglinq2db_SqlServer Condition=" '$(Pkglinq2db_SqlServer)' == '' ">C:\Users\icaro\.nuget\packages\linq2db.sqlserver\5.4.1</Pkglinq2db_SqlServer>
+  </PropertyGroup>
 </Project>

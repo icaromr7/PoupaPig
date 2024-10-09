@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5CC2D329-BDA6-4C5E-AAF1-49BD2FFBCC51}|PoupaPig.Infra\\PoupaPig.Infra.csproj|c:\\users\\icaro\\source\\repos\\poupapig\\poupapig.infra\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5CC2D329-BDA6-4C5E-AAF1-49BD2FFBCC51}|PoupaPig.Infra\\PoupaPig.Infra.csproj|solutionrelative:poupapig.infra\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}|PoupaPig.Web\\PoupaPig.Web.csproj|c:\\users\\icaro\\source\\repos\\poupapig\\poupapig.web\\controllers\\historyvaluescontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}|PoupaPig.Web\\PoupaPig.Web.csproj|solutionrelative:poupapig.web\\controllers\\historyvaluescontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{74D42275-C72C-4288-9A98-6E026BD128D3}|PoupaPig.csproj|c:\\users\\icaro\\source\\repos\\poupapig\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{74D42275-C72C-4288-9A98-6E026BD128D3}|PoupaPig.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}|PoupaPig.Web\\PoupaPig.Web.csproj|c:\\users\\icaro\\source\\repos\\poupapig\\poupapig.web\\controllers\\valuescontrollercs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}|PoupaPig.Web\\PoupaPig.Web.csproj|solutionrelative:poupapig.web\\controllers\\valuescontrollercs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{74D42275-C72C-4288-9A98-6E026BD128D3}|PoupaPig.Dominio.csproj|c:\\users\\icaro\\source\\repos\\poupapig\\entidades\\historyvalues.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74D42275-C72C-4288-9A98-6E026BD128D3}|PoupaPig.Dominio.csproj|solutionrelative:entidades\\historyvalues.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\Program.cs",
-              "RelativeDocumentMoniker": "PoupaPig.Infra\\Program.cs",
-              "ToolTip": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\Program.cs",
-              "RelativeToolTip": "PoupaPig.Infra\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "HistoryValues.cs",
+              "DocumentMoniker": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\Entidades\\HistoryValues.cs",
+              "RelativeDocumentMoniker": "Entidades\\HistoryValues.cs",
+              "ToolTip": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\Entidades\\HistoryValues.cs",
+              "RelativeToolTip": "Entidades\\HistoryValues.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-18T18:40:53.923Z",
+              "WhenOpened": "2024-10-09T01:51:33.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HistoryValuesController .cs",
+              "DocumentMoniker": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\Controllers\\HistoryValuesController .cs",
+              "RelativeDocumentMoniker": "PoupaPig.Web\\Controllers\\HistoryValuesController .cs",
+              "ToolTip": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\Controllers\\HistoryValuesController .cs",
+              "RelativeToolTip": "PoupaPig.Web\\Controllers\\HistoryValuesController .cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAACQAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-09T01:51:00.354Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAAAAAA",
+              "Title": "ValuesControllercs.cs",
+              "DocumentMoniker": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\Controllers\\ValuesControllercs.cs",
+              "RelativeDocumentMoniker": "PoupaPig.Web\\Controllers\\ValuesControllercs.cs",
+              "ToolTip": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\Controllers\\ValuesControllercs.cs",
+              "RelativeToolTip": "PoupaPig.Web\\Controllers\\ValuesControllercs.cs",
+              "ViewState": "AQIAACYAAAAAAAAAAAAwwBYAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-18T18:39:40.993Z",
+              "WhenOpened": "2024-10-09T01:46:17.225Z",
               "EditorCaption": ""
             }
           ]
