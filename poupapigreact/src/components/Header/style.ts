@@ -4,6 +4,8 @@ import theme from "../../styles/theme";
 export const Container = styled.div`
   width: 100%;
   display: flex;
+
+  position: relative;
 `;
 
 export const ContainerLandpage = styled.div`

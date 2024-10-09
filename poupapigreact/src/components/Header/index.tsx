@@ -24,6 +24,7 @@ import Logo from "../../assets/svg/logopp.svg";
 import LogoTitulo from "../../assets/svg/logotitulo.svg";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
+import { HeaderMenu } from "../HeaderMenu";
 
 interface HeaderProps {
   type: "landpage" | "signin" | "default";
@@ -33,6 +34,7 @@ export function Header({ type }: HeaderProps) {
   const isMobileScreen = useMobileScreen();
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [showNotifications, setShowNotifications] = useState<boolean>(false);
 
   const handleOpenMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
@@ -97,6 +99,7 @@ export function Header({ type }: HeaderProps) {
               style={{ color: theme.colors.whiteF2F, width: 20, height: 20 }}
             />
           }
+          onClick={() => setShowNotifications(!showNotifications)}
         />
       </ButtonsDivDefault>
     </ContainerDefault>
@@ -106,6 +109,7 @@ export function Header({ type }: HeaderProps) {
       {type === "landpage" && bodyLandpage}
       {type === "signin" && bodySignIn}
       {type === "default" && bodyDefault}
+      {showNotifications && <HeaderMenu notification />}
     </Container>
   );
 }

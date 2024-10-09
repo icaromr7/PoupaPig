@@ -46,7 +46,7 @@ const RouteRender: React.FC<RouteRenderProps> = ({
       setType("signin");
       return;
     }
-    if (screenProps?.nameScreen === "login") {
+    if (screenProps?.nameScreen === "login" || screenProps?.nameScreen === "") {
       setType("none");
       return;
     }

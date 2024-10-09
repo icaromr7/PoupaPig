@@ -9,6 +9,7 @@ import ScrollToTop from "./ScrollToTop";
 import { Landpage } from "../pages/Landpage";
 import { Login } from "../pages/Login";
 import { SignIn } from "../pages/SignIn";
+import { Home } from "../pages/Home";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -69,17 +70,17 @@ const AppRoutes: React.FC = () => {
             }
           />
           ;
-          {/* <Route
+          <Route
             path="/home"
             element={
               <RouteRender
-                // Component={Home}
+                Component={Home}
                 isPrivate
                 screenProps={{ nameScreen: "home" }}
               />
             }
           />
-          ; */}
+          ;
           {/* <Route
             path="/new-transaction"
             element={
