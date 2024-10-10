@@ -10,6 +10,7 @@ import { Landpage } from "../pages/Landpage";
 import { Login } from "../pages/Login";
 import { SignIn } from "../pages/SignIn";
 import { Home } from "../pages/Home";
+import { NewTransaction } from "../pages/NewTransaction";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -81,17 +82,17 @@ const AppRoutes: React.FC = () => {
             }
           />
           ;
-          {/* <Route
+          <Route
             path="/new-transaction"
             element={
               <RouteRender
-                // Component={NewTransaction}
+                Component={NewTransaction}
                 isPrivate
                 screenProps={{ nameScreen: "new-transaction" }}
               />
             }
           />
-          ; */}
+          ;
           {/* <Route
             path="/my-profile"
             element={
