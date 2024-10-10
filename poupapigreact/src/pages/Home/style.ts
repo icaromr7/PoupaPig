@@ -10,11 +10,16 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  justify-content: flex-start;
+  justify-content: space-between;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const CardFinancialControl = styled.div`
   width: 300px;
+  height: 830px;
   border: 3px solid pink;
 `;
 
@@ -22,29 +27,31 @@ export const ClientData = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 50px;
 `;
 
 export const Row = styled.div`
-  width: 100%;
+  max-width: 1150px;
   display: flex;
   flex-direction: row;
-  gap: 20px;
-
-  border: 2px solid blue;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const TitleContainer = styled.div`
-  height: 40px;
-  width: 145px;
+  min-width: 40px;
+  min-height: 145px;
   background-color: ${theme.colors.blue002};
   color: ${theme.colors.whiteF2F};
   border-radius: 20px;
-  transform: rotate(270deg);
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  transform: rotate(180deg);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 
   font-family: ${theme.fonts.fontOpenSans};
   font-size: 16px;
@@ -52,7 +59,8 @@ export const TitleContainer = styled.div`
 `;
 
 export const ContainerElement = styled.div<HomeStyleProps>`
-  width: 145px;
+  min-width: 145px;
+  max-width: 145px;
   height: 145px;
   background-color: ${(props) =>
     props.$type === "in"
@@ -80,10 +88,11 @@ export const ContainerElement = styled.div<HomeStyleProps>`
       ? theme.colors.orangeEE7
       : theme.colors.blue038};
   border-radius: 20px;
-  padding: 10px;
+  padding: 5px;
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
 
   &:hover {
@@ -93,16 +102,25 @@ export const ContainerElement = styled.div<HomeStyleProps>`
 
 export const Icon = styled.div``;
 
+export const MainData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
 export const Value = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: flex-end;
+  gap: 3px;
 `;
 
 export const DollarSign = styled.div`
   font-family: ${theme.fonts.fontMontserrat};
   font-size: 12px;
   font-weight: ${theme.fonts.fontWeightRegular};
+  margin-bottom: 2px;
 `;
 
 export const ValueNumber = styled.div`
@@ -115,6 +133,11 @@ export const Title = styled.div`
   font-family: ${theme.fonts.fontMontserrat};
   font-size: 12px;
   font-weight: ${theme.fonts.fontWeightRegular};
+
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const Date = styled.div`
@@ -124,16 +147,84 @@ export const Date = styled.div`
 `;
 
 export const ScrollContainer = styled.div`
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
   width: 100%;
-  overflow-x: auto;
+  padding: 0 40px;
 
-  border: 1px solid red;
+  .scroll-item {
+    display: inline-block;
+    width: 400px;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+`;
+
+export const ScrollContent = styled.div`
+  display: flex;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  width: 100%;
+
+  gap: 20px;
+`;
+
+export const ArrowContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  cursor: pointer;
+  padding: 5px;
+  width: 20px;
+  height: 30px;
+`;
+
+export const ArrowLeft = styled(ArrowContainer)`
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ArrowRight = styled(ArrowContainer)`
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const MoneyTipsContainer = styled.div`
+  width: 100%;
+  min-height: 240px;
+  background-color: ${theme.colors.blue93C};
+  border: 3px solid ${theme.colors.blue002};
+  border-radius: 20px;
+  padding: 20px;
 
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  justify-content: space-evenly;
+  align-items: center;
+
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  }
 `;
 
-export const ArrowLeft = styled.div``;
+export const Image = styled.img`
+  max-height: 190px;
+`;
 
-export const ArrowRight = styled.div``;
+export const TitleTips = styled.div`
+  font-family: ${theme.fonts.fontMontserrat};
+  font-size: 40px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.blue002};
+  max-width: 600px;
+  text-align: center;
+`;

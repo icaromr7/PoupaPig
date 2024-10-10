@@ -17,6 +17,7 @@ export const Container = styled.div`
   gap: 10px;
 
   position: absolute;
+  z-index: 999;
   right: 60px;
   top: 90px;
 `;

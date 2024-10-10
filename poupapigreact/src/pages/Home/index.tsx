@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+
+//style, assets e icons
 import {
   Container,
   CardFinancialControl,
@@ -7,17 +9,34 @@ import {
   TitleContainer,
   ContainerElement,
   Icon,
+  MainData,
   Value,
   DollarSign,
   ValueNumber,
   Title,
   Date,
   ScrollContainer,
+  ScrollContent,
   ArrowLeft,
   ArrowRight,
+  MoneyTipsContainer,
+  Image,
+  TitleTips,
 } from "./style";
+import theme from "../../styles/theme";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import Home1 from "../../assets/svg/home1.svg";
+
+//importações internas
 import { numberToCurrency } from "../../utils/bibli";
 import { TransactionData } from "../../interfaces";
+import { FloatingAddButton } from "../../components/FloatingAddButton";
+import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 
 const dataExemplo: TransactionData[] = [
   {
@@ -104,6 +123,28 @@ const dataExemplo: TransactionData[] = [
 
 const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showArrows, setShowArrows] = useState(false);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      const totalWidth = data.length * 145;
+      const containerWidth = scrollRef.current.offsetWidth;
+
+      setShowArrows(totalWidth > containerWidth);
+    }
+  }, [data]);
+
+  const checkScrollPosition = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+
+      setShowLeftArrow(scrollLeft > 0);
+
+      setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+    }
+  };
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -117,23 +158,55 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
     }
   };
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.addEventListener("scroll", checkScrollPosition);
+      checkScrollPosition();
+    }
+
+    return () => {
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener("scroll", checkScrollPosition);
+      }
+    };
+  }, []);
+
   return (
     <ScrollContainer>
-      <ArrowLeft onClick={scrollLeft}>{"<"}</ArrowLeft>
-      <div className="scroll-content" ref={scrollRef}>
+      {showArrows && showLeftArrow && (
+        <ArrowLeft onClick={scrollLeft}>
+          <ArrowBackIosNewIcon
+            style={{ color: theme.colors.blue002, fontSize: "50px" }}
+          />
+        </ArrowLeft>
+      )}
+      <ScrollContent ref={scrollRef}>
         {data.map((item, index) => (
           <ContainerElement key={index} $type={item.type}>
-            <Icon></Icon>
-            <Value>
-              <DollarSign>R$</DollarSign>
-              <ValueNumber>{numberToCurrency(item.value)}</ValueNumber>
-            </Value>
-            <Title>{item.name}</Title>
+            <Icon>
+              {item.type === "in" && <ArrowDownwardIcon />}
+              {item.type === "out" && <ArrowUpwardIcon />}
+              {item.type === "budget" && <AccountBalanceWalletIcon />}
+              {item.type === "investment" && <MonetizationOnIcon />}
+            </Icon>
+            <MainData>
+              <Value>
+                <DollarSign>R$</DollarSign>
+                <ValueNumber>{numberToCurrency(item.value)}</ValueNumber>
+              </Value>
+              <Title>{item.name}</Title>
+            </MainData>
             <Date>{item.date}</Date>
           </ContainerElement>
         ))}
-      </div>
-      <ArrowRight onClick={scrollRight}>{">"}</ArrowRight>
+      </ScrollContent>
+      {showArrows && showRightArrow && (
+        <ArrowRight onClick={scrollRight}>
+          <ArrowForwardIosIcon
+            style={{ color: theme.colors.blue002, fontSize: "50px" }}
+          />
+        </ArrowRight>
+      )}
     </ScrollContainer>
   );
 };
@@ -160,7 +233,7 @@ export function Home() {
 
   return (
     <Container>
-      <CardFinancialControl></CardFinancialControl>
+      <FinancialControlProfile situation="ok" />
       <ClientData>
         <Row>
           <TitleContainer>Lançamentos</TitleContainer>
@@ -174,7 +247,16 @@ export function Home() {
           <TitleContainer>Investimentos</TitleContainer>
           <ScrollMenu data={investment} />
         </Row>
+        <Row>
+          <MoneyTipsContainer>
+            <Image src={Home1} alt="PoupaPig" />
+            <TitleTips>
+              Confira dicas de economia voltadas para o seu perfil!
+            </TitleTips>
+          </MoneyTipsContainer>
+        </Row>
       </ClientData>
+      <FloatingAddButton />
     </Container>
   );
 }

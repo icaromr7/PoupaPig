@@ -54,13 +54,13 @@ export const LogoLogin = styled.img`
 `;
 
 export const ContainerDefault = styled.div`
-  width: 90%;
+  width: 100%;
   height: 60px;
   background-color: ${theme.colors.blue002};
   padding: 0 50px;
 
   margin-top: 15px;
-  margin-left: auto;
+  margin-left: 50px;
 
   border-radius: 50px 0 0 50px;
 
