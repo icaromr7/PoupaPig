@@ -11,6 +11,7 @@ import { Login } from "../pages/Login";
 import { SignIn } from "../pages/SignIn";
 import { Home } from "../pages/Home";
 import { NewTransaction } from "../pages/NewTransaction";
+import { InvestmentGoalForm } from "../pages/InvestmentGoalForm";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -89,6 +90,17 @@ const AppRoutes: React.FC = () => {
                 Component={NewTransaction}
                 isPrivate
                 screenProps={{ nameScreen: "new-transaction" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/investment-goal-form"
+            element={
+              <RouteRender
+                Component={InvestmentGoalForm}
+                isPrivate
+                screenProps={{ nameScreen: "investment-goal-form" }}
               />
             }
           />

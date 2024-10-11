@@ -12,9 +12,14 @@ export const Container = styled.div`
 `;
 
 export const NewTransactionsField = styled.div`
+  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const NewTransactionDiv = styled.div`
@@ -22,9 +27,11 @@ export const NewTransactionDiv = styled.div`
   border-radius: 20px;
   background-color: #fff;
   width: 100%;
-  height: 250px;
+  height: 27vh;
 
   display: flex;
+  align-items: flex-end;
+  justify-content: center;
 
   cursor: pointer;
 
@@ -34,7 +41,7 @@ export const NewTransactionDiv = styled.div`
 `;
 
 export const Image = styled.img`
-  height: 240px;
+  height: 26vh;
 `;
 
 export const Title = styled.div`
@@ -45,9 +52,14 @@ export const Title = styled.div`
 `;
 
 export const InformationField = styled.div`
+  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const Text = styled.div`
@@ -59,4 +71,6 @@ export const Text = styled.div`
   text-align: justify;
 `;
 
-export const Image2 = styled.img``;
+export const Image2 = styled.img`
+  height: 70vh;
+`;

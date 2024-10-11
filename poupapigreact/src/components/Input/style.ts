@@ -8,6 +8,11 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  font-family: ${theme.fonts.fontOpenSans};
+  font-size: 14px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.blue002};
 `;
 
 export const InputWrapper = styled.div`
@@ -28,6 +33,13 @@ export const InputField = styled.input`
   width: 85%;
   background-color: transparent;
   border: 1px transparent;
+
+  &::placeholder {
+    color: ${theme.colors.blue002};
+    font-family: ${theme.fonts.fontOpenSans};
+    font-size: 12px;
+    font-weight: ${theme.fonts.fontWeightRegular};
+  }
 `;
 
 export const Icon2Wrapper = styled.div`

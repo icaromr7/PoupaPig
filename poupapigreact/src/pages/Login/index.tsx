@@ -53,7 +53,6 @@ export function Login() {
         <Text onClick={() => setCurrentBody("emailPassword")}>
           Esqueceu a senha?
         </Text>
-        <Checkbox label="Manter conectado" onChange={handleCheckbox} />
         <Text onClick={handleSignIn}>Ainda não tem conta? Cadastre-se!</Text>
       </Options>
       <Button title="Entrar" />
