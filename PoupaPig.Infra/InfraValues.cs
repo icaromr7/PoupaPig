@@ -1,9 +1,4 @@
 ﻿using PoupaPig.Dominio.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PoupaPig.Infra
 {
@@ -52,6 +47,29 @@ namespace PoupaPig.Infra
             _context.Set<Values>().Remove(value);
             return await _context.SaveChangesAsync() > 0;
         }
-    }
 
+        // Método para calcular o saldo de um usuário
+        public async Task<decimal> CalcularSaldoAsync(int userId)
+        {
+            var valores = await _context.Set<Values>()
+                                        .Where(v => v.ID_User == userId)
+                                        .ToListAsync();
+
+            // Calcula o saldo baseado no Type_Value (crédito/débito)
+            decimal saldo = 0;
+            foreach (var value in valores)
+            {
+                if (value.Type_Value.ToLower() == "crédito")
+                {
+                    saldo += value.Value_Value;
+                }
+                else if (value.Type_Value.ToLower() == "débito")
+                {
+                    saldo -= value.Value_Value;
+                }
+            }
+
+            return saldo;
+        }
+    }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PoupaPig.Dominio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9396dc599574c2fc760e6ffb211de2dfc1cc039")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53279b7eee8da737d5ac7a7cc4c332d084f16fad")]
 [assembly: System.Reflection.AssemblyProductAttribute("PoupaPig.Dominio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PoupaPig.Dominio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

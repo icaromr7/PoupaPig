@@ -82,6 +82,13 @@ namespace PoupaPig.Web.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("saldo/{userId}")]
+        public async Task<ActionResult<decimal>> GetSaldo(int userId)
+        {
+            var saldo = await _serviceValues.CalcularSaldoAsync(userId);
+            return Ok(saldo);
+        }
     }
 
 }
