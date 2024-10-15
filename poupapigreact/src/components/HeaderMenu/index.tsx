@@ -40,10 +40,11 @@ export function HeaderMenu({ notification, config }: HeaderMenuProps) {
           </TextObservation>
           {showNotificationsModal && (
             <CustomModal
-              body={bodyModal}
+              message={bodyModal}
               titleButtonCancel="Cancelar"
               titleButtonGo="Salvas"
               onClose={handleCloseModal}
+              action={() => console.log("oi?")}
             />
           )}
         </>

@@ -50,6 +50,11 @@ export const Close = styled(CloseIcon)`
 export const Body = styled.div`
   width: 80%;
   align-self: center;
+  font-family: ${theme.fonts.fontOpenSans};
+  font-size: 12px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.black171};
+  text-align: center;
 `;
 
 export const Footer = styled.div`

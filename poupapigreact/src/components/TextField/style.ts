@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
+interface TextAreaStyleProps {
+  $isFixed?: boolean;
+}
+
 export const Container = styled.div`
   position: relative;
   width: 100%;
@@ -10,12 +14,13 @@ export const Container = styled.div`
   color: ${theme.colors.blue002};
 `;
 
-export const SelectBox = styled.div`
+export const SelectBox = styled.div<TextAreaStyleProps>`
   width: 100%;
   height: auto;
   border-radius: 10px;
   border: 3px solid ${theme.colors.blue038};
-  background-color: ${theme.colors.blueE5F};
+  background-color: ${({ $isFixed }) =>
+    $isFixed ? theme.colors.whiteF2F : theme.colors.blueE5F};
   padding: 10px;
   display: flex;
   justify-content: flex-start;
@@ -28,8 +33,10 @@ export const SelectBox = styled.div`
     border: none;
     outline: none;
     background-color: transparent;
-    font-size: 14px;
     font-family: ${theme.fonts.fontOpenSans};
+    font-size: 14px;
+    font-weight: ${theme.fonts.fontWeightRegular};
+    color: ${theme.colors.blue002};
     resize: none;
   }
 `;

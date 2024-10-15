@@ -12,6 +12,11 @@ import { SignIn } from "../pages/SignIn";
 import { Home } from "../pages/Home";
 import { NewTransaction } from "../pages/NewTransaction";
 import { InvestmentGoalForm } from "../pages/InvestmentGoalForm";
+import { InvestmentGoalDetail } from "../pages/InvestmentGoalDetail";
+import { InvestmentGoalList } from "../pages/InvestmentGoalList";
+import { InputOutputForm } from "../pages/InputOutputForm";
+import { InputOutputDetail } from "../pages/InputOutpuDetail";
+import { InputOutpList } from "../pages/InputOutputList";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -101,6 +106,61 @@ const AppRoutes: React.FC = () => {
                 Component={InvestmentGoalForm}
                 isPrivate
                 screenProps={{ nameScreen: "investment-goal-form" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/investment-goal-detail"
+            element={
+              <RouteRender
+                Component={InvestmentGoalDetail}
+                isPrivate
+                screenProps={{ nameScreen: "investment-goal-detail" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/investment-goal-list"
+            element={
+              <RouteRender
+                Component={InvestmentGoalList}
+                isPrivate
+                screenProps={{ nameScreen: "investment-goal-list" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/input-output-form"
+            element={
+              <RouteRender
+                Component={InputOutputForm}
+                isPrivate
+                screenProps={{ nameScreen: "input-output-form" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/input-output-detail"
+            element={
+              <RouteRender
+                Component={InputOutputDetail}
+                isPrivate
+                screenProps={{ nameScreen: "input-output-detail" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/input-output-list"
+            element={
+              <RouteRender
+                Component={InputOutpList}
+                isPrivate
+                screenProps={{ nameScreen: "input-output-list" }}
               />
             }
           />

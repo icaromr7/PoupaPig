@@ -23,16 +23,16 @@ export const SelectBox = styled.div`
   cursor: pointer;
 
   span {
-    font-size: 14px;
+    font-size: 12px;
   }
 `;
 
-/* Estilização adicional para o calendário */
-export const CalendarWrapper = styled.div`
+export const DatePickerContainer = styled.div`
   position: absolute;
-  top: 50px; /* Ajuste conforme necessário */
-  z-index: 2;
-  background-color: ${theme.colors.blueE5F};
-  border: 3px solid ${theme.colors.blue038};
-  border-radius: 10px;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 `;

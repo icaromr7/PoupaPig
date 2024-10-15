@@ -17,18 +17,14 @@ const Checkbox: React.FC<CheckboxProps> = ({
   checked = false,
   onChange,
 }) => {
-  const [isChecked, setIsChecked] = useState(checked);
-
   const handleCheckboxChange = () => {
-    const newChecked = !isChecked;
-    setIsChecked(newChecked);
-    onChange(newChecked);
+    onChange(!checked);
   };
 
   return (
     <CheckboxContainer>
-      <HiddenCheckbox checked={isChecked} onChange={handleCheckboxChange} />
-      <StyledCheckbox checked={isChecked} onClick={handleCheckboxChange} />
+      <HiddenCheckbox checked={checked} onChange={handleCheckboxChange} />
+      <StyledCheckbox checked={checked} onClick={handleCheckboxChange} />
       <Label onClick={handleCheckboxChange}>{label}</Label>
     </CheckboxContainer>
   );

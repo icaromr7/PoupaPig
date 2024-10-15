@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 
 //style, icons, assets
 import "react-datepicker/dist/react-datepicker.css";
-import { Container, SelectBox } from "./style";
+import { Container, SelectBox, DatePickerContainer } from "./style";
 import theme from "../../styles/theme";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
@@ -38,11 +38,15 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
         <KeyboardArrowDownIcon style={{ color: theme.colors.blue038 }} />
       </SelectBox>
 
-      {/* {isOpen && (
-        <div>
-          <DatePicker />
-        </div>
-      )} */}
+      {isOpen && (
+        <DatePickerContainer>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            inline
+          />
+        </DatePickerContainer>
+      )}
     </Container>
   );
 };

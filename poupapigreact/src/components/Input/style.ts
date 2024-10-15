@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
+interface InputStyleProps {
+  $isFixed?: boolean;
+}
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
@@ -9,23 +13,25 @@ export const Container = styled.div`
   align-items: center;
   gap: 10px;
 
-  font-family: ${theme.fonts.fontOpenSans};
-  font-size: 14px;
-  font-weight: ${theme.fonts.fontWeightRegular};
-  color: ${theme.colors.blue002};
+  font-family: ${theme.fonts.fontOpenSans} !important;
+  font-size: 14px !important;
+  font-weight: ${theme.fonts.fontWeightRegular} !important;
+  color: ${theme.colors.blue002} !important;
 `;
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.div<InputStyleProps>`
   width: 100%;
   height: 40px;
   border-radius: 20px;
   border: 3px solid ${theme.colors.blue038};
-  background-color: ${theme.colors.blueE5F};
   padding: 0 10px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  background-color: ${({ $isFixed }) =>
+    $isFixed ? theme.colors.whiteF2F : theme.colors.blueE5F};
 `;
 
 export const InputField = styled.input`

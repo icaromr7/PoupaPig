@@ -8,20 +8,24 @@ import {
   Body,
   Footer,
 } from "./style";
+import theme from "../../styles/theme";
+
 import { Button } from "../Button";
 
 interface CustomModalProps {
   title?: string;
-  body?: React.ReactNode;
+  message: React.ReactNode | string;
   titleButtonCancel: string;
+  action: () => void;
   titleButtonGo: string;
   onClose: () => void;
 }
 
 export function CustomModal({
   title,
-  body,
+  message,
   titleButtonCancel,
+  action,
   titleButtonGo,
   onClose,
 }: CustomModalProps) {
@@ -32,10 +36,15 @@ export function CustomModal({
           <Title>{title}</Title>
           <Close onClick={onClose} />
         </Header>
-        <Body>{body}</Body>
+        <Body>{message}</Body>
         <Footer>
-          <Button title={titleButtonCancel} />
-          <Button title={titleButtonGo} />
+          <Button
+            title={titleButtonCancel}
+            backgroundColor={theme.colors.greyB8C}
+            borderColor={theme.colors.grey6F7}
+            onClick={onClose}
+          />
+          <Button title={titleButtonGo} onClick={action} />
         </Footer>
       </Container>
     </Overlay>
