@@ -15,6 +15,7 @@ const theme = {
     greenF9F: "#F9FFF9",
     redF63: "#F63A3A",
     redF3A: "#F3A7A7",
+    redFFD: "#FFDADA",
     redFFF: "#FFF8F8",
     yellowDAD: "#DAD324",
     yellowF9F: "#F9F7CB",
