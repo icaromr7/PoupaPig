@@ -16,7 +16,10 @@ import { InvestmentGoalDetail } from "../pages/InvestmentGoalDetail";
 import { InvestmentGoalList } from "../pages/InvestmentGoalList";
 import { InputOutputForm } from "../pages/InputOutputForm";
 import { InputOutputDetail } from "../pages/InputOutpuDetail";
-import { InputOutpList } from "../pages/InputOutputList";
+import { InputOutputList } from "../pages/InputOutputList";
+import { CategoryList } from "../pages/CategoryList";
+import { CategoryDetail } from "../pages/CategoryDetail";
+import { CategoryForm } from "../pages/CategoryForm";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -158,9 +161,42 @@ const AppRoutes: React.FC = () => {
             path="/input-output-list"
             element={
               <RouteRender
-                Component={InputOutpList}
+                Component={InputOutputList}
                 isPrivate
                 screenProps={{ nameScreen: "input-output-list" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/category-form"
+            element={
+              <RouteRender
+                Component={CategoryForm}
+                isPrivate
+                screenProps={{ nameScreen: "category-form" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/category-detail"
+            element={
+              <RouteRender
+                Component={CategoryDetail}
+                isPrivate
+                screenProps={{ nameScreen: "category-detail" }}
+              />
+            }
+          />
+          ;
+          <Route
+            path="/category-list"
+            element={
+              <RouteRender
+                Component={CategoryList}
+                isPrivate
+                screenProps={{ nameScreen: "category-list" }}
               />
             }
           />

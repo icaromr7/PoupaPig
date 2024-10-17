@@ -10,6 +10,7 @@ import {
   Column,
   ButtonCard,
   RoundIcon,
+  Image,
   TitleButtonCard,
   TitleSentiment,
   ButtonSentiment,
@@ -23,6 +24,10 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Ok from "../../assets/svg/ok.svg";
 import Attention from "../../assets/svg/atencao.svg";
 import Emergency from "../../assets/svg/emergencia.svg";
+import InputOutputForm1 from "../../assets/svg/inputoutputform1.svg";
+import InputOutputForm2 from "../../assets/svg/inputoutputform2.svg";
+import InputOutputForm3 from "../../assets/svg/inputoutputform3.svg";
+import InputOutputForm4 from "../../assets/svg/inputoutputform4.svg";
 
 //importações internas
 import Input from "../../components/Input";
@@ -44,7 +49,7 @@ export function InputOutputForm() {
     navigate("/new-transaction");
   };
 
-  const handleInvestmentGoalList = () => {
+  const handleInputOutputList = () => {
     navigate("/input-output-list");
   };
 
@@ -120,9 +125,11 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
               >
-                <RoundIcon>
-                  <ArrowUpwardIcon style={{ fontSize: 50 }} />
-                </RoundIcon>
+                <Image
+                  src={InputOutputForm1}
+                  alt="PoupaPig"
+                  style={{ marginTop: 15 }}
+                />
                 <TitleButtonCard>
                   Este lançamento é uma{" "}
                   <span
@@ -138,9 +145,7 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
               >
-                <RoundIcon>
-                  <ArrowDownwardIcon style={{ fontSize: 50 }} />
-                </RoundIcon>
+                <Image src={InputOutputForm2} alt="PoupaPig" />
                 <TitleButtonCard>
                   Este lançamento é apenas um{" "}
                   <span
@@ -158,9 +163,7 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
               >
-                <RoundIcon>
-                  <ArrowUpwardIcon style={{ fontSize: 50 }} />
-                </RoundIcon>
+                <Image src={InputOutputForm3} alt="PoupaPig" />
                 <TitleButtonCard>
                   Este lançamento é{" "}
                   <span
@@ -182,9 +185,7 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
               >
-                <RoundIcon>
-                  <ArrowDownwardIcon style={{ fontSize: 50 }} />
-                </RoundIcon>
+                <Image src={InputOutputForm4} alt="PoupaPig" />
                 <TitleButtonCard>
                   Este lançamento é{" "}
                   <span style={{ fontWeight: 700, color: theme.colors.redF63 }}>
@@ -226,7 +227,7 @@ export function InputOutputForm() {
             borderColor={theme.colors.grey6F7}
             onClick={handleCancelForm}
           />
-          <Button title="Salvar" onClick={handleInvestmentGoalList} />
+          <Button title="Salvar" onClick={handleInputOutputList} />
         </ButtonsDiv>
       </Content>
     </Container>

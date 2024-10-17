@@ -33,6 +33,10 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const FirstColumn = styled.div`
@@ -51,6 +55,7 @@ export const Column = styled.div`
 
 export const ButtonCard = styled.div`
   border: 3px solid;
+  width: 250px;
   border-radius: 20px;
   height: 100px;
   background-color: ${theme.colors.whiteF2F};
@@ -60,11 +65,16 @@ export const ButtonCard = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  justify-content: center;
 
   cursor: pointer;
 
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 800px) {
+    width: 100%;
   }
 `;
 
@@ -77,6 +87,10 @@ export const RoundIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const Image = styled.img`
+  height: 80px;
 `;
 
 export const TitleButtonCard = styled.div`
@@ -106,6 +120,8 @@ export const ButtonSentiment = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
+
+  cursor: pointer;
 
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);

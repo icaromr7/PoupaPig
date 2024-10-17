@@ -65,7 +65,7 @@ const dataInputOutput = [
   },
 ];
 
-export function InputOutpList() {
+export function InputOutputList() {
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
 
