@@ -20,6 +20,7 @@ import { InputOutputList } from "../pages/InputOutputList";
 import { CategoryList } from "../pages/CategoryList";
 import { CategoryDetail } from "../pages/CategoryDetail";
 import { CategoryForm } from "../pages/CategoryForm";
+import { Profile } from "../pages/Profile";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -201,17 +202,17 @@ const AppRoutes: React.FC = () => {
             }
           />
           ;
-          {/* <Route
-            path="/my-profile"
+          <Route
+            path="/profile"
             element={
               <RouteRender
-                // Component={MyProfile}
+                Component={Profile}
                 isPrivate
-                screenProps={{ nameScreen: "my-profile" }}
+                screenProps={{ nameScreen: "profile" }}
               />
             }
           />
-          ; */}
+          ;
           {/* <Route
             path="/account-config"
             element={

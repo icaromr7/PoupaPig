@@ -11,6 +11,8 @@ import {
   TextInformation,
   ContainerItem,
   Symbol,
+  ButtonsDiv,
+  Column,
 } from "./style";
 import theme from "../../styles/theme";
 import InvestmentGoalList1 from "../../assets/svg/investmentgoallist1.svg";
@@ -23,6 +25,18 @@ import { useNavigate } from "react-router-dom";
 import { CustomModal } from "../../components/CustomModal";
 
 const dataInvestment = [
+  {
+    nome: "Casa",
+  },
+  {
+    nome: "Carro",
+  },
+  {
+    nome: "Fundo monetário",
+  },
+  {
+    nome: "Imóvel 2",
+  },
   {
     nome: "Casa",
   },
@@ -119,15 +133,19 @@ export function InvestmentGoalList() {
             </TextInformation>
           </Information>
         </InfoColumn>
-        {dataInvestment.map((investment, index) =>
-          itemInvestment(investment, index + "-" + investment)
-        )}
+        <Column>
+          {dataInvestment.map((investment, index) =>
+            itemInvestment(investment, index + "-" + investment)
+          )}
+        </Column>
       </MainColumn>
       {/* AQUI VEM A COLUNA DE METAS */}
       <MainColumn>
-        {dataInvestment.map((goal, index) =>
-          itemGoal(goal, index + "-" + goal)
-        )}
+        <Column>
+          {dataInvestment.map((goal, index) =>
+            itemGoal(goal, index + "-" + goal)
+          )}
+        </Column>
         <InfoColumn>
           <Image src={Landpage3} alt="PoupaPig" style={{ height: 205 }} />
           <Information>
@@ -143,6 +161,9 @@ export function InvestmentGoalList() {
             </TextInformation>
           </Information>
         </InfoColumn>
+        <ButtonsDiv>
+          <Button title="Adicionar investimento ou meta" minWidth="300px" />
+        </ButtonsDiv>
       </MainColumn>
       {modalDelete && (
         <CustomModal

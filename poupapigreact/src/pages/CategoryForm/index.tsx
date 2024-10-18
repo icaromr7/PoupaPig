@@ -91,6 +91,7 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import PaletteIcon from "@mui/icons-material/Palette";
 import PetsIcon from "@mui/icons-material/Pets";
 import { Button } from "../../components/Button";
+import StyledIcon from "../../components/StyledIcon";
 
 export function CategoryForm() {
   const navigate = useNavigate();
@@ -115,95 +116,87 @@ export function CategoryForm() {
         <IconDiv>
           <TitleIconDiv>Escolha um icon para a categoria:</TitleIconDiv>
           <LineIcon>
-            <IcecreamIcon
-              sx={{
-                color: theme.colors.blue002,
-                cursor: "pointer",
-                "&:hover": {
-                  border: `1px solid ${theme.colors.blue002}`,
-                  borderRadius: "4px",
-                },
-              }}
-            />
-            <LocalBarIcon style={{ color: theme.colors.blue002 }} />
-            <AirplanemodeActiveIcon style={{ color: theme.colors.blue002 }} />
-            <AirportShuttleIcon style={{ color: theme.colors.blue002 }} />
-            <AodIcon style={{ color: theme.colors.blue002 }} />
-            <AppleIcon style={{ color: theme.colors.blue002 }} />
-            <AttractionsIcon style={{ color: theme.colors.blue002 }} />
-            <AutoStoriesIcon style={{ color: theme.colors.blue002 }} />
-            <AutoGraphIcon style={{ color: theme.colors.blue002 }} />
-            <BatchPredictionIcon style={{ color: theme.colors.blue002 }} />
-            <BathtubIcon style={{ color: theme.colors.blue002 }} />
-            <BeachAccessIcon style={{ color: theme.colors.blue002 }} />
-            <BikeScooterIcon style={{ color: theme.colors.blue002 }} />
-            <Brightness5Icon style={{ color: theme.colors.blue002 }} />
-            <CakeIcon style={{ color: theme.colors.blue002 }} />
-            <BuildIcon style={{ color: theme.colors.blue002 }} />
-            <CameraAltIcon style={{ color: theme.colors.blue002 }} />
-            <CarRepairIcon style={{ color: theme.colors.blue002 }} />
+            <StyledIcon IconComponent={IcecreamIcon} />
+            <StyledIcon IconComponent={LocalBarIcon} />
+            <StyledIcon IconComponent={AirplanemodeActiveIcon} />
+            <StyledIcon IconComponent={AirportShuttleIcon} />
+            <StyledIcon IconComponent={AodIcon} />
+            <StyledIcon IconComponent={AppleIcon} />
+            <StyledIcon IconComponent={AttractionsIcon} />
+            <StyledIcon IconComponent={AutoStoriesIcon} />
+            <StyledIcon IconComponent={AutoGraphIcon} />
+            <StyledIcon IconComponent={BatchPredictionIcon} />
+            <StyledIcon IconComponent={BathtubIcon} />
+            <StyledIcon IconComponent={BeachAccessIcon} />
+            <StyledIcon IconComponent={BikeScooterIcon} />
+            <StyledIcon IconComponent={Brightness5Icon} />
+            <StyledIcon IconComponent={CakeIcon} />
+            <StyledIcon IconComponent={BuildIcon} />
+            <StyledIcon IconComponent={CameraAltIcon} />
+            <StyledIcon IconComponent={CarRepairIcon} />
           </LineIcon>
           <LineIcon>
-            <CardGiftcardIcon style={{ color: theme.colors.blue002 }} />
-            <CardTravelIcon style={{ color: theme.colors.blue002 }} />
-            <CastleIcon style={{ color: theme.colors.blue002 }} />
-            <CelebrationIcon style={{ color: theme.colors.blue002 }} />
-            <ChairIcon style={{ color: theme.colors.blue002 }} />
-            <CheckroomIcon style={{ color: theme.colors.blue002 }} />
-            <ChildCareIcon style={{ color: theme.colors.blue002 }} />
-            <ChildFriendlyIcon style={{ color: theme.colors.blue002 }} />
-            <CleanHandsIcon style={{ color: theme.colors.blue002 }} />
-            <CleaningServicesIcon style={{ color: theme.colors.blue002 }} />
-            <CoffeeIcon style={{ color: theme.colors.blue002 }} />
-            <ColorLensIcon style={{ color: theme.colors.blue002 }} />
-            <ComputerIcon style={{ color: theme.colors.blue002 }} />
-            <CookieIcon style={{ color: theme.colors.blue002 }} />
-            <CrisisAlertIcon style={{ color: theme.colors.blue002 }} />
-            <DeliveryDiningIcon style={{ color: theme.colors.blue002 }} />
-            <DeviceThermostatIcon style={{ color: theme.colors.blue002 }} />
-            <DirectionsSubwayIcon style={{ color: theme.colors.blue002 }} />
+            <StyledIcon IconComponent={CardGiftcardIcon} />
+            <StyledIcon IconComponent={CardTravelIcon} />
+            <StyledIcon IconComponent={CastleIcon} />
+            <StyledIcon IconComponent={CelebrationIcon} />
+            <StyledIcon IconComponent={ChairIcon} />
+            <StyledIcon IconComponent={CheckroomIcon} />
+            <StyledIcon IconComponent={ChildCareIcon} />
+            <StyledIcon IconComponent={ChildFriendlyIcon} />
+            <StyledIcon IconComponent={CleanHandsIcon} />
+            <StyledIcon IconComponent={CleaningServicesIcon} />
+            <StyledIcon IconComponent={CoffeeIcon} />
+            <StyledIcon IconComponent={ColorLensIcon} />
+            <StyledIcon IconComponent={ComputerIcon} />
+            <StyledIcon IconComponent={CookieIcon} />
+            <StyledIcon IconComponent={CrisisAlertIcon} />
+            <StyledIcon IconComponent={DeliveryDiningIcon} />
+            <StyledIcon IconComponent={DeviceThermostatIcon} />
+            <StyledIcon IconComponent={DirectionsSubwayIcon} />
           </LineIcon>
           <LineIcon>
-            <DownhillSkiingIcon style={{ color: theme.colors.blue002 }} />
-            <DrawIcon style={{ color: theme.colors.blue002 }} />
-            <ElectricBoltIcon style={{ color: theme.colors.blue002 }} />
-            <EmojiNatureIcon style={{ color: theme.colors.blue002 }} />
-            <EmergencyIcon style={{ color: theme.colors.blue002 }} />
-            <EmojiEmotionsIcon style={{ color: theme.colors.blue002 }} />
-            <EnhancedEncryptionIcon style={{ color: theme.colors.blue002 }} />
-            <Face3Icon style={{ color: theme.colors.blue002 }} />
-            <Face6Icon style={{ color: theme.colors.blue002 }} />
-            <FavoriteIcon style={{ color: theme.colors.blue002 }} />
-            <FamilyRestroomIcon style={{ color: theme.colors.blue002 }} />
-            <FestivalIcon style={{ color: theme.colors.blue002 }} />
-            <FitnessCenterIcon style={{ color: theme.colors.blue002 }} />
-            <ForestIcon style={{ color: theme.colors.blue002 }} />
-            <GavelIcon style={{ color: theme.colors.blue002 }} />
-            <GradeIcon style={{ color: theme.colors.blue002 }} />
-            <HardwareIcon style={{ color: theme.colors.blue002 }} />
-            <HealthAndSafetyIcon style={{ color: theme.colors.blue002 }} />
+            <StyledIcon IconComponent={DownhillSkiingIcon} />
+            <StyledIcon IconComponent={DrawIcon} />
+            <StyledIcon IconComponent={ElectricBoltIcon} />
+            <StyledIcon IconComponent={EmojiNatureIcon} />
+            <StyledIcon IconComponent={EmergencyIcon} />
+            <StyledIcon IconComponent={EmojiEmotionsIcon} />
+            <StyledIcon IconComponent={EnhancedEncryptionIcon} />
+            <StyledIcon IconComponent={Face3Icon} />
+            <StyledIcon IconComponent={Face6Icon} />
+            <StyledIcon IconComponent={FavoriteIcon} />
+            <StyledIcon IconComponent={FamilyRestroomIcon} />
+            <StyledIcon IconComponent={FestivalIcon} />
+            <StyledIcon IconComponent={FitnessCenterIcon} />
+            <StyledIcon IconComponent={ForestIcon} />
+            <StyledIcon IconComponent={GavelIcon} />
+            <StyledIcon IconComponent={GradeIcon} />
+            <StyledIcon IconComponent={HardwareIcon} />
+            <StyledIcon IconComponent={HealthAndSafetyIcon} />
           </LineIcon>
           <LineIcon>
-            <HeadsetIcon style={{ color: theme.colors.blue002 }} />
-            <HikingIcon style={{ color: theme.colors.blue002 }} />
-            <HomeWorkIcon style={{ color: theme.colors.blue002 }} />
-            <HttpsIcon style={{ color: theme.colors.blue002 }} />
-            <ImagesearchRollerIcon style={{ color: theme.colors.blue002 }} />
-            <InstagramIcon style={{ color: theme.colors.blue002 }} />
-            <IronIcon style={{ color: theme.colors.blue002 }} />
-            <KitesurfingIcon style={{ color: theme.colors.blue002 }} />
-            <LightModeIcon style={{ color: theme.colors.blue002 }} />
-            <LightbulbIcon style={{ color: theme.colors.blue002 }} />
-            <LiquorIcon style={{ color: theme.colors.blue002 }} />
-            <LocalFloristIcon style={{ color: theme.colors.blue002 }} />
-            <LocalGroceryStoreIcon style={{ color: theme.colors.blue002 }} />
-            <LunchDiningIcon style={{ color: theme.colors.blue002 }} />
-            <LuggageIcon style={{ color: theme.colors.blue002 }} />
-            <MedicalServicesIcon style={{ color: theme.colors.blue002 }} />
-            <PaletteIcon style={{ color: theme.colors.blue002 }} />
-            <PetsIcon style={{ color: theme.colors.blue002 }} />
+            <StyledIcon IconComponent={HeadsetIcon} />
+            <StyledIcon IconComponent={HikingIcon} />
+            <StyledIcon IconComponent={HomeWorkIcon} />
+            <StyledIcon IconComponent={HttpsIcon} />
+            <StyledIcon IconComponent={ImagesearchRollerIcon} />
+            <StyledIcon IconComponent={InstagramIcon} />
+            <StyledIcon IconComponent={IronIcon} />
+            <StyledIcon IconComponent={KitesurfingIcon} />
+            <StyledIcon IconComponent={LightModeIcon} />
+            <StyledIcon IconComponent={LightbulbIcon} />
+            <StyledIcon IconComponent={LiquorIcon} />
+            <StyledIcon IconComponent={LocalFloristIcon} />
+            <StyledIcon IconComponent={LocalGroceryStoreIcon} />
+            <StyledIcon IconComponent={LunchDiningIcon} />
+            <StyledIcon IconComponent={LuggageIcon} />
+            <StyledIcon IconComponent={MedicalServicesIcon} />
+            <StyledIcon IconComponent={PaletteIcon} />
+            <StyledIcon IconComponent={PetsIcon} />
           </LineIcon>
         </IconDiv>
+
         <ButtonsDiv>
           <Button
             title="Cancelar"

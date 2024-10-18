@@ -69,3 +69,40 @@ export const Symbol = styled.div<InputOutputListStyleProps>`
   align-items: center;
   justify-content: center;
 `;
+
+export const ButtonsDiv = styled.div`
+  align-self: flex-end;
+`;
+
+export const Column = styled.div`
+  border: 3px solid #fff;
+  padding: 20px;
+  border-radius: 20px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 340px;
+  overflow-y: auto;
+
+  /* Estiliza a barra de rolagem */
+  &::-webkit-scrollbar {
+    width: 0.4em; /* Ajusta a largura */
+    margin-right: 10px; /* Simula espaçamento à direita */
+  }
+
+  /* Estiliza o "thumb" da barra de rolagem (a parte arrastável) */
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 32, 67, 0.5);
+    border-radius: 10px;
+    border: 2px solid transparent; /* Adiciona espaço ao redor */
+    background-clip: padding-box; /* Faz com que o espaço seja visível */
+  }
+
+  /* Estiliza a área de rolagem para uma altura menor */
+  &::-webkit-scrollbar-track {
+    margin-top: 10px; /* Espaço no topo da barra */
+    margin-bottom: 10px; /* Espaço na parte inferior da barra */
+  }
+`;

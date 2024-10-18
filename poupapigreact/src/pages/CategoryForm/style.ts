@@ -3,6 +3,7 @@ import theme from "../../styles/theme";
 
 export const Container = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -62,6 +63,7 @@ export const LineIcon = styled.div`
 export const ButtonsDiv = styled.div`
   display: flex;
   flex-direction: row;
+  justify-self: end;
   align-self: flex-end;
   gap: 10px;
 `;

@@ -11,6 +11,8 @@ import {
   TextInformation,
   ContainerItem,
   Symbol,
+  ButtonsDiv,
+  Column,
 } from "./style";
 import theme from "../../styles/theme";
 import InputOutput1 from "../../assets/svg/inputoutputlist1.svg";
@@ -129,19 +131,23 @@ export function InputOutputList() {
             </TextInformation>
           </Information>
         </InfoColumn>
-        {dataInputOutput
-          .filter((investment) => investment.situ === "fixo")
-          .map((investment, index) =>
-            itemInputOutput(investment, index + "-" + investment)
-          )}
+        <Column>
+          {dataInputOutput
+            .filter((investment) => investment.situ === "fixo")
+            .map((investment, index) =>
+              itemInputOutput(investment, index + "-" + investment)
+            )}
+        </Column>
       </MainColumn>
       {/* AQUI VEM A COLUNA DE METAS */}
       <MainColumn>
-        {dataInputOutput
-          .filter((investment) => investment.situ === "flutuante")
-          .map((investment, index) =>
-            itemInputOutput(investment, index + "-" + investment)
-          )}
+        <Column>
+          {dataInputOutput
+            .filter((investment) => investment.situ === "flutuante")
+            .map((investment, index) =>
+              itemInputOutput(investment, index + "-" + investment)
+            )}
+        </Column>
         <InfoColumn>
           <Image src={InputOutput2} alt="PoupaPig" style={{ height: 205 }} />
           <Information>
@@ -156,6 +162,9 @@ export function InputOutputList() {
             </TextInformation>
           </Information>
         </InfoColumn>
+        <ButtonsDiv>
+          <Button title="Adicionar lançamento" minWidth="300px" />
+        </ButtonsDiv>
       </MainColumn>
       {modalDelete && (
         <CustomModal
