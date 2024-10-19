@@ -23,14 +23,16 @@ import {
 import Logo from "../../assets/svg/logopp.svg";
 import LogoTitulo from "../../assets/svg/logotitulo.svg";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 import { HeaderMenu } from "../HeaderMenu";
 
 interface HeaderProps {
-  type: "landpage" | "signin" | "default";
+  type: "landpage" | "signin" | "default" | "profile";
 }
 
 export function Header({ type }: HeaderProps) {
+  console.log("type", type);
   const isMobileScreen = useMobileScreen();
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -93,6 +95,18 @@ export function Header({ type }: HeaderProps) {
         <ButtonHeader title="Home" />
         <ButtonHeader title="Nova transação" />
         <ButtonHeader title="Meu perfil" />
+        {type === "profile" ? (
+          <ButtonHeader
+            icon={
+              <SettingsIcon
+                style={{ color: theme.colors.whiteF2F, width: 20, height: 20 }}
+              />
+            }
+            onClick={() => setShowNotifications(!showNotifications)}
+          />
+        ) : (
+          <ButtonHeader />
+        )}
         <ButtonHeader
           icon={
             <NotificationsIcon
@@ -108,7 +122,7 @@ export function Header({ type }: HeaderProps) {
     <Container>
       {type === "landpage" && bodyLandpage}
       {type === "signin" && bodySignIn}
-      {type === "default" && bodyDefault}
+      {(type === "default" || type === "profile") && bodyDefault}
       {showNotifications && <HeaderMenu notification />}
     </Container>
   );
