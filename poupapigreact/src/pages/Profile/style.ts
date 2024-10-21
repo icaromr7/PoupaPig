@@ -92,3 +92,49 @@ export const NameBenefit = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
+export const TableContainer = styled.div`
+  width: 100%;
+  max-height: 360px;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+export const TableHeader = styled.thead`
+  position: sticky;
+  top: 0;
+  background-color: ${theme.colors.greenAEC};
+  z-index: 1;
+`;
+
+export const TableRow = styled.tr<{ even: boolean }>`
+  height: 30px;
+  background-color: ${({ even }) =>
+    even ? "rgba(174, 207, 159, 0.5)" : "rgba(191, 243, 167, 0.5)"};
+`;
+
+export const TableCell = styled.td`
+  padding: 5px;
+  text-align: left;
+  font-family: ${theme.fonts.fontOpenSans};
+  color: ${theme.colors.black171};
+  font-size: 15px;
+`;
+
+export const HeaderCell = styled.th`
+  padding: 5px;
+  text-align: left;
+  font-family: ${theme.fonts.fontOpenSans};
+  color: ${theme.colors.black171};
+  font-size: 15px;
+`;
+
+export const IconCell = styled.td`
+  text-align: center;
+`;
