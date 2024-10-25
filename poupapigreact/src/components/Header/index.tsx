@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //importações internas
@@ -32,11 +32,12 @@ interface HeaderProps {
 }
 
 export function Header({ type }: HeaderProps) {
-  console.log("type", type);
   const isMobileScreen = useMobileScreen();
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  const [showConfig, setShowConfig] = useState<boolean>(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleOpenMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
@@ -47,8 +48,19 @@ export function Header({ type }: HeaderProps) {
   };
 
   const handleSignIn = () => {
-    console.log("oi?");
     navigate("/sign-in");
+  };
+
+  const handleHome = () => {
+    navigate("/home");
+  };
+
+  const handleNewTransaction = () => {
+    navigate("/new-transaction");
+  };
+
+  const handleProfile = () => {
+    navigate("/profile");
   };
 
   const MobileMenuLandpage = (
@@ -74,7 +86,7 @@ export function Header({ type }: HeaderProps) {
         />
       ) : (
         <ButtonsDiv>
-          <ButtonHeader title="Criar conta" />
+          <ButtonHeader title="Criar conta" onClick={handleSignIn} />
           <ButtonHeader title="Entrar" onClick={handleLogin} />
         </ButtonsDiv>
       )}
@@ -88,13 +100,42 @@ export function Header({ type }: HeaderProps) {
     </ContainerLogin>
   );
 
+  const handleConfigMenu = () => {
+    setShowConfig(!showConfig);
+    setShowNotifications(false);
+  };
+
+  const handleNotificationMenu = () => {
+    setShowNotifications(!showNotifications);
+    setShowConfig(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+        setShowConfig(false);
+      }
+    };
+
+    if (showNotifications || showConfig) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showNotifications, showConfig]);
+
   const bodyDefault = (
     <ContainerDefault>
       <LogoDefault src={LogoTitulo} alt="PoupaPig" />
       <ButtonsDivDefault>
-        <ButtonHeader title="Home" />
-        <ButtonHeader title="Nova transação" />
-        <ButtonHeader title="Meu perfil" />
+        <ButtonHeader title="Home" onClick={handleHome} />
+        <ButtonHeader title="Nova transação" onClick={handleNewTransaction} />
+        <ButtonHeader title="Meu perfil" onClick={handleProfile} />
         {type === "profile" ? (
           <ButtonHeader
             icon={
@@ -102,7 +143,7 @@ export function Header({ type }: HeaderProps) {
                 style={{ color: theme.colors.whiteF2F, width: 20, height: 20 }}
               />
             }
-            onClick={() => setShowNotifications(!showNotifications)}
+            onClick={handleConfigMenu}
           />
         ) : (
           <ButtonHeader />
@@ -113,7 +154,7 @@ export function Header({ type }: HeaderProps) {
               style={{ color: theme.colors.whiteF2F, width: 20, height: 20 }}
             />
           }
-          onClick={() => setShowNotifications(!showNotifications)}
+          onClick={handleNotificationMenu}
         />
       </ButtonsDivDefault>
     </ContainerDefault>
@@ -123,7 +164,16 @@ export function Header({ type }: HeaderProps) {
       {type === "landpage" && bodyLandpage}
       {type === "signin" && bodySignIn}
       {(type === "default" || type === "profile") && bodyDefault}
-      {showNotifications && <HeaderMenu notification />}
+      {showNotifications && (
+        <div ref={menuRef}>
+          <HeaderMenu notification />
+        </div>
+      )}
+      {showConfig && (
+        <div ref={menuRef}>
+          <HeaderMenu config />
+        </div>
+      )}
     </Container>
   );
 }

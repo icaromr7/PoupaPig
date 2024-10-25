@@ -33,10 +33,7 @@ const RouteRender: React.FC<RouteRenderProps> = ({
     "landpage" | "signin" | "default" | "none" | "profile"
   >("default");
 
-  console.log("screenProps?.nameScreen", screenProps?.nameScreen);
-
   useEffect(() => {
-    console.log("screenProps?.nameScreen", screenProps?.nameScreen);
     if (screenProps?.nameScreen === "landpage") {
       setType("landpage");
       return;

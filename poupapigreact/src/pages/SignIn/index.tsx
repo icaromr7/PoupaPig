@@ -41,6 +41,14 @@ export function SignIn() {
     }
   };
 
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleLandpage = () => {
+    navigate("/landpage");
+  };
+
   const dataForm = (
     <ContainerForm>
       <ColumnLeft>
@@ -81,6 +89,7 @@ export function SignIn() {
             title="Cancelar"
             borderColor={theme.colors.grey6F7}
             backgroundColor={theme.colors.greyB8C}
+            onClick={handleLandpage}
           />
           <Button title="Avançar" onClick={() => setCurrentBody("questions")} />
         </ButtonsDiv>
@@ -121,8 +130,9 @@ export function SignIn() {
             title="Cancelar"
             borderColor={theme.colors.grey6F7}
             backgroundColor={theme.colors.greyB8C}
+            onClick={handleLandpage}
           />
-          <Button title="Avançar" />
+          <Button title="Avançar" onClick={handleLogin} />
         </ButtonsDiv>
       </ColumnRightQuestions>
     </ContainerForm>

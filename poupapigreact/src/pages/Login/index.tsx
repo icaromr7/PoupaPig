@@ -29,6 +29,10 @@ export function Login() {
     console.log("checked", checked);
   };
 
+  const handleHome = () => {
+    navigate("/home");
+  };
+
   const handleGoBack = () => {
     if (currentBody === "login") {
       navigate("/landpage");
@@ -55,7 +59,7 @@ export function Login() {
         </Text>
         <Text onClick={handleSignIn}>Ainda não tem conta? Cadastre-se!</Text>
       </Options>
-      <Button title="Entrar" />
+      <Button title="Entrar" onClick={handleHome} />
     </ContainerLogin>
   );
 

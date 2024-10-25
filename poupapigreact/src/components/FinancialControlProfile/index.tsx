@@ -22,6 +22,7 @@ import Emergency from "../../assets/svg/emergencia.svg";
 //importações internas
 import { numberToCurrency } from "../../utils/bibli";
 import { Button } from "../Button";
+import { useNavigate } from "react-router-dom";
 
 interface FinancialControlProfileProps {
   situation: "ok" | "attention" | "emergency";
@@ -30,8 +31,13 @@ interface FinancialControlProfileProps {
 export function FinancialControlProfile({
   situation,
 }: FinancialControlProfileProps) {
+  const navigate = useNavigate();
   const [messageSituation, setMessageSituation] = useState<string>("");
   const [iconSituation, setIconSituation] = useState<string>("");
+
+  const handleNewTransaction = () => {
+    navigate("/new-transaction");
+  };
 
   useEffect(() => {
     switch (situation) {
@@ -79,7 +85,7 @@ export function FinancialControlProfile({
       {valueSign("orçado", 289)}
       {valueSign("livre sem valor dos orçamentos", 1900.56)}
       {valueSign("investido", 15000)}
-      <Button title="Adicionar transação" />
+      <Button title="Adicionar transação" onClick={handleNewTransaction} />
     </Container>
   );
 }

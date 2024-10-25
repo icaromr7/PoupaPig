@@ -38,8 +38,10 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import { Button } from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 export function Landpage() {
+  const navigate = useNavigate();
   const cardInfo = (
     type: "control" | "money" | "investment" | "calculus",
     text: string
@@ -74,6 +76,10 @@ export function Landpage() {
         <TextInfo>{text}</TextInfo>
       </ContainerInfo>
     );
+  };
+
+  const handleSignIn = () => {
+    navigate("/sign-in");
   };
 
   return (
@@ -136,6 +142,7 @@ export function Landpage() {
             height="80px"
             minWidth="300px"
             fontSize="25px"
+            onClick={handleSignIn}
           />
         </SectionColumn>
       </Section>

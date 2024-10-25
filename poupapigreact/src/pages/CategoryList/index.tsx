@@ -86,7 +86,7 @@ export function CategoryList() {
   // }, []);
 
   const handleEditData = () => {
-    navigate("/input-output-form");
+    navigate("/category-form");
   };
 
   const handleDeleteModal = () => {

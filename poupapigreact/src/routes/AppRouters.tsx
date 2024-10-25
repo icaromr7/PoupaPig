@@ -21,6 +21,7 @@ import { CategoryList } from "../pages/CategoryList";
 import { CategoryDetail } from "../pages/CategoryDetail";
 import { CategoryForm } from "../pages/CategoryForm";
 import { Profile } from "../pages/Profile";
+import { ConfigAccount } from "../pages/ConfigAccount";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -213,16 +214,16 @@ const AppRoutes: React.FC = () => {
             }
           />
           ;
-          {/* <Route
-            path="/account-config"
+          <Route
+            path="/config-account"
             element={
               <RouteRender
-                // Component={AccountConfig}
+                Component={ConfigAccount}
                 isPrivate
-                screenProps={{ nameScreen: "account-config" }}
+                screenProps={{ nameScreen: "config-account" }}
               />
             }
-          /> */}
+          />
           {/* <Route
             path="/graphs"
             element={

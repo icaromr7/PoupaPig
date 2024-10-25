@@ -19,14 +19,23 @@ import NewTransaction4 from "../../assets/svg/newtransaction4.svg";
 
 export function NewTransaction() {
   const navigate = useNavigate();
+
   const handleInvestmentGoalForm = () => {
     navigate("/investment-goal-form");
+  };
+
+  const handleTransactionForm = () => {
+    navigate("/input-output-form");
+  };
+
+  const handleCategoryForm = () => {
+    navigate("/category-form");
   };
 
   return (
     <Container>
       <NewTransactionsField>
-        <NewTransactionDiv>
+        <NewTransactionDiv onClick={handleTransactionForm}>
           <Image src={NewTransaction1} alt="PoupaPig" />
           <Title>
             cadastrar <span style={{ fontSize: 30 }}>entrada/saída</span>
@@ -38,7 +47,7 @@ export function NewTransaction() {
           </Title>
           <Image src={NewTransaction2} alt="PoupaPig" />
         </NewTransactionDiv>
-        <NewTransactionDiv>
+        <NewTransactionDiv onClick={handleCategoryForm}>
           <Image
             src={NewTransaction3}
             alt="PoupaPig"
