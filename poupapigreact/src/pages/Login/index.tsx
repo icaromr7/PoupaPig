@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 //style, assets e icons
 import {
@@ -17,7 +20,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //importações internas
 import Input from "../../components/Input";
 import { Button } from "../../components/Button";
-import Checkbox from "../../components/Checkbox";
+
+const schema = yup.object().shape({
+  email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
+  password: yup
+    .string()
+    .min(6, "Mínimo de 6 caracteres")
+    .required("Campo obrigatório"),
+});
 
 export function Login() {
   const navigate = useNavigate();
@@ -25,11 +35,16 @@ export function Login() {
     "login" | "emailPassword" | "codePassword" | "newPassword"
   >("login");
 
-  const handleCheckbox = (checked: boolean) => {
-    console.log("checked", checked);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const handleHome = () => {
+  const onSubmit = (data: any) => {
+    console.log("Dados do formulário:", data);
     navigate("/home");
   };
 
@@ -51,15 +66,26 @@ export function Login() {
 
   const bodyLogin = (
     <ContainerLogin>
-      <Input name="e-mail" placeholder="E-mail" />
-      <Input name="senha" placeholder="Senha" />
+      <Input
+        name="email"
+        placeholder="E-mail"
+        error={errors.email?.message}
+        register={register}
+      />
+      <Input
+        name="password"
+        placeholder="Senha"
+        customType="password"
+        error={errors.password?.message}
+        register={register}
+      />
       <Options>
         <Text onClick={() => setCurrentBody("emailPassword")}>
           Esqueceu a senha?
         </Text>
         <Text onClick={handleSignIn}>Ainda não tem conta? Cadastre-se!</Text>
       </Options>
-      <Button title="Entrar" onClick={handleHome} />
+      <Button title="Entrar" onClick={handleSubmit(onSubmit)} />
     </ContainerLogin>
   );
 

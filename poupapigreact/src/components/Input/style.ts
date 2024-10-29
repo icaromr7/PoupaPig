@@ -49,8 +49,8 @@ export const InputField = styled.input`
 `;
 
 export const Icon2Wrapper = styled.div`
-  height: 100%;
-  width: 15%;
+  height: fit-content;
+  width: fit-content;
 `;
 
 export const TogglePasswordButton = styled.div``;
@@ -58,3 +58,7 @@ export const TogglePasswordButton = styled.div``;
 export const ErrorMessage = styled.div``;
 
 export const IconWrapper = styled.div``;
+
+export const ErrorDiv = styled.div`
+  position: relative;
+`;
