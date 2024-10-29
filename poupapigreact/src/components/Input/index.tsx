@@ -73,10 +73,12 @@ const Input: React.FC<InputProps> = ({
         />
         {error !== "" && error && (
           <ErrorDiv>
-            <FiAlertCircle
-              color="#c00"
-              size={30}
-              style={{ cursor: "pointer" }}
+            <ErrorOutlineIcon
+              style={{
+                cursor: "pointer",
+                color: theme.colors.redF63,
+                height: 20,
+              }}
               className="error-circle"
               data-tooltip-id={`tooltip-error-input-${name}`}
             />

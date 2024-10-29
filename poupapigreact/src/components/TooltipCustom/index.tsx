@@ -9,8 +9,8 @@ interface ToolTipProps {
 
 const ToolTipCustom = ({ id, title, backgroundColor }: ToolTipProps) => {
   const tooltipStyle = {
-    backgroundColor: backgroundColor || "#ed145b",
-    color: "#FFF",
+    backgroundColor: theme.colors.redF3A,
+    color: theme.colors.redF63,
     fontFamily: theme.fonts.fontOpenSans,
     fontSize: 14,
     borderRadius: 6,
