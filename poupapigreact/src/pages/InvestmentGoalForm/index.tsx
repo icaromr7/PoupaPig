@@ -85,39 +85,39 @@ export function InvestmentGoalForm() {
 
           {investment && (
             <>
-              <CustomSelect
+              {/* <CustomSelect
                 name="tipo"
                 placeholder="Tipo"
                 data={data}
                 onSelect={(option: any) =>
                   console.log("Opção selecionada:", option)
                 }
-              />
+              /> */}
               <CustomSelectDate
                 placeholder="Data permitida para retirada"
                 onDateChange={handleDateChange}
               />
-              <CustomSelect
+              {/* <CustomSelect
                 name="instituicao"
                 placeholder="Instituição"
                 data={data}
                 onSelect={(option: any) =>
                   console.log("Opção selecionada:", option)
                 }
-              />
+              /> */}
               <Line>
                 <Input
                   name="porcentagem"
                   placeholder="Porcentagem investimento"
                 />
-                <CustomSelect
+                {/* <CustomSelect
                   name="rendimento"
                   placeholder="Rendimento"
                   data={data}
                   onSelect={(option: any) =>
                     console.log("Opção selecionada:", option)
                   }
-                />
+                /> */}
               </Line>
               <Input
                 name="valorInvestimento"

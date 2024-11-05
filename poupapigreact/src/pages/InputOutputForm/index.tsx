@@ -65,7 +65,7 @@ export function InputOutputForm() {
               placeholder="Data"
               onDateChange={handleDateChange}
             />
-            <CustomSelect
+            {/* <CustomSelect
               name="categoria"
               placeholder="Categoria"
               data={data}
@@ -80,7 +80,7 @@ export function InputOutputForm() {
               onSelect={(option: any) =>
                 console.log("Opção selecionada:", option)
               }
-            />
+            /> */}
             <Input name="qtdeParcelas" placeholder="Quantidade de parcelas" />
           </FirstColumn>
           <Column>

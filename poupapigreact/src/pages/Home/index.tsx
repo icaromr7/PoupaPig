@@ -127,15 +127,6 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      const totalWidth = data.length * 145;
-      const containerWidth = scrollRef.current.offsetWidth;
-
-      setShowArrows(totalWidth > containerWidth);
-    }
-  }, [data]);
-
   const checkScrollPosition = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -143,6 +134,15 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
       setShowLeftArrow(scrollLeft > 0);
 
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+    }
+  };
+
+  const updateShowArrows = () => {
+    if (scrollRef.current) {
+      const totalWidth = data.length * 145;
+      const containerWidth = scrollRef.current.offsetWidth;
+      setShowArrows(totalWidth > containerWidth);
+      checkScrollPosition();
     }
   };
 
@@ -159,17 +159,20 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
   };
 
   useEffect(() => {
+    updateShowArrows();
+
+    window.addEventListener("resize", updateShowArrows);
     if (scrollRef.current) {
       scrollRef.current.addEventListener("scroll", checkScrollPosition);
-      checkScrollPosition();
     }
 
     return () => {
+      window.removeEventListener("resize", updateShowArrows);
       if (scrollRef.current) {
         scrollRef.current.removeEventListener("scroll", checkScrollPosition);
       }
     };
-  }, []);
+  }, [data]);
 
   return (
     <ScrollContainer>

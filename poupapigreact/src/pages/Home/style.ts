@@ -6,7 +6,16 @@ interface HomeStyleProps {
 }
 
 export const Container = styled.div`
+  flex-shrink: 0;
   width: 100%;
+  min-width: 250px;
+  max-width: 1800px;
+
+  border: 4px solid red;
+
+  margin-left: auto;
+  margin-right: auto;
+
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -28,10 +37,12 @@ export const ClientData = styled.div`
   display: flex;
   flex-direction: column;
   gap: 50px;
+
+  border: 3px solid blue;
 `;
 
 export const Row = styled.div`
-  max-width: 1150px;
+  /* max-width: 1150px; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -154,6 +165,8 @@ export const ScrollContainer = styled.div`
   width: 100%;
   padding: 0 40px;
 
+  border: 3px solid green;
+
   .scroll-item {
     display: inline-block;
     width: 400px;
@@ -169,6 +182,8 @@ export const ScrollContent = styled.div`
   width: 100%;
 
   gap: 20px;
+
+  border: 3px solid pink;
 `;
 
 export const ArrowContainer = styled.div`
