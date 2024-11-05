@@ -121,7 +121,8 @@ export function SignIn() {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = (data: any) => {
+    console.log("Dados do formulário:", data);
     navigate("/login");
   };
 
@@ -377,7 +378,7 @@ export function SignIn() {
         <TopForm>
           <CustomSelect
             name="questao8"
-            title="Quantos banheiros tem no seu domicílio?"
+            title="Quantos DVDs tem no seu domicílio?"
             placeholder="Escolha"
             data={[
               "0 (zero)",
@@ -393,7 +394,7 @@ export function SignIn() {
           />
           <CustomSelect
             name="questao9"
-            title="Quantos banheiros tem no seu domicílio?"
+            title="Quantos fornos de micro-ondas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
               "0 (zero)",
@@ -409,7 +410,7 @@ export function SignIn() {
           />
           <CustomSelect
             name="questao10"
-            title="Quantos trabalhadores domésticos tem no seu domicílio?"
+            title="Quantas motocicletas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
               "0 (zero)",
@@ -425,7 +426,7 @@ export function SignIn() {
           />
           <CustomSelect
             name="questao11"
-            title="Quantos automóveis tem no seu domicílio?"
+            title="Quantas máquinas secadoras de roupas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
               "0 (zero)",
@@ -441,14 +442,14 @@ export function SignIn() {
           />
           <CustomSelect
             name="questao12"
-            title="Quantos microcomputadores tem no seu domicílio?"
+            title="Qual é o grau de instrução do chefe da família?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              "Analfabeto/Fundamental I incompleto",
+              "Fundamental I completo/Fundamental II incompleto",
+              "Fundamental II completo/Médio incompleto",
+              "Médio completo/Superior incompleto",
+              "Superior completo",
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao12?.message}
@@ -457,14 +458,12 @@ export function SignIn() {
           />
           <CustomSelect
             name="questao13"
-            title="Quantas máquinas de lavar roupa tem no seu domicílio?"
+            title="A água utilizada no seu domicílio é proveniente de?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              "Rede geral de distribuição",
+              "Poço ou nascente",
+              "Outro meio",
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao13?.message}
@@ -473,15 +472,9 @@ export function SignIn() {
           />
           <CustomSelect
             name="questao14"
-            title="Quantas geladeiras tem no seu domicílio?"
+            title="A rua do seu domicílio é?"
             placeholder="Escolha"
-            data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
-            ]}
+            data={["Asfaltada/Pavimentada", "Terra/Cascalho"]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao14?.message}
             register={registerQuestionsTwo}
@@ -514,7 +507,7 @@ export function SignIn() {
           />
           <Button
             title="Avançar"
-            onClick={handleSubmitQuestionsOne(handleQuestionsSecondPart)}
+            onClick={handleSubmitQuestionsTwo(handleLogin)}
           />
         </ButtonsDiv>
       </ColumnRightQuestions>
