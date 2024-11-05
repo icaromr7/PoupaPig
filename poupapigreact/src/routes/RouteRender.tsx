@@ -9,6 +9,7 @@ import {
 } from "./style";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { useHeader } from "../context/HeaderContext";
 
 interface RouteProperties {
   isPrivate?: boolean;
@@ -29,41 +30,40 @@ const RouteRender: React.FC<RouteRenderProps> = ({
   screenProps,
   ...rest
 }) => {
-  const [type, setType] = useState<
-    "landpage" | "signin" | "default" | "none" | "profile"
-  >("default");
+  const { setHeaderType } = useHeader();
+  // const [type, setType] = useState<
+  //   "landpage" | "signin" | "default" | "none" | "profile"
+  // >("default");
 
   useEffect(() => {
-    if (screenProps?.nameScreen === "landpage") {
-      setType("landpage");
-      return;
-    }
-    if (
-      screenProps?.nameScreen === "404" ||
-      screenProps?.nameScreen === "sign-in"
-    ) {
-      setType("signin");
-      return;
-    }
-    if (
-      screenProps?.nameScreen === "profile" ||
-      screenProps?.nameScreen === "config-account"
-    ) {
-      setType("profile");
-      return;
-    }
-    if (screenProps?.nameScreen === "login" || screenProps?.nameScreen === "") {
-      setType("none");
-      return;
-    }
-  }, [screenProps?.nameScreen]);
+    const newType = (() => {
+      switch (screenProps?.nameScreen) {
+        case "landpage":
+          return "landpage";
+        case "404":
+        case "sign-in":
+          return "signin";
+        case "profile":
+        case "config-account":
+          return "profile";
+        case "login":
+        case "":
+          return "none";
+        default:
+          return "default";
+      }
+    })();
+
+    setHeaderType(newType);
+  }, [screenProps?.nameScreen, setHeaderType]);
 
   return (
     <ContainerTotal>
       <Container>
         <Section1>
           <HeaderContainer>
-            {type !== "none" && <Header type={type} />}
+            <Header type={useHeader().headerType} />{" "}
+            {/* Aqui você usa o tipo do contexto */}
           </HeaderContainer>
         </Section1>
         <BodyMain $isLandpage={screenProps?.nameScreen === "landpage"}>

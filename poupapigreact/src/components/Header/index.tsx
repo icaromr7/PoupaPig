@@ -28,7 +28,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { HeaderMenu } from "../HeaderMenu";
 
 interface HeaderProps {
-  type: "landpage" | "signin" | "default" | "profile";
+  type: "landpage" | "signin" | "default" | "profile" | "none";
 }
 
 export function Header({ type }: HeaderProps) {

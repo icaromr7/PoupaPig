@@ -25,7 +25,41 @@ const schema = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
   password: yup
     .string()
-    .min(6, "Mínimo de 6 caracteres")
+    .min(8, "A senha deve ter pelo menos 8 caracteres")
+    .matches(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula")
+    .matches(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula")
+    .matches(/[0-9]/, "A senha deve conter pelo menos um número")
+    .matches(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "A senha deve conter pelo menos um caractere especial"
+    )
+    .required("Campo obrigatório"),
+});
+
+const emailSchema = yup.object().shape({
+  email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
+});
+
+const codeSchema = yup.object().shape({
+  codePassword: yup.string().required("Campo obrigatório"),
+});
+
+const schemaPassword = yup.object().shape({
+  newPassword: yup
+    .string()
+    .min(8, "A senha deve ter pelo menos 8 caracteres")
+    .matches(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula")
+    .matches(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula")
+    .matches(/[0-9]/, "A senha deve conter pelo menos um número")
+    .matches(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "A senha deve conter pelo menos um caractere especial"
+    )
+    .required("Campo obrigatório"),
+
+  confirmNewPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword")], "As senhas devem ser iguais")
     .required("Campo obrigatório"),
 });
 
@@ -43,9 +77,48 @@ export function Login() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const {
+    register: registerEmailPassword,
+    handleSubmit: handleSubmitEmailPassword,
+    formState: { errors: errorsEmailPassword },
+  } = useForm({
+    resolver: yupResolver(emailSchema),
+  });
+
+  const {
+    register: registerCodeEmail,
+    handleSubmit: handleSubmitCodeEmail,
+    formState: { errors: errorsCodeEmail },
+  } = useForm({
+    resolver: yupResolver(codeSchema),
+  });
+
+  const {
+    register: registerPassword,
+    handleSubmit: handlePassword,
+    formState: { errors: errorsPassword },
+  } = useForm({
+    resolver: yupResolver(schemaPassword),
+  });
+
+  const onSubmitLogin = (data: any) => {
     console.log("Dados do formulário:", data);
     navigate("/home");
+  };
+
+  const onSubmitEmailPassword = (data: any) => {
+    console.log("Dados do formulário (emailPassword):", data);
+    setCurrentBody("codePassword");
+  };
+
+  const onSubmitCodePassword = (data: any) => {
+    console.log("Dados do formulário:", data);
+    setCurrentBody("newPassword");
+  };
+
+  const onSubmitNewPassword = (data: any) => {
+    console.log("Dados do formulário:", data);
+    setCurrentBody("login");
   };
 
   const handleGoBack = () => {
@@ -85,7 +158,7 @@ export function Login() {
         </Text>
         <Text onClick={handleSignIn}>Ainda não tem conta? Cadastre-se!</Text>
       </Options>
-      <Button title="Entrar" onClick={handleSubmit(onSubmit)} />
+      <Button title="Entrar" onClick={handleSubmit(onSubmitLogin)} />
     </ContainerLogin>
   );
 
@@ -96,14 +169,18 @@ export function Login() {
           Digite seu e-mail para receber um código de segurança para redefinir
           sua senha:
         </Text>
-        <Input name="e-mail" placeholder="E-mail" />
+        <Input
+          name="email"
+          placeholder="E-mail"
+          error={errorsEmailPassword.email?.message}
+          register={registerEmailPassword}
+        />
       </Options>
       <Options>
         <Button
           title="Enviar código"
-          onClick={() => setCurrentBody("codePassword")}
+          onClick={handleSubmitEmailPassword(onSubmitEmailPassword)}
         />
-        <Text onClick={handleSignIn}>Ainda não tem conta? Cadastre-se!</Text>
       </Options>
     </ContainerLogin>
   );
@@ -114,12 +191,17 @@ export function Login() {
         <Text style={{ textDecoration: "none" }}>
           Digite o código recebido:
         </Text>
-        <Input name="code-password" placeholder="Código" />
+        <Input
+          name="codePassword"
+          placeholder="Código"
+          error={errorsCodeEmail.codePassword?.message}
+          register={registerCodeEmail}
+        />
       </Options>
       <Options>
         <Button
           title="Confirmar"
-          onClick={() => setCurrentBody("newPassword")}
+          onClick={handleSubmitCodeEmail(onSubmitCodePassword)}
         />
         <Text style={{ color: "transparent" }}>Div</Text>{" "}
         {/*DEIXAR ISSO ASSIM - é pra ficar na mesma medida do emailPassword */}
@@ -129,9 +211,24 @@ export function Login() {
 
   const newPassword = (
     <ContainerLogin>
-      <Input name="new-password" placeholder="Nova senha" />
-      <Input name="confirm-new-password" placeholder="Confirme a nova senha" />
-      <Button title="Alterar senha" onClick={() => setCurrentBody("login")} />
+      <Input
+        name="newPassword"
+        placeholder="Senha"
+        customType="password"
+        error={errorsPassword.newPassword?.message}
+        register={registerPassword}
+      />
+      <Input
+        name="confirmNewPassword"
+        placeholder="Confirme a nova senha"
+        customType="password"
+        error={errorsPassword.confirmNewPassword?.message}
+        register={registerPassword}
+      />
+      <Button
+        title="Alterar senha"
+        onClick={handlePassword(onSubmitNewPassword)}
+      />
     </ContainerLogin>
   );
 

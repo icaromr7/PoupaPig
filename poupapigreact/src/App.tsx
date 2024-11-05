@@ -3,6 +3,8 @@ import { Header } from "./components/Header";
 import "./styles/index.css";
 import { Footer } from "./components/Footer";
 import AppRoutes from "./routes/AppRouters";
+import { HeaderProvider } from "./context/HeaderContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
@@ -10,7 +12,11 @@ function App() {
     //   <Header type="default" />
     //   <Footer />
     // </div>
-    <AppRoutes />
+    <AuthProvider>
+      <HeaderProvider>
+        <AppRoutes />
+      </HeaderProvider>
+    </AuthProvider>
   );
 }
 

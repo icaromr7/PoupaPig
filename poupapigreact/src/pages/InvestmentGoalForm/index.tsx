@@ -86,6 +86,7 @@ export function InvestmentGoalForm() {
           {investment && (
             <>
               <CustomSelect
+                name="tipo"
                 placeholder="Tipo"
                 data={data}
                 onSelect={(option: any) =>
@@ -97,6 +98,7 @@ export function InvestmentGoalForm() {
                 onDateChange={handleDateChange}
               />
               <CustomSelect
+                name="instituicao"
                 placeholder="Instituição"
                 data={data}
                 onSelect={(option: any) =>
@@ -109,6 +111,7 @@ export function InvestmentGoalForm() {
                   placeholder="Porcentagem investimento"
                 />
                 <CustomSelect
+                  name="rendimento"
                   placeholder="Rendimento"
                   data={data}
                   onSelect={(option: any) =>

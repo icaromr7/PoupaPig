@@ -2,13 +2,16 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 
 export const Container = styled.div`
-  position: relative;
   width: 100%;
 
   font-family: ${theme.fonts.fontOpenSans};
   font-size: 14px;
   font-weight: ${theme.fonts.fontWeightRegular};
   color: ${theme.colors.blue002};
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export const SelectBox = styled.div`
@@ -22,10 +25,19 @@ export const SelectBox = styled.div`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+
+  position: relative;
 `;
 
 export const Placeholder = styled.span`
   font-size: 12px;
+`;
+
+export const RightSide = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const OptionsList = styled.div`
@@ -39,6 +51,8 @@ export const OptionsList = styled.div`
   max-height: 150px;
   overflow-y: auto;
   z-index: 1;
+  top: 30px;
+  right: 0;
 
   /* Custom scrollbar styles */
   ::-webkit-scrollbar {

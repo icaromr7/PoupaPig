@@ -66,6 +66,7 @@ export function InputOutputForm() {
               onDateChange={handleDateChange}
             />
             <CustomSelect
+              name="categoria"
               placeholder="Categoria"
               data={data}
               onSelect={(option: any) =>
@@ -73,6 +74,7 @@ export function InputOutputForm() {
               }
             />
             <CustomSelect
+              name="tipo_pagamento"
               placeholder="Forma de pagamento"
               data={data}
               onSelect={(option: any) =>
