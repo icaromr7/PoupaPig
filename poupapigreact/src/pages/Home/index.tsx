@@ -130,10 +130,19 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
   const checkScrollPosition = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      console.log("scroll", scrollLeft, scrollWidth, clientWidth);
 
       setShowLeftArrow(scrollLeft > 0);
+      console.log("left:", scrollLeft);
 
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+      console.log(
+        "right:",
+        scrollLeft,
+        clientWidth,
+        scrollWidth,
+        scrollLeft + clientWidth < scrollWidth
+      );
     }
   };
 
@@ -141,6 +150,12 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
     if (scrollRef.current) {
       const totalWidth = data.length * 145;
       const containerWidth = scrollRef.current.offsetWidth;
+      console.log(
+        "mnedidas",
+        totalWidth,
+        containerWidth,
+        totalWidth > containerWidth
+      );
       setShowArrows(totalWidth > containerWidth);
       checkScrollPosition();
     }
@@ -173,6 +188,8 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
       }
     };
   }, [data]);
+
+  console.log("show arrows", showArrows);
 
   return (
     <ScrollContainer>
@@ -236,7 +253,9 @@ export function Home() {
 
   return (
     <Container>
-      <FinancialControlProfile situation="ok" />
+      <CardFinancialControl>
+        <FinancialControlProfile situation="ok" />
+      </CardFinancialControl>
       <ClientData>
         <Row>
           <TitleContainer>Lançamentos</TitleContainer>

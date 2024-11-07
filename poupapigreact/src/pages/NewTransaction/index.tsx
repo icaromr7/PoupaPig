@@ -36,7 +36,11 @@ export function NewTransaction() {
     <Container>
       <NewTransactionsField>
         <NewTransactionDiv onClick={handleTransactionForm}>
-          <Image src={NewTransaction1} alt="PoupaPig" />
+          <Image
+            style={{ transform: "rotate(90deg)" }}
+            src={NewTransaction1}
+            alt="PoupaPig"
+          />
           <Title>
             cadastrar <span style={{ fontSize: 30 }}>entrada/saída</span>
           </Title>

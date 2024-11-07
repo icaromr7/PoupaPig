@@ -11,8 +11,6 @@ export const Container = styled.div`
   min-width: 250px;
   max-width: 1800px;
 
-  border: 4px solid red;
-
   margin-left: auto;
   margin-right: auto;
 
@@ -27,22 +25,28 @@ export const Container = styled.div`
 `;
 
 export const CardFinancialControl = styled.div`
-  width: 300px;
-  height: 830px;
-  border: 3px solid pink;
+  width: 30%;
+  flex-shrink: 0;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const ClientData = styled.div`
-  width: 100%;
+  flex-grow: 1;
+  width: 60%;
   display: flex;
   flex-direction: column;
   gap: 50px;
 
-  border: 3px solid blue;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const Row = styled.div`
-  /* max-width: 1150px; */
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -160,41 +164,34 @@ export const Date = styled.div`
 export const ScrollContainer = styled.div`
   position: relative;
   display: flex;
+  align-items: center;
   overflow: hidden;
-  white-space: nowrap;
   width: 100%;
   padding: 0 40px;
-
-  border: 3px solid green;
-
-  .scroll-item {
-    display: inline-block;
-    width: 400px;
-    box-sizing: border-box;
-    padding: 10px;
-  }
+  scroll-behavior: smooth;
 `;
 
 export const ScrollContent = styled.div`
   display: flex;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  width: 100%;
-
   gap: 20px;
-
-  border: 3px solid pink;
+  overflow-x: auto;
+  width: 60vw;
+  flex-grow: 1;
+  flex-basis: 0;
+  overflow-x: scroll;
+  scrollbar-width: none;
 `;
 
 export const ArrowContainer = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
   cursor: pointer;
   padding: 5px;
   width: 20px;
   height: 30px;
+  z-index: 2;
+  flex-shrink: 0;
 `;
 
 export const ArrowLeft = styled(ArrowContainer)`

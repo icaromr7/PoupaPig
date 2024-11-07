@@ -20,7 +20,6 @@ export function ButtonHeader({
   icon,
   onClick,
 }: ButtonHeaderProps) {
-  console.log("entrei no ButtonHeader");
   const handleClick = (e: any) => {
     if (onClick) {
       console.log("entrei no on click");

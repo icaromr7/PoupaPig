@@ -37,7 +37,7 @@ const schemaSignIn = yup.object().shape({
   nome_completo: yup
     .string()
     .required("Campo obrigatório")
-    .matches(/^[a-zA-ZÀ-ÿ\s]+$/, "Apenas letras são permitidas"),
+    .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
   email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
   confirmaEmail: yup
     .string()

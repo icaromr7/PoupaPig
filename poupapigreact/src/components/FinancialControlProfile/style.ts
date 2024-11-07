@@ -2,7 +2,7 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 
 export const Container = styled.div`
-  min-width: 300px;
+  width: 100%;
   height: 830px;
   border: 5px solid ${theme.colors.greenBFF};
   padding: 15px;
