@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 //style, icons e assets
 import {
@@ -17,10 +20,12 @@ import {
   Icon,
   NameSentiment,
   ButtonsDiv,
+  ErrorDiv,
 } from "./style";
 import theme from "../../styles/theme";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Ok from "../../assets/svg/ok.svg";
 import Attention from "../../assets/svg/atencao.svg";
 import Emergency from "../../assets/svg/emergencia.svg";
@@ -36,10 +41,70 @@ import CustomSelect from "../../components/CustomSelect";
 import TextField from "../../components/TextField";
 import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import ToolTipCustom from "../../components/TooltipCustom";
+
+const schema = yup.object().shape({
+  nome: yup
+    .string()
+    .required("Campo obrigatório")
+    .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
+  valor: yup
+    .string()
+    .required("Campo obrigatório")
+    .matches(/^[0-9]*$/, "Apenas números são permitidos"),
+  categoria_id: yup.string().required("Campo obrigatório"),
+  banco_id: yup.string().nullable().notRequired(),
+  tipo_pagamento_id: yup.string().required("Campo obrigatório"),
+  recorrencia_id: yup.string().nullable().notRequired(),
+  data_transacao: yup.string().nullable().notRequired(),
+  quantidade_parcela: yup
+    .string()
+    .matches(/^[0-9]*$/, "Apenas números são permitidos")
+    .nullable()
+    .notRequired(),
+  tipo_id: yup.string().required("Escolha uma das opções"),
+  situacao_id: yup.string().required("Escolha uma das opções"),
+  periodicidade_id: yup.string().required("Escolha uma das opções"),
+  sentimento_id: yup.string().nullable().notRequired(),
+  observacao: yup.string().nullable().notRequired(),
+});
 
 export function InputOutputForm() {
   const navigate = useNavigate();
-  const data = ["Opção 1", "Opção 2", "Opção 3", "Opção 4", "Opção 5"];
+  const [payment, setPayment] = useState<string>("");
+  const [type, setType] = useState<"in" | "out" | undefined>(undefined);
+  const [situation, setSituation] = useState<
+    "certain" | "possibility" | undefined
+  >(undefined);
+  const [repeat, setRepeat] = useState<"repeat" | "noRepeat" | undefined>(
+    undefined
+  );
+  const [sentiment, setSentiment] = useState<
+    "happy" | "anxious" | "sad" | undefined
+  >(undefined);
+
+  const {
+    register: register,
+    handleSubmit: handleSubmit,
+    formState: { errors: errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const tipo_pagamento = [
+    "Dinheiro",
+    "Cartão de Crédito",
+    "Cartão de Débito",
+    "Transferência Bancária",
+    "Boleto",
+    "Pix",
+    "Cheque",
+    "Vale-alimentação",
+    "Vale-refeição",
+    "Vale-transporte",
+    "Outro",
+  ];
 
   const handleDateChange = (date: Date | null) => {
     console.log("Data selecionada:", date);
@@ -49,8 +114,38 @@ export function InputOutputForm() {
     navigate("/new-transaction");
   };
 
-  const handleInputOutputList = () => {
+  const handleInputOutputList = (data: any) => {
+    console.log("data", data);
     navigate("/input-output-list");
+  };
+
+  const handleSelect = (option: string) => {
+    console.log("option", option);
+  };
+
+  const handleSelectPayment = (option: string) => {
+    console.log("option", option);
+    setPayment(option);
+  };
+
+  const handleTypeSelected = (type: "in" | "out") => {
+    setType(type);
+    setValue("tipo_id", type);
+  };
+
+  const handleSituationSelected = (type: "certain" | "possibility") => {
+    setSituation(type);
+    setValue("situacao_id", type);
+  };
+
+  const handleRecurrencySelected = (type: "repeat" | "noRepeat") => {
+    setRepeat(type);
+    setValue("periodicidade_id", type);
+  };
+
+  const handleSentimentSelected = (sentiment: "happy" | "anxious" | "sad") => {
+    setSentiment(sentiment);
+    setValue("sentimento_id", sentiment);
   };
 
   return (
@@ -59,29 +154,65 @@ export function InputOutputForm() {
       <Content>
         <Row>
           <FirstColumn>
-            <Input name="nome" placeholder="Nome" />
-            <Input name="valor" placeholder="Valor" />
-            <CustomSelectDate
-              placeholder="Data"
-              onDateChange={handleDateChange}
+            <Input
+              name="nome"
+              placeholder="Nome"
+              error={errors.nome?.message}
+              register={register}
             />
-            {/* <CustomSelect
-              name="categoria"
-              placeholder="Categoria"
-              data={data}
-              onSelect={(option: any) =>
-                console.log("Opção selecionada:", option)
-              }
+            <Input
+              name="valor"
+              placeholder="Valor"
+              error={errors.valor?.message}
+              register={register}
+              number={true}
             />
             <CustomSelect
-              name="tipo_pagamento"
+              name="categoria_id"
+              placeholder="Categoria"
+              data={["Categoria 1", "Categoria 2"]}
+              onSelect={handleSelect}
+              error={errors.categoria_id?.message}
+              register={register}
+              setValue={setValue}
+            />
+            <CustomSelect
+              name="banco_id"
+              placeholder="Banco"
+              data={["Banco 1", "Banco 1"]}
+              onSelect={handleSelect}
+              error={errors.banco_id?.message}
+              register={register}
+              setValue={setValue}
+            />
+            <CustomSelect
+              name="tipo_pagamento_id"
               placeholder="Forma de pagamento"
-              data={data}
-              onSelect={(option: any) =>
-                console.log("Opção selecionada:", option)
-              }
-            /> */}
-            <Input name="qtdeParcelas" placeholder="Quantidade de parcelas" />
+              data={tipo_pagamento}
+              onSelect={handleSelectPayment}
+              error={errors.tipo_pagamento_id?.message}
+              register={register}
+              setValue={setValue}
+            />
+            {payment === "Cartão de Crédito" && (
+              <Input
+                name="quantidade_parcela"
+                placeholder="Quantidade de parcelas"
+                error={errors.quantidade_parcela?.message}
+                register={register}
+              />
+            )}
+            {repeat === "repeat" && (
+              <CustomSelect
+                name="recorrencia_id"
+                placeholder="Recorrência"
+                data={["Recorrência 1", "Recorrência 2"]}
+                onSelect={handleSelect}
+                error={errors.recorrencia_id?.message}
+                register={register}
+                setValue={setValue}
+              />
+            )}
           </FirstColumn>
           <Column>
             <Row>
@@ -90,6 +221,8 @@ export function InputOutputForm() {
                   color: theme.colors.redF63,
                   backgroundColor: theme.colors.redFFD,
                 }}
+                onClick={() => handleTypeSelected("out")}
+                $selected={type === "out"}
               >
                 <RoundIcon>
                   <ArrowUpwardIcon style={{ fontSize: 50 }} />
@@ -106,6 +239,8 @@ export function InputOutputForm() {
                   color: theme.colors.green0FB,
                   backgroundColor: theme.colors.greenDCF,
                 }}
+                onClick={() => handleTypeSelected("in")}
+                $selected={type === "in"}
               >
                 <RoundIcon>
                   <ArrowDownwardIcon style={{ fontSize: 50 }} />
@@ -119,6 +254,23 @@ export function InputOutputForm() {
                   </span>
                 </TitleButtonCard>
               </ButtonCard>
+              {errors.tipo_id?.message && (
+                <ErrorDiv>
+                  <ErrorOutlineIcon
+                    style={{
+                      cursor: "pointer",
+                      color: theme.colors.redF63,
+                      height: 20,
+                    }}
+                    className="error-circle"
+                    data-tooltip-id={`tooltip-error-input-tipo_id`}
+                  />
+                  <ToolTipCustom
+                    title={errors.tipo_id?.message}
+                    id={`tooltip-error-input-tipo_id`}
+                  />
+                </ErrorDiv>
+              )}
             </Row>
             <Row>
               <ButtonCard
@@ -126,6 +278,8 @@ export function InputOutputForm() {
                   color: theme.colors.blue002,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
+                onClick={() => handleSituationSelected("certain")}
+                $selected={situation === "certain"}
               >
                 <Image
                   src={InputOutputForm1}
@@ -146,6 +300,8 @@ export function InputOutputForm() {
                   color: theme.colors.blue002,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
+                onClick={() => handleSituationSelected("possibility")}
+                $selected={situation === "possibility"}
               >
                 <Image src={InputOutputForm2} alt="PoupaPig" />
                 <TitleButtonCard>
@@ -157,6 +313,23 @@ export function InputOutputForm() {
                   </span>
                 </TitleButtonCard>
               </ButtonCard>
+              {errors.situacao_id?.message && (
+                <ErrorDiv>
+                  <ErrorOutlineIcon
+                    style={{
+                      cursor: "pointer",
+                      color: theme.colors.redF63,
+                      height: 20,
+                    }}
+                    className="error-circle"
+                    data-tooltip-id={`tooltip-error-input-situacao_id`}
+                  />
+                  <ToolTipCustom
+                    title={errors.situacao_id?.message}
+                    id={`tooltip-error-input-situacao_id`}
+                  />
+                </ErrorDiv>
+              )}
             </Row>
             <Row>
               <ButtonCard
@@ -164,6 +337,8 @@ export function InputOutputForm() {
                   color: theme.colors.blue038,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
+                onClick={() => handleRecurrencySelected("repeat")}
+                $selected={repeat === "repeat"}
               >
                 <Image src={InputOutputForm3} alt="PoupaPig" />
                 <TitleButtonCard>
@@ -186,6 +361,8 @@ export function InputOutputForm() {
                   color: theme.colors.redF63,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
+                onClick={() => handleRecurrencySelected("noRepeat")}
+                $selected={repeat === "noRepeat"}
               >
                 <Image src={InputOutputForm4} alt="PoupaPig" />
                 <TitleButtonCard>
@@ -199,25 +376,67 @@ export function InputOutputForm() {
                   </span>
                 </TitleButtonCard>
               </ButtonCard>
+              {errors.periodicidade_id?.message && (
+                <ErrorDiv>
+                  <ErrorOutlineIcon
+                    style={{
+                      cursor: "pointer",
+                      color: theme.colors.redF63,
+                      height: 20,
+                    }}
+                    className="error-circle"
+                    data-tooltip-id={`tooltip-error-input-periodicidade_id`}
+                  />
+                  <ToolTipCustom
+                    title={errors.periodicidade_id?.message}
+                    id={`tooltip-error-input-periodicidade_id`}
+                  />
+                </ErrorDiv>
+              )}
+            </Row>
+            <Row>
+              <CustomSelectDate
+                name="data_transacao"
+                placeholder="Data da transação"
+                error={errors.data_transacao?.message}
+                register={register}
+              />
             </Row>
           </Column>
         </Row>
         <Row>
-          <TextField placeholder="Observações ou anotações extras" />
+          <TextField
+            name="observacao"
+            placeholder="Observações ou anotações extras"
+            error={errors.observacao?.message}
+            register={register}
+          />
         </Row>
         <Row>
           <TitleSentiment>Como eu me senti com essa compra</TitleSentiment>
         </Row>
         <Row style={{ justifyContent: "space-evenly" }}>
-          <ButtonSentiment style={{ color: theme.colors.green0FB }}>
+          <ButtonSentiment
+            style={{ color: theme.colors.green0FB }}
+            onClick={() => handleSentimentSelected("happy")}
+            $selected={sentiment === "happy"}
+          >
             <Icon src={Ok} alt="PoupaPig" />
             <NameSentiment>{`Feliz, animada(o)`}</NameSentiment>
           </ButtonSentiment>
-          <ButtonSentiment style={{ color: theme.colors.yellowDAD }}>
+          <ButtonSentiment
+            style={{ color: theme.colors.yellowDAD }}
+            onClick={() => handleSentimentSelected("anxious")}
+            $selected={sentiment === "anxious"}
+          >
             <Icon src={Attention} alt="PoupaPig" />
             <NameSentiment>{`Tensa(o), ansiosa(o)`}</NameSentiment>
           </ButtonSentiment>
-          <ButtonSentiment style={{ color: theme.colors.redF63 }}>
+          <ButtonSentiment
+            style={{ color: theme.colors.redF63 }}
+            onClick={() => handleSentimentSelected("sad")}
+            $selected={sentiment === "sad"}
+          >
             <Icon src={Emergency} alt="PoupaPig" />
             <NameSentiment>{`Triste, miserável`}</NameSentiment>
           </ButtonSentiment>
@@ -229,7 +448,10 @@ export function InputOutputForm() {
             borderColor={theme.colors.grey6F7}
             onClick={handleCancelForm}
           />
-          <Button title="Salvar" onClick={handleInputOutputList} />
+          <Button
+            title="Salvar"
+            onClick={handleSubmit(handleInputOutputList)}
+          />
         </ButtonsDiv>
       </Content>
     </Container>

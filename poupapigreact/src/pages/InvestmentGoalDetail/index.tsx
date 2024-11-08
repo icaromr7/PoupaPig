@@ -93,10 +93,10 @@ export function InvestmentGoalDetail({ type }: InvestmentGoalDetailProps) {
           )}
         </FormRegister>
         <FormRegisterRight>
-          <TextField
+          {/* <TextField
             placeholder="Observações ou anotações extras"
             fixedValue="Isso é um teste favor ignorar o texto Isso é um teste favor ignorar o texto Isso é um teste favor ignorar o texto."
-          />
+          /> */}
           <ValueInvestment>
             <TitleInvestment>Valor inicial do investimento</TitleInvestment>
             <Values>

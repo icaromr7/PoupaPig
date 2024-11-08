@@ -40,3 +40,7 @@ export const SelectBox = styled.div<TextAreaStyleProps>`
     resize: none;
   }
 `;
+
+export const ErrorDiv = styled.div`
+  position: relative;
+`;

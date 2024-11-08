@@ -128,10 +128,10 @@ export function InputOutputDetail() {
           </Column>
         </Row>
         <Row>
-          <TextField
+          {/* <TextField
             placeholder="Observações ou anotações extras"
             fixedValue="pipiippopopopopopipiopipopipiopipiçopioipipoipoi"
-          />
+          /> */}
         </Row>
         <Row>
           <TitleSentiment>Como eu me senti com essa compra</TitleSentiment>

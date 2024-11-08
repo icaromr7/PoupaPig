@@ -36,3 +36,7 @@ export const DatePickerContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 `;
+
+export const ErrorDiv = styled.div`
+  position: relative;
+`;

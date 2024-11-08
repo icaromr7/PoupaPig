@@ -70,10 +70,10 @@ export function InvestmentGoalForm() {
         <FormRegister>
           <Input name="nome" placeholder="Nome" />
           <Input name="valorFoco" placeholder="Valor foco" />
-          <CustomSelectDate
+          {/* <CustomSelectDate
             placeholder="Data limite"
             onDateChange={handleDateChange}
-          />
+          /> */}
           <Line style={{ alignSelf: "center", gap: 100 }}>
             <Checkbox
               label="Investimento"
@@ -93,10 +93,10 @@ export function InvestmentGoalForm() {
                   console.log("Opção selecionada:", option)
                 }
               /> */}
-              <CustomSelectDate
+              {/* <CustomSelectDate
                 placeholder="Data permitida para retirada"
                 onDateChange={handleDateChange}
-              />
+              /> */}
               {/* <CustomSelect
                 name="instituicao"
                 placeholder="Instituição"
@@ -127,11 +127,11 @@ export function InvestmentGoalForm() {
           )}
         </FormRegister>
         <FormRegisterRight>
-          <TextField
+          {/* <TextField
             placeholder="Observações ou anotações extras"
             value={textValue}
             onChange={handleTextChange}
-          />
+          /> */}
           <ButtonsDiv>
             <Button
               title="Cancelar"

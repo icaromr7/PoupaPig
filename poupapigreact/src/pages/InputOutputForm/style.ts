@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
+interface InputOutputFormStyelProps {
+  $selected: boolean;
+}
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
@@ -34,6 +38,8 @@ export const Row = styled.div`
   flex-direction: row;
   gap: 20px;
 
+  position: relative;
+
   @media (max-width: 800px) {
     flex-direction: column;
   }
@@ -53,7 +59,7 @@ export const Column = styled.div`
   flex-shrink: 0;
 `;
 
-export const ButtonCard = styled.div`
+export const ButtonCard = styled.div<InputOutputFormStyelProps>`
   border: 3px solid;
   width: 250px;
   border-radius: 20px;
@@ -68,6 +74,9 @@ export const ButtonCard = styled.div`
   justify-content: center;
 
   cursor: pointer;
+
+  box-shadow: ${(props) =>
+    props.$selected && `0px 4px 10px rgba(0, 0, 0, 0.6)`};
 
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
@@ -109,7 +118,7 @@ export const TitleSentiment = styled.div`
   color: ${theme.colors.black171};
 `;
 
-export const ButtonSentiment = styled.div`
+export const ButtonSentiment = styled.div<InputOutputFormStyelProps>`
   border: 2px solid;
   height: 60px;
   border-radius: 30px;
@@ -122,6 +131,9 @@ export const ButtonSentiment = styled.div`
   gap: 20px;
 
   cursor: pointer;
+
+  box-shadow: ${(props) =>
+    props.$selected && `0px 4px 10px rgba(0, 0, 0, 0.6)`};
 
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
@@ -144,4 +156,10 @@ export const ButtonsDiv = styled.div`
   flex-direction: row;
   align-self: flex-end;
   gap: 10px;
+`;
+
+export const ErrorDiv = styled.div`
+  position: absolute;
+  right: -30px;
+  top: 40px;
 `;

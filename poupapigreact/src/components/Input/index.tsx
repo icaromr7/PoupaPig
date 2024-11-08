@@ -10,8 +10,6 @@ import {
   TogglePasswordButton,
   ErrorDiv,
 } from "./style";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -26,6 +24,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   customType?: "fullName" | "password" | "email";
   fixedValue?: string;
+  number?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -36,6 +35,7 @@ const Input: React.FC<InputProps> = ({
   required,
   customType,
   fixedValue,
+  number = false,
   ...rest
 }: InputProps) => {
   const isPasswordType = customType === "password";
@@ -43,6 +43,19 @@ const Input: React.FC<InputProps> = ({
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      number &&
+      !/[0-9.,]/.test(event.key) &&
+      event.key !== "Backspace" &&
+      event.key !== "Delete" &&
+      event.key !== "ArrowLeft" &&
+      event.key !== "ArrowRight"
+    ) {
+      event.preventDefault(); // Impede a entrada de caracteres que não são permitidos
+    }
   };
 
   return (
@@ -53,6 +66,7 @@ const Input: React.FC<InputProps> = ({
           type={isPasswordType && !showPassword ? "password" : "text"}
           placeholder={placeholder}
           readOnly={!!fixedValue}
+          onKeyDown={handleKeyDown}
           {...(register && register(name, { required }))}
           {...rest}
         />

@@ -81,12 +81,14 @@ export function CategoryForm() {
             placeholder="Valor minimo"
             error={errors.valor_minimo?.message}
             register={register}
+            number={true}
           />
           <Input
             name="valor_maximo"
             placeholder="Valor máximo"
             error={errors.valor_maximo?.message}
             register={register}
+            number={true}
           />
         </InputDiv>
         <IconDiv>
