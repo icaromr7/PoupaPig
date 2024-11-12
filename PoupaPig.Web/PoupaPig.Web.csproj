@@ -10,4 +10,8 @@
     <ProjectReference Include="..\PoupaPig.Infra\PoupaPig.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

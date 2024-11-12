@@ -1,17 +1,22 @@
+using PoupaPig.Dominio;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Registrar os serviços do domínio através do módulo de injeção
+builder.Services.RegistrarServicos();
 
+// Adicionar controladores para a aplicação
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurar o pipeline de requisições HTTP
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // Forçar uso de HTTPS
 
-app.UseAuthorization();
+app.UseAuthorization(); // Ativar autorização
 
-app.MapControllers();
+app.MapControllers(); // Mapear os controllers
 
-app.Run();
+app.Run(); // Rodar a aplicação
+

@@ -1,0 +1,11 @@
+﻿namespace PoupaPig.Dominio.Categorias.Servicos
+{
+    public interface IServicoCategoriaPersonalizada
+    {
+        List<CategoriaPersonalizada> ObterTodas();
+        CategoriaPersonalizada ObterPorId(int id);
+        void Criar(CategoriaPersonalizada dados);
+        void Atualizar(CategoriaPersonalizada dados);
+        void Excluir(int id);
+    }
+}
