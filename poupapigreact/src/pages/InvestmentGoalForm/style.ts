@@ -69,3 +69,9 @@ export const FirtsColumn = styled.div`
     flex-direction: column;
   }
 `;
+
+export const ErrorDiv = styled.div`
+  position: absolute;
+  right: -30px;
+  top: 40px;
+`;

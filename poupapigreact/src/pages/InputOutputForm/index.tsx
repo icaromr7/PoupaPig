@@ -40,8 +40,9 @@ import CustomSelectDate from "../../components/CustomSelectDate";
 import CustomSelect from "../../components/CustomSelect";
 import TextField from "../../components/TextField";
 import { Button } from "../../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ToolTipCustom from "../../components/TooltipCustom";
+import { TransacaoInt } from "../../interfaces";
 
 const schema = yup.object().shape({
   nome: yup
@@ -54,6 +55,7 @@ const schema = yup.object().shape({
     .matches(/^[0-9]*$/, "Apenas números são permitidos"),
   categoria_id: yup.string().required("Campo obrigatório"),
   banco_id: yup.string().nullable().notRequired(),
+  nome_meta_investimento_id: yup.string().nullable().notRequired(),
   tipo_pagamento_id: yup.string().required("Campo obrigatório"),
   recorrencia_id: yup.string().nullable().notRequired(),
   data_transacao: yup.string().nullable().notRequired(),
@@ -70,6 +72,9 @@ const schema = yup.object().shape({
 });
 
 export function InputOutputForm() {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const location = useLocation();
+  const transactionData: TransacaoInt = location.state?.transactionData;
   const navigate = useNavigate();
   const [payment, setPayment] = useState<string>("");
   const [type, setType] = useState<"in" | "out" | undefined>(undefined);
@@ -84,9 +89,9 @@ export function InputOutputForm() {
   >(undefined);
 
   const {
-    register: register,
-    handleSubmit: handleSubmit,
-    formState: { errors: errors },
+    register,
+    handleSubmit,
+    formState: { errors },
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
@@ -105,10 +110,6 @@ export function InputOutputForm() {
     "Vale-transporte",
     "Outro",
   ];
-
-  const handleDateChange = (date: Date | null) => {
-    console.log("Data selecionada:", date);
-  };
 
   const handleCancelForm = () => {
     navigate("/new-transaction");
@@ -148,6 +149,10 @@ export function InputOutputForm() {
     setValue("sentimento_id", sentiment);
   };
 
+  const handleEditForm = () => {
+    setIsEditing(true);
+  };
+
   return (
     <Container>
       <Title>Lançamentos na conta</Title>
@@ -159,6 +164,8 @@ export function InputOutputForm() {
               placeholder="Nome"
               error={errors.nome?.message}
               register={register}
+              fixedValue={transactionData && transactionData.nome}
+              isEditing={isEditing}
             />
             <Input
               name="valor"
@@ -166,6 +173,8 @@ export function InputOutputForm() {
               error={errors.valor?.message}
               register={register}
               number={true}
+              fixedValue={transactionData && transactionData.valor}
+              isEditing={isEditing}
             />
             <CustomSelect
               name="categoria_id"
@@ -175,6 +184,10 @@ export function InputOutputForm() {
               error={errors.categoria_id?.message}
               register={register}
               setValue={setValue}
+              fixedValue={
+                transactionData && String(transactionData.categoria_id)
+              }
+              isEditing={isEditing}
             />
             <CustomSelect
               name="banco_id"
@@ -184,6 +197,8 @@ export function InputOutputForm() {
               error={errors.banco_id?.message}
               register={register}
               setValue={setValue}
+              fixedValue={transactionData && String(transactionData.banco_id)}
+              isEditing={isEditing}
             />
             <CustomSelect
               name="tipo_pagamento_id"
@@ -193,16 +208,27 @@ export function InputOutputForm() {
               error={errors.tipo_pagamento_id?.message}
               register={register}
               setValue={setValue}
+              fixedValue={
+                transactionData && String(transactionData.tipo_pagamento_id)
+              }
+              isEditing={isEditing}
             />
-            {payment === "Cartão de Crédito" && (
+            {(payment === "Cartão de Crédito" ||
+              transactionData.quantidade_parcela !== undefined) && (
               <Input
                 name="quantidade_parcela"
                 placeholder="Quantidade de parcelas"
                 error={errors.quantidade_parcela?.message}
                 register={register}
+                number={true}
+                fixedValue={
+                  transactionData && transactionData.quantidade_parcela
+                }
+                isEditing={isEditing}
               />
             )}
-            {repeat === "repeat" && (
+            {(repeat === "repeat" ||
+              transactionData.recorrencia_id !== undefined) && (
               <CustomSelect
                 name="recorrencia_id"
                 placeholder="Recorrência"
@@ -211,6 +237,10 @@ export function InputOutputForm() {
                 error={errors.recorrencia_id?.message}
                 register={register}
                 setValue={setValue}
+                fixedValue={
+                  transactionData && String(transactionData.recorrencia_id)
+                }
+                isEditing={isEditing}
               />
             )}
           </FirstColumn>
@@ -221,8 +251,13 @@ export function InputOutputForm() {
                   color: theme.colors.redF63,
                   backgroundColor: theme.colors.redFFD,
                 }}
-                onClick={() => handleTypeSelected("out")}
-                $selected={type === "out"}
+                onClick={() => {
+                  if (transactionData.tipo_id === undefined && !isEditing) {
+                    handleTypeSelected("out");
+                  }
+                }}
+                $selected={type === "out" || transactionData.tipo_id === 1}
+                $blocked={!isEditing}
               >
                 <RoundIcon>
                   <ArrowUpwardIcon style={{ fontSize: 50 }} />
@@ -239,8 +274,13 @@ export function InputOutputForm() {
                   color: theme.colors.green0FB,
                   backgroundColor: theme.colors.greenDCF,
                 }}
-                onClick={() => handleTypeSelected("in")}
-                $selected={type === "in"}
+                onClick={() => {
+                  if (transactionData.tipo_id === undefined && !isEditing) {
+                    handleTypeSelected("in");
+                  }
+                }}
+                $selected={type === "in" || transactionData.tipo_id === 2}
+                $blocked={!isEditing}
               >
                 <RoundIcon>
                   <ArrowDownwardIcon style={{ fontSize: 50 }} />
@@ -278,8 +318,15 @@ export function InputOutputForm() {
                   color: theme.colors.blue002,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
-                onClick={() => handleSituationSelected("certain")}
-                $selected={situation === "certain"}
+                onClick={() => {
+                  if (transactionData.situacao_id === undefined && !isEditing) {
+                    handleSituationSelected("certain");
+                  }
+                }}
+                $selected={
+                  situation === "certain" || transactionData.situacao_id === 1
+                }
+                $blocked={!isEditing}
               >
                 <Image
                   src={InputOutputForm1}
@@ -300,8 +347,16 @@ export function InputOutputForm() {
                   color: theme.colors.blue002,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
-                onClick={() => handleSituationSelected("possibility")}
-                $selected={situation === "possibility"}
+                onClick={() => {
+                  if (transactionData.situacao_id === undefined && !isEditing) {
+                    handleSituationSelected("possibility");
+                  }
+                }}
+                $selected={
+                  situation === "possibility" ||
+                  transactionData.situacao_id === 2
+                }
+                $blocked={!isEditing}
               >
                 <Image src={InputOutputForm2} alt="PoupaPig" />
                 <TitleButtonCard>
@@ -337,8 +392,18 @@ export function InputOutputForm() {
                   color: theme.colors.blue038,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
-                onClick={() => handleRecurrencySelected("repeat")}
-                $selected={repeat === "repeat"}
+                onClick={() => {
+                  if (
+                    transactionData.periodicidade_id === undefined &&
+                    !isEditing
+                  ) {
+                    handleRecurrencySelected("repeat");
+                  }
+                }}
+                $selected={
+                  repeat === "repeat" || transactionData.periodicidade_id === 1
+                }
+                $blocked={!isEditing}
               >
                 <Image src={InputOutputForm3} alt="PoupaPig" />
                 <TitleButtonCard>
@@ -361,8 +426,19 @@ export function InputOutputForm() {
                   color: theme.colors.redF63,
                   backgroundColor: theme.colors.whiteF2F,
                 }}
-                onClick={() => handleRecurrencySelected("noRepeat")}
-                $selected={repeat === "noRepeat"}
+                onClick={() => {
+                  if (
+                    transactionData.periodicidade_id === undefined &&
+                    !isEditing
+                  ) {
+                    handleRecurrencySelected("noRepeat");
+                  }
+                }}
+                $selected={
+                  repeat === "noRepeat" ||
+                  transactionData.periodicidade_id === 2
+                }
+                $blocked={!isEditing}
               >
                 <Image src={InputOutputForm4} alt="PoupaPig" />
                 <TitleButtonCard>
@@ -400,6 +476,25 @@ export function InputOutputForm() {
                 placeholder="Data da transação"
                 error={errors.data_transacao?.message}
                 register={register}
+                setValue={setValue}
+                fixedValue={
+                  transactionData && String(transactionData.data_transacao)
+                }
+                isEditing={isEditing}
+              />
+              <CustomSelect
+                name="nome_meta_investimento_id"
+                placeholder="Relacionar com investimento/meta:"
+                data={["Investimento 1", "Meta 2"]}
+                onSelect={handleSelect}
+                error={errors.nome_meta_investimento_id?.message}
+                register={register}
+                setValue={setValue}
+                fixedValue={
+                  transactionData &&
+                  String(transactionData.nome_meta_investimento_id)
+                }
+                isEditing={isEditing}
               />
             </Row>
           </Column>
@@ -410,6 +505,8 @@ export function InputOutputForm() {
             placeholder="Observações ou anotações extras"
             error={errors.observacao?.message}
             register={register}
+            fixedValue={transactionData && transactionData.observacao}
+            isEditing={isEditing}
           />
         </Row>
         <Row>
@@ -418,24 +515,45 @@ export function InputOutputForm() {
         <Row style={{ justifyContent: "space-evenly" }}>
           <ButtonSentiment
             style={{ color: theme.colors.green0FB }}
-            onClick={() => handleSentimentSelected("happy")}
-            $selected={sentiment === "happy"}
+            onClick={() => {
+              if (transactionData.sentimento_id === undefined && !isEditing) {
+                handleSentimentSelected("happy");
+              }
+            }}
+            $selected={
+              sentiment === "happy" || transactionData.sentimento_id === 1
+            }
+            $blocked={!isEditing}
           >
             <Icon src={Ok} alt="PoupaPig" />
             <NameSentiment>{`Feliz, animada(o)`}</NameSentiment>
           </ButtonSentiment>
           <ButtonSentiment
             style={{ color: theme.colors.yellowDAD }}
-            onClick={() => handleSentimentSelected("anxious")}
-            $selected={sentiment === "anxious"}
+            onClick={() => {
+              if (transactionData.sentimento_id === undefined && !isEditing) {
+                handleSentimentSelected("anxious");
+              }
+            }}
+            $selected={
+              sentiment === "anxious" || transactionData.sentimento_id === 2
+            }
+            $blocked={!isEditing}
           >
             <Icon src={Attention} alt="PoupaPig" />
             <NameSentiment>{`Tensa(o), ansiosa(o)`}</NameSentiment>
           </ButtonSentiment>
           <ButtonSentiment
             style={{ color: theme.colors.redF63 }}
-            onClick={() => handleSentimentSelected("sad")}
-            $selected={sentiment === "sad"}
+            onClick={() => {
+              if (transactionData.sentimento_id === undefined && !isEditing) {
+                handleSentimentSelected("sad");
+              }
+            }}
+            $selected={
+              sentiment === "sad" || transactionData.sentimento_id === 3
+            }
+            $blocked={!isEditing}
           >
             <Icon src={Emergency} alt="PoupaPig" />
             <NameSentiment>{`Triste, miserável`}</NameSentiment>
@@ -449,8 +567,12 @@ export function InputOutputForm() {
             onClick={handleCancelForm}
           />
           <Button
-            title="Salvar"
-            onClick={handleSubmit(handleInputOutputList)}
+            title={transactionData && !isEditing ? "Editar" : "Salvar"}
+            onClick={
+              transactionData && !isEditing
+                ? handleEditForm
+                : handleSubmit(handleInputOutputList)
+            }
           />
         </ButtonsDiv>
       </Content>

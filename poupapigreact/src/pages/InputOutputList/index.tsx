@@ -23,47 +23,76 @@ import Input from "../../components/Input";
 import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { CustomModal } from "../../components/CustomModal";
+import { TransacaoInt } from "../../interfaces";
 
-const dataInputOutput = [
+const dataInputOutput: TransacaoInt[] = [
   {
-    nome: "Teste 1",
-    tipo: "out",
-    situ: "fixo",
+    id: 1,
+    nome: "Compra 1",
+    valor: 123,
+    categoria_id: 1,
+    banco_id: 1,
+    nome_meta_investimento_id: 1,
+    tipo_pagamento_id: 1,
+    recorrencia_id: 1,
+    data_transacao: "09/11/2024",
+    quantidade_parcela: 12,
+    tipo_id: 1,
+    situacao_id: 1,
+    periodicidade_id: 1,
+    sentimento_id: 1,
+    observacao: "observação",
   },
   {
-    nome: "Teste 2",
-    tipo: "in",
-    situ: "flutuante",
+    id: 2,
+    nome: "Compra 2",
+    valor: 123,
+    categoria_id: 1,
+    banco_id: 1,
+    nome_meta_investimento_id: 1,
+    tipo_pagamento_id: 1,
+    recorrencia_id: 1,
+    data_transacao: "09/11/2024",
+    quantidade_parcela: 12,
+    tipo_id: 2,
+    situacao_id: 1,
+    periodicidade_id: 1,
+    sentimento_id: 1,
+    observacao: "observação",
   },
   {
-    nome: "Teste 3",
-    tipo: "out",
-    situ: "flutuante",
+    id: 3,
+    nome: "Compra 3",
+    valor: 123,
+    categoria_id: 1,
+    banco_id: 1,
+    nome_meta_investimento_id: 1,
+    tipo_pagamento_id: 1,
+    recorrencia_id: 1,
+    data_transacao: "09/11/2024",
+    quantidade_parcela: 12,
+    tipo_id: 1,
+    situacao_id: 2,
+    periodicidade_id: 1,
+    sentimento_id: 1,
+    observacao: "observação",
   },
   {
-    nome: "Teste 4",
-    tipo: "out",
-    situ: "fixo",
-  },
-  {
-    nome: "Teste 5",
-    tipo: "out",
-    situ: "fixo",
-  },
-  {
-    nome: "Teste 6",
-    tipo: "in",
-    situ: "flutuante",
-  },
-  {
-    nome: "Teste 7",
-    tipo: "out",
-    situ: "flutuante",
-  },
-  {
-    nome: "Teste 8",
-    tipo: "out",
-    situ: "fixo",
+    id: 4,
+    nome: "Compra 4",
+    valor: 123,
+    categoria_id: 1,
+    banco_id: 1,
+    nome_meta_investimento_id: 1,
+    tipo_pagamento_id: 1,
+    recorrencia_id: 1,
+    data_transacao: "09/11/2024",
+    quantidade_parcela: 12,
+    tipo_id: 1,
+    situacao_id: 1,
+    periodicidade_id: 1,
+    sentimento_id: 1,
+    observacao: "observação",
   },
 ];
 
@@ -71,8 +100,8 @@ export function InputOutputList() {
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
 
-  const handleEditData = () => {
-    navigate("/input-output-form");
+  const handleEditData = (data: TransacaoInt) => {
+    navigate("/input-output-form", { state: { transactionData: data } });
   };
 
   const handleDeleteModal = () => {
@@ -84,11 +113,15 @@ export function InputOutputList() {
     setModalDelete(false);
   };
 
-  const itemInputOutput = (data: any, key: any) => {
+  const handleTransactionForm = () => {
+    navigate("/input-output-form");
+  };
+
+  const itemInputOutput = (data: TransacaoInt) => {
     return (
       <ContainerItem>
-        <Symbol $type={data.tipo}>
-          {data.tipo === "in" ? (
+        <Symbol $type={data.tipo_id}>
+          {data.tipo_id === 2 ? (
             <ArrowDownwardIcon
               style={{ fontSize: 30, color: theme.colors.green0FB }}
             />
@@ -98,12 +131,16 @@ export function InputOutputList() {
             />
           )}
         </Symbol>
-        <Input name={key} placeholder={data.nome} fixedValue={data.nome} />
+        <Input
+          name={data.nome}
+          placeholder={data.nome}
+          fixedValue={data.nome}
+        />
         <Button
           title="Editar"
           backgroundColor={theme.colors.yellowF9F}
           borderColor={theme.colors.yellowDAD}
-          onClick={handleEditData}
+          onClick={() => handleEditData(data)}
         />
         <Button
           title="Excluir"
@@ -133,20 +170,16 @@ export function InputOutputList() {
         </InfoColumn>
         <Column>
           {dataInputOutput
-            .filter((investment) => investment.situ === "fixo")
-            .map((investment, index) =>
-              itemInputOutput(investment, index + "-" + investment)
-            )}
+            .filter((investment: TransacaoInt) => investment.situacao_id === 1)
+            .map((investment) => itemInputOutput(investment))}
         </Column>
       </MainColumn>
       {/* AQUI VEM A COLUNA DE METAS */}
       <MainColumn>
         <Column>
           {dataInputOutput
-            .filter((investment) => investment.situ === "flutuante")
-            .map((investment, index) =>
-              itemInputOutput(investment, index + "-" + investment)
-            )}
+            .filter((investment: TransacaoInt) => investment.situacao_id === 2)
+            .map((investment) => itemInputOutput(investment))}
         </Column>
         <InfoColumn>
           <Image src={InputOutput2} alt="PoupaPig" style={{ height: 205 }} />
@@ -163,7 +196,11 @@ export function InputOutputList() {
           </Information>
         </InfoColumn>
         <ButtonsDiv>
-          <Button title="Adicionar lançamento" minWidth="300px" />
+          <Button
+            title="Adicionar lançamento"
+            minWidth="300px"
+            onClick={handleTransactionForm}
+          />
         </ButtonsDiv>
       </MainColumn>
       {modalDelete && (

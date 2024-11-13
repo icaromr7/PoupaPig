@@ -6,6 +6,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 50px;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const MainColumn = styled.div`
@@ -14,6 +18,10 @@ export const MainColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const InfoColumn = styled.div`
@@ -98,4 +106,8 @@ export const Column = styled.div`
 
 export const ButtonsDiv = styled.div`
   align-self: flex-end;
+`;
+
+export const IconPoupaPig = styled.img`
+  width: 25px;
 `;

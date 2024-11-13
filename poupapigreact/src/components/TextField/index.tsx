@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Container, SelectBox, ErrorDiv } from "./style";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import theme from "../../styles/theme";
@@ -11,6 +11,7 @@ interface TextFieldProps {
   value?: string;
   fixedValue?: string;
   error?: string;
+  isEditing?: boolean;
   register?: UseFormRegister<any>;
 }
 
@@ -20,22 +21,23 @@ const TextField: React.FC<TextFieldProps> = ({
   value,
   fixedValue,
   error,
+  isEditing,
   register,
   ...rest
 }) => {
   return (
     <Container>
-      <SelectBox $isFixed={!!fixedValue}>
+      <SelectBox $isFixed={fixedValue !== undefined && !isEditing}>
         <textarea
           placeholder={placeholder}
-          value={fixedValue || value}
+          value={fixedValue || value || ""}
           rows={6}
-          disabled={!!fixedValue}
+          disabled={fixedValue !== undefined && !isEditing}
           {...(register && register(name))}
           {...rest}
         />
       </SelectBox>
-      {error !== "" && error && (
+      {error && (
         <ErrorDiv>
           <ErrorOutlineIcon
             style={{

@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-
-//style, icons e assets
 import {
   Container,
   SelectBox,
@@ -23,6 +21,7 @@ interface CustomSelectProps {
   error?: string;
   required?: boolean;
   fixedValue?: string;
+  isEditing?: boolean;
   onSelect: (option: string) => void;
   register?: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -36,16 +35,22 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   error,
   required,
   fixedValue,
+  isEditing,
   onSelect,
   register,
   setValue,
   ...rest
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(
+    fixedValue || null
+  );
   const selectRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => {
+    console.log("oi?", isOpen);
+    setIsOpen(!isOpen);
+  };
 
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
@@ -53,6 +58,13 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     onSelect(option);
     setValue(name, option, { shouldValidate: true });
   };
+
+  useEffect(() => {
+    if (fixedValue) {
+      setSelectedOption(fixedValue);
+      setValue(name, fixedValue);
+    }
+  }, [fixedValue, name, setValue]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -73,7 +85,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   return (
     <Container ref={selectRef}>
       {title && <Placeholder style={{ width: 300 }}>{title}</Placeholder>}
-      <SelectBox onClick={toggleDropdown}>
+      <SelectBox
+        onClick={() =>
+          fixedValue !== undefined
+            ? isEditing && toggleDropdown()
+            : toggleDropdown()
+        }
+        $isFixed={fixedValue !== undefined && !isEditing}
+      >
         <Placeholder>{selectedOption || placeholder}</Placeholder>
         <RightSide>
           {error && (
@@ -101,7 +120,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                 key={index}
                 onClick={() => {
                   handleSelectOption(option);
-                  // Atualiza o valor do formulário com react-hook-form
                   register &&
                     register(name, { required }).onChange({
                       target: { value: option },

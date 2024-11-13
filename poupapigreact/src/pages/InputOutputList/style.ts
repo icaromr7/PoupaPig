@@ -2,7 +2,7 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 
 interface InputOutputListStyleProps {
-  $type?: string;
+  $type?: number;
 }
 
 export const Container = styled.div`
@@ -60,7 +60,7 @@ export const Symbol = styled.div<InputOutputListStyleProps>`
   min-width: 40px;
   height: 40px;
   border: ${(props) =>
-    props.$type === "in"
+    props.$type === 2
       ? `3px solid ${theme.colors.green0FB}`
       : `3px solid ${theme.colors.redF63}`};
   border-radius: 20px;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
-import { UseFormRegister, FieldValues } from "react-hook-form";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 //style, icons, assets
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,24 +14,41 @@ interface CustomSelectDateProps {
   placeholder: string;
   name: string;
   register?: UseFormRegister<any>;
+  setValue: UseFormSetValue<any>;
   error?: string;
   required?: boolean;
+  fixedValue?: string;
+  isEditing?: boolean;
 }
 
 const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
   placeholder,
   name,
   register,
+  setValue,
   error,
   required,
+  fixedValue,
+  isEditing,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (fixedValue) {
+      const defaultDate = new Date(fixedValue);
+      setSelectedDate(defaultDate);
+      setValue(name, defaultDate);
+    }
+  }, [fixedValue, name, setValue]);
+
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     setIsOpen(false);
+    if (date) {
+      setValue(name, date);
+    }
   };
 
   const toggleCalendar = () => {
@@ -56,7 +73,14 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
 
   return (
     <Container ref={selectRef}>
-      <SelectBox onClick={toggleCalendar}>
+      <SelectBox
+        onClick={() =>
+          fixedValue !== undefined
+            ? isEditing && toggleCalendar()
+            : toggleCalendar()
+        }
+        $isFixed={fixedValue !== undefined && !isEditing}
+      >
         <span>
           {selectedDate ? selectedDate.toLocaleDateString() : placeholder}
         </span>
@@ -81,12 +105,7 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
         <DatePickerContainer>
           <DatePicker
             selected={selectedDate}
-            onChange={(date) => {
-              handleDateChange(date);
-              if (register) {
-                register(name, { required });
-              }
-            }}
+            onChange={handleDateChange}
             inline
           />
         </DatePickerContainer>

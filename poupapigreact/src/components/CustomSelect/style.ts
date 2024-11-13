@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
+interface CustomSelectStyleProps {
+  $isFixed?: boolean;
+}
+
 export const Container = styled.div`
   width: 100%;
 
@@ -14,17 +18,19 @@ export const Container = styled.div`
   gap: 10px;
 `;
 
-export const SelectBox = styled.div`
+export const SelectBox = styled.div<CustomSelectStyleProps>`
   width: 100%;
   height: 40px;
   border-radius: 20px;
   border: 3px solid ${theme.colors.blue038};
-  background-color: ${theme.colors.blueE5F};
+  background-color: ${({ $isFixed }) =>
+    $isFixed ? theme.colors.whiteF2F : theme.colors.blueE5F};
   padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
+
+  cursor: ${(props) => !props.$isFixed && `pointer`};
 
   position: relative;
 `;

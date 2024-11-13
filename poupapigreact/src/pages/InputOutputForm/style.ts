@@ -3,6 +3,7 @@ import theme from "../../styles/theme";
 
 interface InputOutputFormStyelProps {
   $selected: boolean;
+  $blocked?: boolean;
 }
 
 export const Container = styled.div`
@@ -73,13 +74,14 @@ export const ButtonCard = styled.div<InputOutputFormStyelProps>`
   align-items: center;
   justify-content: center;
 
-  cursor: pointer;
+  cursor: ${(props) => !props.$blocked && `pointer`};
 
   box-shadow: ${(props) =>
     props.$selected && `0px 4px 10px rgba(0, 0, 0, 0.6)`};
 
   &:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: ${(props) =>
+      !props.$blocked && `0px 4px 10px rgba(0, 0, 0, 0.4)`};
   }
 
   @media (max-width: 800px) {
@@ -130,13 +132,14 @@ export const ButtonSentiment = styled.div<InputOutputFormStyelProps>`
   justify-content: center;
   gap: 20px;
 
-  cursor: pointer;
+  cursor: ${(props) => !props.$blocked && `pointer`};
 
   box-shadow: ${(props) =>
     props.$selected && `0px 4px 10px rgba(0, 0, 0, 0.6)`};
 
   &:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: ${(props) =>
+      !props.$blocked && `0px 4px 10px rgba(0, 0, 0, 0.4)`};
   }
 `;
 

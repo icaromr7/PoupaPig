@@ -11,20 +11,6 @@ interface HeaderMenuProps {
 
 export function HeaderMenu({ notification, config }: HeaderMenuProps) {
   const navigate = useNavigate();
-  const [showNotificationsModal, setShowNotificationsModal] =
-    useState<boolean>(false);
-
-  const handleCheckbox = (checked: boolean) => {
-    console.log("checked", checked);
-  };
-
-  const bodyModal = (
-    <>
-      <Checkbox label="Notificação 01" onChange={handleCheckbox} />
-      <Checkbox label="Notificação 02" onChange={handleCheckbox} />
-      <Checkbox label="Notificação 03" onChange={handleCheckbox} />
-    </>
-  );
 
   const handleAccountConfig = () => {
     navigate("/config-account");
@@ -34,9 +20,6 @@ export function HeaderMenu({ notification, config }: HeaderMenuProps) {
     navigate("/login");
   };
 
-  const handleCloseModal = () => {
-    setShowNotificationsModal(false);
-  };
   return (
     <Container>
       {notification && (
@@ -45,18 +28,6 @@ export function HeaderMenu({ notification, config }: HeaderMenuProps) {
           <Line>Hoje é dia de pagar </Line>
           <Line>Hoje é dia de pagar a conta xxxx</Line>
           <Line>Hoje é dia de pagar a conta xxxx</Line>
-          {/* <TextObservation onClick={() => setShowNotificationsModal(true)}>
-            Não deseja mais receber notificações? Clique aqui.
-          </TextObservation>
-          {showNotificationsModal && (
-            <CustomModal
-              message={bodyModal}
-              titleButtonCancel="Cancelar"
-              titleButtonGo="Salvas"
-              onClose={handleCloseModal}
-              action={() => console.log("oi?")}
-            />
-          )} */}
         </>
       )}
       {config && (

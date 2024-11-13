@@ -14,79 +14,59 @@ import {
   Symbol,
   Column,
   ButtonsDiv,
+  IconPoupaPig,
 } from "./style";
 import theme from "../../styles/theme";
 import InputOutput1 from "../../assets/svg/inputoutputlist1.svg";
+import IconePig from "../../assets/svg/iconepig.svg";
 
 import Input from "../../components/Input";
 import { Button } from "../../components/Button";
 import { CustomModal } from "../../components/CustomModal";
+import { CategoriaInt } from "../../interfaces";
+import { showIconPicked } from "../../utils/bibli";
 
 // Lista de categorias (exemplo)
-const dataCategory = [
+const dataCategory: CategoriaInt[] = [
   {
-    nome: "Teste 1",
-    icon: "IceCream",
+    id: 1,
+    nome_id: "Ifood",
+    icone: "LunchDiningIcon",
+    valor_minimo: 0,
+    valor_maximo: 1000,
   },
   {
-    nome: "Teste 2",
-    icon: "Bathtub",
+    id: 2,
+    nome_id: "Uber",
+    valor_minimo: 100,
+    valor_maximo: 5000,
   },
   {
-    nome: "Teste 3",
-    icon: "CarRepair",
+    id: 3,
+    nome_id: "Make",
+    icone: "CardTravelIcon",
   },
   {
-    nome: "Teste 4",
-    icon: "ChildFriendly",
+    id: 4,
+    nome_id: "Cabelo",
+    icone: "Face3Icon",
+    valor_minimo: 0,
+    valor_maximo: 200,
   },
   {
-    nome: "Teste 5",
-    icon: "Cookie",
-  },
-  {
-    nome: "Teste 6",
-    icon: "DeliveryDining",
+    id: 5,
+    nome_id: "Pet",
+    icone: "PetsIcon",
+    valor_minimo: 200,
   },
 ];
 
 export function CategoryList() {
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
-  const [icons, setIcons] = useState<any>({});
 
-  // // Função para carregar o ícone dinamicamente com base no nome
-  // const loadIcon = async (iconName: string) => {
-  //   console.log("iconname", iconName);
-  //   try {
-  //     // Adiciona o sufixo 'Icon' ao nome do ícone
-  //     const { default: IconComponent } = await import(
-  //       `@mui/icons-material/${iconName}`
-  //     );
-  //     console.log("IconComponent", IconComponent);
-  //     return IconComponent;
-  //   } catch (error) {
-  //     console.error(`Erro ao carregar o ícone ${iconName}`, error);
-  //     return null; // Retorna null se o ícone não for encontrado
-  //   }
-  // };
-
-  // // Função que carrega os ícones de todas as categorias no início
-  // useEffect(() => {
-  //   const fetchIcons = async () => {
-  //     const iconPromises = dataCategory.map(async (category) => {
-  //       const IconComponent = await loadIcon(category.icon);
-  //       return { [category.icon]: IconComponent };
-  //     });
-  //     const iconsResult = await Promise.all(iconPromises);
-  //     setIcons(Object.assign({}, ...iconsResult));
-  //   };
-
-  //   fetchIcons();
-  // }, []);
-
-  const handleEditData = () => {
-    navigate("/category-form");
+  const handleEditData = (data: CategoriaInt) => {
+    navigate("/category-form", { state: { categoryData: data } });
   };
 
   const handleDeleteModal = () => {
@@ -98,18 +78,31 @@ export function CategoryList() {
     setModalDelete(false);
   };
 
-  const itemCategory = (data: any, key: any) => {
-    const Icon = icons[data.icon]; // Pega o ícone carregado dinamicamente
+  const handleCategoryForm = () => {
+    navigate("/category-form");
+  };
+
+  const itemCategory = (data: CategoriaInt) => {
     return (
-      <ContainerItem key={key}>
-        {/* <Symbol>{Icon ? <Icon /> : null}</Symbol>{" "} */}
+      <ContainerItem key={data.id}>
+        <Symbol>
+          {data.icone ? (
+            showIconPicked(data.icone)
+          ) : (
+            <IconPoupaPig src={IconePig} alt="Icon" />
+          )}
+        </Symbol>{" "}
         {/* Exibe o ícone, se disponível */}
-        <Input name={key} placeholder={data.nome} fixedValue={data.nome} />
+        <Input
+          name={data.nome_id}
+          placeholder={data.nome_id}
+          fixedValue={data.nome_id}
+        />
         <Button
           title="Editar"
           backgroundColor={theme.colors.yellowF9F}
           borderColor={theme.colors.yellowDAD}
-          onClick={handleEditData}
+          onClick={() => handleEditData(data)}
         />
         <Button
           title="Excluir"
@@ -139,12 +132,16 @@ export function CategoryList() {
       </MainColumn>
       <MainColumn>
         <Column>
-          {dataCategory.map((category, index) =>
-            itemCategory(category, index + "-" + category.icon)
+          {dataCategory.map((category: CategoriaInt, key) =>
+            itemCategory(category)
           )}
         </Column>
         <ButtonsDiv>
-          <Button title="Adicionar categoria" minWidth="300px" />
+          <Button
+            title="Adicionar categoria"
+            minWidth="300px"
+            onClick={handleCategoryForm}
+          />
         </ButtonsDiv>
       </MainColumn>
       {modalDelete && (

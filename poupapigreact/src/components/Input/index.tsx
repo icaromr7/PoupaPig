@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes } from "react";
+import React, { useState, InputHTMLAttributes, useEffect } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 //style
@@ -23,8 +23,9 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   register?: UseFormRegister<any>;
   required?: boolean;
   customType?: "fullName" | "password" | "email";
-  fixedValue?: string;
+  fixedValue?: string | number | undefined;
   number?: boolean;
+  isEditing?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -36,10 +37,20 @@ const Input: React.FC<InputProps> = ({
   customType,
   fixedValue,
   number = false,
+  isEditing,
   ...rest
 }: InputProps) => {
   const isPasswordType = customType === "password";
   const [showPassword, setShowPassword] = useState(false);
+  const [inputValue, setInputValue] = useState<string>(
+    fixedValue?.toString() ?? ""
+  );
+
+  useEffect(() => {
+    if (fixedValue !== undefined) {
+      setInputValue(fixedValue.toString());
+    }
+  }, [fixedValue]);
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -58,15 +69,23 @@ const Input: React.FC<InputProps> = ({
     }
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <Container>
-      <InputWrapper $isFixed={!!fixedValue}>
+      <InputWrapper $isFixed={fixedValue !== undefined && !isEditing}>
         {/* {iconApply(customType)} */}
         <InputField
           type={isPasswordType && !showPassword ? "password" : "text"}
           placeholder={placeholder}
-          readOnly={!!fixedValue}
+          readOnly={fixedValue !== undefined && !isEditing}
           onKeyDown={handleKeyDown}
+          defaultValue={
+            fixedValue && !isEditing ? fixedValue.toString() : undefined
+          }
+          onChange={handleChange}
           {...(register && register(name, { required }))}
           {...rest}
         />

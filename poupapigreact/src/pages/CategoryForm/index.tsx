@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,6 +18,7 @@ import Input from "../../components/Input";
 
 import { Button } from "../../components/Button";
 import { IconPicker } from "../../utils/bibli";
+import { CategoriaInt } from "../../interfaces";
 
 const schema = yup.object().shape({
   nome_id: yup
@@ -38,12 +39,15 @@ const schema = yup.object().shape({
 });
 
 export function CategoryForm() {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const location = useLocation();
+  const categoryData: CategoriaInt = location.state?.categoryData;
   const navigate = useNavigate();
 
   const {
-    register: register,
-    handleSubmit: handleSubmit,
-    formState: { errors: errors },
+    register,
+    handleSubmit,
+    formState: { errors },
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
@@ -53,7 +57,7 @@ export function CategoryForm() {
     navigate("/new-transaction");
   };
 
-  const handleInputOutputList = (data: any) => {
+  const handleCategoryList = (data: any) => {
     console.log("data", data);
     navigate("/category-list");
   };
@@ -63,7 +67,9 @@ export function CategoryForm() {
     setValue("icone", iconName);
   };
 
-  // const icon = showIconPicked("Icecream");
+  const handleEditForm = () => {
+    setIsEditing(true);
+  };
 
   return (
     <Container>
@@ -75,6 +81,8 @@ export function CategoryForm() {
             placeholder="Nome categoria"
             error={errors.nome_id?.message}
             register={register}
+            fixedValue={categoryData && categoryData.nome_id}
+            isEditing={isEditing}
           />
           <Input
             name="valor_minimo"
@@ -82,6 +90,8 @@ export function CategoryForm() {
             error={errors.valor_minimo?.message}
             register={register}
             number={true}
+            fixedValue={categoryData && (categoryData.valor_minimo ?? " ")}
+            isEditing={isEditing}
           />
           <Input
             name="valor_maximo"
@@ -89,12 +99,16 @@ export function CategoryForm() {
             error={errors.valor_maximo?.message}
             register={register}
             number={true}
+            fixedValue={categoryData && (categoryData.valor_maximo ?? " ")}
+            isEditing={isEditing}
           />
         </InputDiv>
-        <IconDiv>
-          <TitleIconDiv>Escolha um icon para a categoria:</TitleIconDiv>
-          <IconPicker onSelect={handleIconSelect} />
-        </IconDiv>
+        {(!categoryData || isEditing) && (
+          <IconDiv>
+            <TitleIconDiv>Escolha um icon para a categoria:</TitleIconDiv>
+            <IconPicker onSelect={handleIconSelect} />
+          </IconDiv>
+        )}
         <ButtonsDiv>
           <Button
             title="Cancelar"
@@ -104,8 +118,12 @@ export function CategoryForm() {
           />
           {/* {icon} */}
           <Button
-            title="Salvar"
-            onClick={handleSubmit(handleInputOutputList)}
+            title={categoryData && !isEditing ? "Editar" : "Salvar"}
+            onClick={
+              categoryData && !isEditing
+                ? handleEditForm
+                : handleSubmit(handleCategoryList)
+            }
           />
         </ButtonsDiv>
       </Content>

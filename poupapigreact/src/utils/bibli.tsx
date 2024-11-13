@@ -195,6 +195,8 @@ export const IconPicker = ({
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
+          flexWrap: window.innerWidth < 800 ? "wrap" : "nowrap",
+          maxWidth: window.innerWidth < 800 ? "250px" : "100%",
         }}
       >
         <StyledIcon
@@ -293,6 +295,8 @@ export const IconPicker = ({
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
+          flexWrap: window.innerWidth < 800 ? "wrap" : "nowrap",
+          maxWidth: window.innerWidth < 800 ? "250px" : "100%",
         }}
       >
         <StyledIcon
@@ -391,6 +395,8 @@ export const IconPicker = ({
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
+          flexWrap: window.innerWidth < 800 ? "wrap" : "nowrap",
+          maxWidth: window.innerWidth < 800 ? "250px" : "100%",
         }}
       >
         <StyledIcon
@@ -489,6 +495,8 @@ export const IconPicker = ({
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
+          flexWrap: window.innerWidth < 800 ? "wrap" : "nowrap",
+          maxWidth: window.innerWidth < 800 ? "250px" : "100%",
         }}
       >
         <StyledIcon

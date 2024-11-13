@@ -45,6 +45,10 @@ export const IconDiv = styled.div`
   flex-direction: column;
   gap: 30px;
   align-items: center;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const TitleIconDiv = styled.div`
