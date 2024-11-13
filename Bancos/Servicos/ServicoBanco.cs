@@ -1,30 +1,46 @@
-﻿namespace PoupaPig.Dominio.Bancos.Servicos
+﻿using PoupaPig.Dominio.Bancos;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Bancos.Servicos
 {
-    public class ServicoBanco : IServicoBanco
+    public class ServicoBanco
     {
-        public void Atualizar(Banco dados)
+        private readonly IRepositorioBanco _repositorioBanco;
+
+        // Injetando o RepositorioBanco através do construtor
+        public ServicoBanco(IRepositorioBanco repositorioBanco)
         {
-            throw new NotImplementedException();
+            _repositorioBanco = repositorioBanco;
         }
 
+        // Método para criar um novo banco
         public void Criar(Banco dados)
         {
-            throw new NotImplementedException();
+            _repositorioBanco.Criar(dados);
         }
 
+        // Método para atualizar um banco existente
+        public void Atualizar(Banco dados)
+        {
+            _repositorioBanco.Atualizar(dados);
+        }
+
+        // Método para excluir um banco pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorioBanco.Excluir(id);
         }
 
+        // Método para obter um banco pelo ID
         public Banco ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorioBanco.ObterPorId(id);
         }
 
+        // Método para obter todos os bancos
         public List<Banco> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorioBanco.ObterTodas();
         }
     }
 }

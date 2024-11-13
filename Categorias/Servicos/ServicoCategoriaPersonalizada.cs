@@ -1,30 +1,46 @@
-﻿namespace PoupaPig.Dominio.Categorias.Servicos
+﻿using PoupaPig.Dominio.Categorias;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Categorias.Servicos
 {
-    public class ServicoCategoriaPersonalizada : IServicoCategoriaPersonalizada
+    public class ServicoCategoriaPersonalizada
     {
-        public void Atualizar(CategoriaPersonalizada dados)
+        private readonly IRepositorioCategoriaPersonalizada _repositorioCategoriaPersonalizada;
+
+        // Injetando o RepositorioCategoriaPersonalizada através do construtor
+        public ServicoCategoriaPersonalizada(IRepositorioCategoriaPersonalizada repositorioCategoriaPersonalizada)
         {
-            throw new NotImplementedException();
+            _repositorioCategoriaPersonalizada = repositorioCategoriaPersonalizada;
         }
 
+        // Método para criar uma nova categoria personalizada
         public void Criar(CategoriaPersonalizada dados)
         {
-            throw new NotImplementedException();
+            _repositorioCategoriaPersonalizada.Criar(dados);
         }
 
+        // Método para atualizar uma categoria personalizada existente
+        public void Atualizar(CategoriaPersonalizada dados)
+        {
+            _repositorioCategoriaPersonalizada.Atualizar(dados);
+        }
+
+        // Método para excluir uma categoria personalizada pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorioCategoriaPersonalizada.Excluir(id);
         }
 
+        // Método para obter uma categoria personalizada pelo ID
         public CategoriaPersonalizada ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorioCategoriaPersonalizada.ObterPorId(id);
         }
 
+        // Método para obter todas as categorias personalizadas
         public List<CategoriaPersonalizada> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorioCategoriaPersonalizada.ObterTodas();
         }
     }
 }

@@ -1,30 +1,40 @@
-﻿namespace PoupaPig.Dominio.Usuarios.Servicos
+﻿using PoupaPig.Dominio.Usuarios;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Usuarios.Servicos
 {
     public class ServicoUsuario
     {
-        public void Atualizar(Usuario dados)
+        private readonly IRepositorioUsuario _repositorioUsuario;
+
+        public ServicoUsuario(IRepositorioUsuario repositorioUsuario)
         {
-            throw new NotImplementedException();
+            _repositorioUsuario = repositorioUsuario;
         }
 
         public void Criar(Usuario dados)
         {
-            throw new NotImplementedException();
+            _repositorioUsuario.Criar(dados);
+        }
+
+        public void Atualizar(Usuario dados)
+        {
+            _repositorioUsuario.Atualizar(dados);
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorioUsuario.Excluir(id);
         }
 
         public Usuario ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorioUsuario.ObterPorId(id);
         }
 
         public List<Usuario> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorioUsuario.ObterTodas();
         }
     }
 }

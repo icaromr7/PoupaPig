@@ -1,4 +1,5 @@
 ﻿using LinqToDB.Mapping;
+using System.ComponentModel;
 
 namespace PoupaPig.Dominio.Metas
 {

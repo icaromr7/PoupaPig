@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Cartoes.Servicos
 {
-    public interface IServicoCartao
+    public interface IRepositorioCartao
     {
         List<Cartao> ObterTodas();
         Cartao ObterPorId(int id);

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PoupaPig.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92a5fc38471bfd3491bde39c2535666b27382c18")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d10e0b30457dc8ff4cf2ed91d692288ac9ebc203")]
 [assembly: System.Reflection.AssemblyProductAttribute("PoupaPig.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PoupaPig.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

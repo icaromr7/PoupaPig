@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Questionarios.Servicos
 {
-    public interface IServicoQuestionario
+    public interface IRepositorioQuestionario
     {
         List<Questionario> ObterTodas();
         Questionario ObterPorId(int id);

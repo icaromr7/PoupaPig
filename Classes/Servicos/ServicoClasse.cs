@@ -1,30 +1,46 @@
-﻿namespace PoupaPig.Dominio.Classes.Servicos
+﻿using PoupaPig.Dominio.Classes;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Classes.Servicos
 {
-    public class ServicoClasse : IServicoClasse
+    public class ServicoClasse
     {
-        public void Atualizar(Classe dados)
+        private readonly IRepositorioClasse _repositorioClasse;
+
+        // Injetando o RepositorioClasse através do construtor
+        public ServicoClasse(IRepositorioClasse repositorioClasse)
         {
-            throw new NotImplementedException();
+            _repositorioClasse = repositorioClasse;
         }
 
+        // Método para criar uma nova classe
         public void Criar(Classe dados)
         {
-            throw new NotImplementedException();
+            _repositorioClasse.Criar(dados);
         }
 
+        // Método para atualizar uma classe existente
+        public void Atualizar(Classe dados)
+        {
+            _repositorioClasse.Atualizar(dados);
+        }
+
+        // Método para excluir uma classe pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorioClasse.Excluir(id);
         }
 
+        // Método para obter uma classe pelo ID
         public Classe ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorioClasse.ObterPorId(id);
         }
 
+        // Método para obter todas as classes
         public List<Classe> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorioClasse.ObterTodas();
         }
     }
 }

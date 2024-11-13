@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Transacoes.Servicos
 {
-    public interface IServicoTransacao
+    public interface IRepositorioTransacao
     {
         List<Transacao> ObterTodas();
         Transacao ObterPorId(int id);

@@ -1,30 +1,46 @@
-﻿namespace PoupaPig.Dominio.Assinaturas.Servicos
+﻿using PoupaPig.Dominio.Assinaturas;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Assinaturas.Servicos
 {
-    public class ServicoAssinatura : IServicoAssinatura
+    public class ServicoAssinatura
     {
-        public void Atualizar(Assinatura dados)
+        private readonly IRepositorioAssinatura _repositorioAssinatura;
+
+        // Injetando o RepositorioAssinatura através do construtor
+        public ServicoAssinatura(IRepositorioAssinatura repositorioAssinatura)
         {
-            throw new NotImplementedException();
+            _repositorioAssinatura = repositorioAssinatura;
         }
 
+        // Método para criar uma nova assinatura
         public void Criar(Assinatura dados)
         {
-            throw new NotImplementedException();
+            _repositorioAssinatura.Criar(dados);
         }
 
+        // Método para atualizar uma assinatura existente
+        public void Atualizar(Assinatura dados)
+        {
+            _repositorioAssinatura.Atualizar(dados);
+        }
+
+        // Método para excluir uma assinatura pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorioAssinatura.Excluir(id);
         }
 
+        // Método para obter uma assinatura pelo ID
         public Assinatura ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorioAssinatura.ObterPorId(id);
         }
 
+        // Método para obter todas as assinaturas
         public List<Assinatura> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorioAssinatura.ObterTodas();
         }
     }
 }

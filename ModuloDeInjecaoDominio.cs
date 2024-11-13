@@ -8,6 +8,15 @@ using PoupaPig.Dominio.Metas.Servicos;
 using PoupaPig.Dominio.Questionarios.Servicos;
 using PoupaPig.Dominio.Transacoes.Servicos;
 using PoupaPig.Dominio.Usuarios.Servicos;
+using PoupaPig.Infra.Assinaturas;
+using PoupaPig.Infra.Bancos;
+using PoupaPig.Infra.Cartoes;
+using PoupaPig.Infra.Categorias;
+using PoupaPig.Infra.Classes;
+using PoupaPig.Infra.Metas;
+using PoupaPig.Infra.Questionarios;
+using PoupaPig.Infra.Transacoes;
+using PoupaPig.Infra.Usuarios;
 
 namespace PoupaPig.Dominio
 {
@@ -38,6 +47,16 @@ namespace PoupaPig.Dominio
             services.AddScoped<ServicoTipoTransacao>();
             services.AddScoped<ServicoTransacao>();
             services.AddScoped<ServicoUsuario>();
+            services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            services.AddScoped<IRepositorioTransacao, RepositorioTransacao>();
+            services.AddScoped<IRepositorioQuestionario, RepositorioQuestionario>();
+            services.AddScoped<IRepositorioMetaInvestimento, RepositorioMetaInvestimento>();
+            services.AddScoped<IRepositorioClasse, RepositorioClasse>();
+            services.AddScoped<IRepositorioCategoriaPadrao, RepositorioCategoriaPadrao>();
+            services.AddScoped<IRepositorioCategoriaPersonalizada, RepositorioCategoriaPersonalizada>();
+            services.AddScoped<IRepositorioCartao, RepositorioCartao>();
+            services.AddScoped<IRepositorioBanco, RepositorioBanco>();
+            services.AddScoped<IRepositorioAssinatura, RepositorioAssinatura>();
 
             return services;
         }

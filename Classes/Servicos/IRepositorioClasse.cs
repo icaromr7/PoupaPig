@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Classes.Servicos
 {
-    public interface IServicoClasse
+    public interface IRepositorioClasse
     {
         List<Classe> ObterTodas();
         Classe ObterPorId(int id);

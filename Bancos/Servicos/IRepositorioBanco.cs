@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Bancos.Servicos
 {
-    public interface IServicoBanco
+    public interface IRepositorioBanco
     {
         List<Banco> ObterTodas();
         Banco ObterPorId(int id);

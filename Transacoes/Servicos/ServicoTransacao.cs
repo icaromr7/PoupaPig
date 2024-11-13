@@ -1,30 +1,40 @@
-﻿namespace PoupaPig.Dominio.Transacoes.Servicos
+﻿using PoupaPig.Dominio.Transacoes;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Transacoes.Servicos
 {
-    public class ServicoTransacao : IServicoTransacao
+    public class ServicoTransacao
     {
-        public void Atualizar(Transacao dados)
+        private readonly IRepositorioTransacao _repositorioTransacao;
+
+        public ServicoTransacao(IRepositorioTransacao repositorioTransacao)
         {
-            throw new NotImplementedException();
+            _repositorioTransacao = repositorioTransacao;
         }
 
         public void Criar(Transacao dados)
         {
-            throw new NotImplementedException();
+            _repositorioTransacao.Criar(dados);
+        }
+
+        public void Atualizar(Transacao dados)
+        {
+            _repositorioTransacao.Atualizar(dados);
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorioTransacao.Excluir(id);
         }
 
         public Transacao ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorioTransacao.ObterPorId(id);
         }
 
         public List<Transacao> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorioTransacao.ObterTodas();
         }
     }
 }

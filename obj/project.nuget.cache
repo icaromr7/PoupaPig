@@ -1,23 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "kgzNqsxHnnMyAaS/C0SRBZ1tOQjffSP6SQo6ddW0btiJlUhzbWgIl02A1VPa0QHZy159jc9hn79qxFIG4SPsuw==",
+  "dgSpecHash": "+7E00qAAMdk=",
   "success": false,
   "projectFilePath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Dominio.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\icaro\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512"
+  ],
   "logs": [
     {
       "code": "NU1100",
       "level": "Error",
-      "message": "Não foi possível resolver 'Microsoft.Extensions.DependencyInjection.Abstractions (>= 8.0.2)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: aspnetcore-dev, Microsoft Visual Studio Offline Packages, nuget.org.",
-      "libraryId": "Microsoft.Extensions.DependencyInjection.Abstractions",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    },
-    {
-      "code": "NU1100",
-      "level": "Error",
-      "message": "Não foi possível resolver 'linq2db (>= 5.4.1)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: aspnetcore-dev, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "message": "Não foi possível resolver 'linq2db (>= 5.4.1)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: nuget.org.",
       "libraryId": "linq2db",
       "targetGraphs": [
         "net7.0"
@@ -26,7 +19,7 @@
     {
       "code": "NU1100",
       "level": "Error",
-      "message": "Não foi possível resolver 'FluentValidation (>= 11.10.0)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: aspnetcore-dev, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "message": "Não foi possível resolver 'FluentValidation (>= 11.10.0)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: nuget.org.",
       "libraryId": "FluentValidation",
       "targetGraphs": [
         "net7.0"
@@ -35,7 +28,7 @@
     {
       "code": "NU1100",
       "level": "Error",
-      "message": "Não foi possível resolver 'linq2db.SqlServer (>= 5.4.1)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: aspnetcore-dev, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "message": "Não foi possível resolver 'linq2db.SqlServer (>= 5.4.1)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: nuget.org.",
       "libraryId": "linq2db.SqlServer",
       "targetGraphs": [
         "net7.0"
@@ -44,7 +37,7 @@
     {
       "code": "NU1100",
       "level": "Error",
-      "message": "Não foi possível resolver 'System.Linq (>= 4.3.0)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: aspnetcore-dev, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "message": "Não foi possível resolver 'System.Linq (>= 4.3.0)' para 'net7.0'. O PackageSourceMapping está habilitado, as seguintes fontes não foram consideradas: nuget.org.",
       "libraryId": "System.Linq",
       "targetGraphs": [
         "net7.0"
