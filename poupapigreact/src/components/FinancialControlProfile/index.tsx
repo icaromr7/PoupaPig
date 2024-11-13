@@ -28,39 +28,82 @@ interface FinancialControlProfileProps {
   situation: "ok" | "attention" | "emergency";
 }
 
-export function FinancialControlProfile({
-  situation,
-}: FinancialControlProfileProps) {
+interface ClientSituationProps {
+  valor_livre: number;
+  valor_gastos: number;
+  valor_devendo: number;
+  valor_orcado: number;
+  valor_livre_sem_devedor: number;
+  valor_investido: number;
+}
+
+export function FinancialControlProfile() {
   const navigate = useNavigate();
   const [messageSituation, setMessageSituation] = useState<string>("");
   const [iconSituation, setIconSituation] = useState<string>("");
+  const [situation, setSituation] = useState<
+    "ok" | "attention" | "emergency"
+  >();
+  const [hex, setHex] = useState<string>("");
+  const [hexBackground, setHexBackground] = useState<string>("");
+
+  const clientData: ClientSituationProps = {
+    valor_livre: 2189.56,
+    valor_gastos: 1053.41,
+    valor_devendo: 1000.56,
+    valor_orcado: 289,
+    valor_livre_sem_devedor: 1900.56,
+    valor_investido: 15000,
+  };
 
   const handleNewTransaction = () => {
     navigate("/new-transaction");
   };
 
   useEffect(() => {
-    switch (situation) {
-      case "ok":
-        setMessageSituation("Parabéns! Suas finanças estão sob controle.");
-        setIconSituation(Ok);
-        break;
-      case "attention":
-        setMessageSituation("Opa! Precisa tomar cuidado com os gastos.");
-        setIconSituation(Attention);
-        break;
-      case "emergency":
-        setMessageSituation("Socorro! Pare de gastar agora!");
-        setIconSituation(Emergency);
-        break;
-      default:
-        break;
+    const calculo =
+      clientData.valor_livre_sem_devedor - clientData.valor_devendo;
+
+    if (calculo > 0) {
+      setSituation("ok");
+      setHex(theme.colors.green0FB);
+      setHexBackground(theme.colors.greenBFF);
+      setMessageSituation("Parabéns! Suas finanças estão sob controle.");
+      setIconSituation(Ok);
+      return;
+    }
+    if (calculo === 0) {
+      setSituation("attention");
+      setHex(theme.colors.yellowDAD);
+      setHexBackground(theme.colors.yellowF9F);
+      setMessageSituation("Opa! Precisa tomar cuidado com os gastos.");
+      setIconSituation(Attention);
+      return;
+    }
+    if (calculo < 0) {
+      setSituation("emergency");
+      setHex(theme.colors.redF63);
+      setHexBackground(theme.colors.redF3A);
+      setMessageSituation(
+        "Socorro! Pare de gastar, você vai ficar com saldo negativo."
+      );
+      setIconSituation(Emergency);
+      return;
     }
   }, []);
 
-  const valueSign = (type: string, value: number) => {
+  const hexToRgb = (hex: string) => {
+    const bigint = parseInt(hex.replace("#", ""), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return { r, g, b };
+  };
+
+  const valueSign = (type: string, value: number, hex: string) => {
     return (
-      <ValueContainer>
+      <ValueContainer $hex={hexToRgb(hex)}>
         <Value>
           <DollarSign>R$</DollarSign>
           <ValueNumber>{numberToCurrency(value)}</ValueNumber>
@@ -71,21 +114,29 @@ export function FinancialControlProfile({
   };
 
   return (
-    <Container>
+    <Container $hex={hexToRgb(hex)}>
       <Title>Seu controle financeiro</Title>
-      <ResumeContainer>
-        {valueSign("livres", 2189.56)}
+      <ResumeContainer $hex={hexToRgb(hexBackground)}>
+        {valueSign("livres", 2189.56, hex)}
         <SituationMessage>
           <Image src={iconSituation} alt="PoupaPig" />
           <Message>{messageSituation}</Message>
         </SituationMessage>
       </ResumeContainer>
-      {valueSign("gasto", 1053.41)}
-      {valueSign("devendo", 548.29)}
-      {valueSign("orçado", 289)}
-      {valueSign("livre sem valor dos orçamentos", 1900.56)}
-      {valueSign("investido", 15000)}
-      <Button title="Adicionar transação" onClick={handleNewTransaction} />
+      {valueSign("gasto", 1053.41, theme.colors.redF63)}
+      {valueSign("devendo", 548.29, theme.colors.yellowDAD)}
+      {valueSign("orçado", 289, theme.colors.orangeEE7)}
+      {valueSign(
+        "livre sem valor dos orçamentos",
+        1900.56,
+        theme.colors.greenAEC
+      )}
+      {valueSign("investido", 15000, theme.colors.blue038)}
+      <Button
+        title="Adicionar transação"
+        onClick={handleNewTransaction}
+        minWidth="100%"
+      />
     </Container>
   );
 }

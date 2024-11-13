@@ -1,11 +1,23 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
-export const Container = styled.div`
+interface RgbStyleProps {
+  r?: number;
+  g?: number;
+  b?: number;
+}
+
+interface HexStyleProps {
+  $hex: RgbStyleProps;
+}
+
+export const Container = styled.div<HexStyleProps>`
   width: 100%;
   height: 830px;
-  border: 5px solid ${theme.colors.greenBFF};
+  border: 5px solid
+    ${(props) => `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b})`};
   padding: 15px;
+  border-radius: 20px;
 
   display: flex;
   flex-direction: column;
@@ -20,8 +32,9 @@ export const Title = styled.div`
   color: ${theme.colors.black171};
 `;
 
-export const ResumeContainer = styled.div`
-  background-color: ${theme.colors.greenBFF};
+export const ResumeContainer = styled.div<HexStyleProps>`
+  background-color: ${(props) =>
+    `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b}, 0.8)`};
   width: 100%;
   height: fit-content;
   border-radius: 20px;
@@ -43,15 +56,18 @@ export const Message = styled.div`
   font-size: 15px;
   font-weight: ${theme.fonts.fontWeightRegular};
   color: ${theme.colors.black171};
+  text-align: center;
 `;
 
-export const ValueContainer = styled.div`
+export const ValueContainer = styled.div<HexStyleProps>`
   width: 100%;
   height: fit-content;
-  border: 3px solid ${theme.colors.redF63};
+  border: 3px solid
+    ${(props) => `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b})`};
   border-radius: 20px;
-  background-color: ${theme.colors.redF3A};
-  color: ${theme.colors.redF63};
+  background-color: ${(props) =>
+    `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b}, 0.3)`};
+  color: ${(props) => `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b})`};
   padding: 5px;
 
   display: flex;

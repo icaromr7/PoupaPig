@@ -46,6 +46,7 @@ import Ok from "../../assets/svg/ok.svg";
 
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 import { Button } from "../../components/Button";
+import { FloatingAddButton } from "../../components/FloatingAddButton";
 
 const cards = [
   "Visa",
@@ -197,6 +198,7 @@ export function Profile() {
           </Side>
         </Row>
       </ClientData>
+      <FloatingAddButton />
     </Container>
   );
 }

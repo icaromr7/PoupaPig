@@ -37,6 +37,7 @@ import { numberToCurrency } from "../../utils/bibli";
 import { TransactionData } from "../../interfaces";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
+import { ModalEconomyTips } from "../../components/ModalEconomyTips";
 
 const dataExemplo: TransactionData[] = [
   {
@@ -148,7 +149,7 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
 
   const updateShowArrows = () => {
     if (scrollRef.current) {
-      const totalWidth = data.length * 145;
+      const totalWidth = data.length * 165;
       const containerWidth = scrollRef.current.offsetWidth;
       console.log(
         "mnedidas",
@@ -235,6 +236,7 @@ export function Home() {
   const [inOut, setInOut] = useState<TransactionData[]>([]);
   const [budget, setBudget] = useState<TransactionData[]>([]);
   const [investment, setInvestment] = useState<TransactionData[]>([]);
+  const [showModalTips, setShowModalTips] = useState<boolean>(false);
 
   useEffect(() => {
     // Separar os dados por tipo
@@ -254,7 +256,7 @@ export function Home() {
   return (
     <Container>
       <CardFinancialControl>
-        <FinancialControlProfile situation="ok" />
+        <FinancialControlProfile />
       </CardFinancialControl>
       <ClientData>
         <Row>
@@ -270,15 +272,16 @@ export function Home() {
           <ScrollMenu data={investment} />
         </Row>
         <Row>
-          <MoneyTipsContainer>
+          <MoneyTipsContainer onClick={() => setShowModalTips(true)}>
             <Image src={Home1} alt="PoupaPig" />
-            <TitleTips>
-              Confira dicas de economia voltadas para o seu perfil!
-            </TitleTips>
+            <TitleTips>Confira as dicas de economia do PoupaPig!</TitleTips>
           </MoneyTipsContainer>
         </Row>
       </ClientData>
       <FloatingAddButton />
+      {showModalTips && (
+        <ModalEconomyTips onClose={() => setShowModalTips(false)} />
+      )}
     </Container>
   );
 }

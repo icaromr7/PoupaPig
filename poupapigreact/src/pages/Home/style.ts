@@ -25,9 +25,12 @@ export const Container = styled.div`
 `;
 
 export const CardFinancialControl = styled.div`
-  width: 30%;
+  width: 25%;
   flex-shrink: 0;
 
+  @media (max-width: 1300px) {
+    width: 40%;
+  }
   @media (max-width: 800px) {
     width: 100%;
   }
@@ -35,11 +38,14 @@ export const CardFinancialControl = styled.div`
 
 export const ClientData = styled.div`
   flex-grow: 1;
-  width: 60%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   gap: 50px;
 
+  @media (max-width: 1300px) {
+    width: 60%;
+  }
   @media (max-width: 800px) {
     width: 100%;
   }
