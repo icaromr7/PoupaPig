@@ -10,6 +10,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 50px;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const MainColumn = styled.div`
@@ -17,6 +21,10 @@ export const MainColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const InfoColumn = styled.div`
