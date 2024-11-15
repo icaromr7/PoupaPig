@@ -2,10 +2,10 @@
 {
     public interface IRepositorioBanco
     {
-        List<banco> ObterTodas();
-        banco ObterPorId(int id);
-        void Criar(banco dados);
-        void Atualizar(banco dados);
+        List<Banco> ObterTodas();
+        Banco ObterPorId(int id);
+        void Criar(Banco dados);
+        void Atualizar(Banco dados);
         void Excluir(int id);
     }
 }

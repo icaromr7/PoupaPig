@@ -1,9 +1,6 @@
 ﻿using LinqToDB;
-using LinqToDB.Data;
 using PoupaPig.Dominio.Assinaturas;
 using PoupaPig.Dominio.Assinaturas.Servicos;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PoupaPig.Infra.Assinaturas
 {
@@ -18,15 +15,15 @@ namespace PoupaPig.Infra.Assinaturas
         }
 
         // Método para criar uma nova assinatura
-        public void Criar(assinatura dados)
+        public void Criar(Assinatura dados)
         {
             _dataConnection.Insert(dados);
         }
 
         // Método para atualizar uma assinatura existente
-        public void Atualizar(assinatura dados)
+        public void Atualizar(Assinatura dados)
         {
-            var assinaturaExistente = _dataConnection.GetTable<assinatura>().FirstOrDefault(a => a.id == dados.id);
+            var assinaturaExistente = _dataConnection.GetTable<Assinatura>().FirstOrDefault(a => a.id == dados.id);
             if (assinaturaExistente != null)
             {
                 _dataConnection.Update(dados);
@@ -36,7 +33,7 @@ namespace PoupaPig.Infra.Assinaturas
         // Método para excluir uma assinatura pelo ID
         public void Excluir(int id)
         {
-            var assinatura = _dataConnection.GetTable<assinatura>().FirstOrDefault(a => a.id == id);
+            var assinatura = _dataConnection.GetTable<Assinatura>().FirstOrDefault(a => a.id == id);
             if (assinatura != null)
             {
                 _dataConnection.Delete(assinatura);
@@ -44,15 +41,15 @@ namespace PoupaPig.Infra.Assinaturas
         }
 
         // Método para obter uma assinatura pelo ID
-        public assinatura ObterPorId(int id)
+        public Assinatura ObterPorId(int id)
         {
-            return _dataConnection.GetTable<assinatura>().FirstOrDefault(a => a.id == id);
+            return _dataConnection.GetTable<Assinatura>().FirstOrDefault(a => a.id == id);
         }
 
         // Método para obter todas as assinaturas
-        public List<assinatura> ObterTodas()
+        public List<Assinatura> ObterTodas()
         {
-            return _dataConnection.GetTable<assinatura>().ToList();
+            return _dataConnection.GetTable<Assinatura>().ToList();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace PoupaPig.Dominio.Categorias
         [Column(Name = "id")]
         public int id { get; set; }
 
-        [Column(Name = "nome_id")]
+        [Column(Name = "nome")]
         public int nome_id { get; set; }
 
         [Column(Name = "icone")]

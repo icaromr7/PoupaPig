@@ -2,11 +2,14 @@
 
 namespace PoupaPig.Dominio.Transacoes
 {
+    [Table(Name = "sentimento_transacao")] // Nome da tabela no banco de dados
     public class SentimentoTransacao
     {
-        [PrimaryKey, Identity]
+        [PrimaryKey, Identity] // Chave primária e identidade
+        [Column(Name = "id")] // Nome da coluna no banco de dados
         public int id { get; set; }
-        [Column]
+
+        [Column(Name = "nome")] // Nome da coluna no banco de dados
         public string nome { get; set; }
     }
 }

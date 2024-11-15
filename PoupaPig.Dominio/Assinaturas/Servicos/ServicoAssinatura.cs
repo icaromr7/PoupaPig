@@ -14,13 +14,13 @@ namespace PoupaPig.Dominio.Assinaturas.Servicos
         }
 
         // Método para criar uma nova assinatura
-        public void Criar(assinatura dados)
+        public void Criar(Assinatura dados)
         {
             _repositorioAssinatura.Criar(dados);
         }
 
         // Método para atualizar uma assinatura existente
-        public void Atualizar(assinatura dados)
+        public void Atualizar(Assinatura dados)
         {
             _repositorioAssinatura.Atualizar(dados);
         }
@@ -32,13 +32,13 @@ namespace PoupaPig.Dominio.Assinaturas.Servicos
         }
 
         // Método para obter uma assinatura pelo ID
-        public assinatura ObterPorId(int id)
+        public Assinatura ObterPorId(int id)
         {
             return _repositorioAssinatura.ObterPorId(id);
         }
 
         // Método para obter todas as assinaturas
-        public List<assinatura> ObterTodas()
+        public List<Assinatura> ObterTodas()
         {
             return _repositorioAssinatura.ObterTodas();
         }

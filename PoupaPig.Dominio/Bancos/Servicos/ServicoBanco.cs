@@ -14,13 +14,13 @@ namespace PoupaPig.Dominio.Bancos.Servicos
         }
 
         // Método para criar um novo banco
-        public void Criar(banco dados)
+        public void Criar(Banco dados)
         {
             _repositorioBanco.Criar(dados);
         }
 
         // Método para atualizar um banco existente
-        public void Atualizar(banco dados)
+        public void Atualizar(Banco dados)
         {
             _repositorioBanco.Atualizar(dados);
         }
@@ -32,13 +32,13 @@ namespace PoupaPig.Dominio.Bancos.Servicos
         }
 
         // Método para obter um banco pelo ID
-        public banco ObterPorId(int id)
+        public Banco ObterPorId(int id)
         {
             return _repositorioBanco.ObterPorId(id);
         }
 
         // Método para obter todos os bancos
-        public List<banco> ObterTodas()
+        public List<Banco> ObterTodas()
         {
             return _repositorioBanco.ObterTodas();
         }

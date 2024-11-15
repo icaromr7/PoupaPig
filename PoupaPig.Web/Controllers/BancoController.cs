@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoupaPig.Dominio.Bancos;
 using PoupaPig.Dominio.Bancos.Servicos;
-using System.Collections.Generic;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,14 +14,14 @@ public class BancoController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Criar([FromBody] banco banco)
+    public IActionResult Criar([FromBody] Banco banco)
     {
         _servicoBanco.Criar(banco);
         return Ok("banco criado com sucesso!");
     }
 
     [HttpPut]
-    public IActionResult Atualizar([FromBody] banco banco)
+    public IActionResult Atualizar([FromBody] Banco banco)
     {
         _servicoBanco.Atualizar(banco);
         return Ok("banco atualizado com sucesso!");
@@ -46,7 +45,7 @@ public class BancoController : ControllerBase
     [HttpGet]
     public IActionResult ObterTodas()
     {
-        List<banco> bancos = _servicoBanco.ObterTodas();
+        List<Banco> bancos = _servicoBanco.ObterTodas();
         return Ok(bancos);
     }
 }

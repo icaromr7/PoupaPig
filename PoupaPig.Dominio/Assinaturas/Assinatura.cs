@@ -2,11 +2,14 @@
 
 namespace PoupaPig.Dominio.Assinaturas
 {
-    public class assinatura
+    [Table(Name = "assinatura")]
+    public class Assinatura
     {
         [PrimaryKey, Identity]
+        [Column(Name = "id")] // Nome diferente da coluna no banco de dados
         public int id { get; set; }
-        [Column]
+
+        [Column(Name = "nome")] // Nome diferente da coluna no banco de dados
         public string nome { get; set; }
     }
 }

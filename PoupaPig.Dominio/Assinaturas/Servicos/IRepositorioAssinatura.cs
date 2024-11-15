@@ -2,10 +2,10 @@
 {
     public interface IRepositorioAssinatura
     {
-        List<assinatura> ObterTodas();
-        assinatura ObterPorId(int id);
-        void Criar(assinatura dados);
-        void Atualizar(assinatura dados);
+        List<Assinatura> ObterTodas();
+        Assinatura ObterPorId(int id);
+        void Criar(Assinatura dados);
+        void Atualizar(Assinatura dados);
         void Excluir(int id);
     }
 }
