@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {}
+    "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Dominio.csproj": {
+    "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Dominio.csproj",
+        "projectUniqueName": "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj",
         "projectName": "PoupaPig.Dominio",
-        "projectPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Dominio.csproj",
+        "projectPath": "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj",
         "packagesPath": "C:\\Users\\icaro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\obj\\",
+        "outputPath": "C:\\PoupaPig\\PoupaPig.Dominio\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "F:\\VisualStudioSDks\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\icaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -22,14 +22,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -46,28 +47,16 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
-            "FluentValidation": {
+            "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[11.10.0, )"
-            },
-            "Microsoft.Extensions.DependencyInjection.Abstractions": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "System.Linq": {
-              "target": "Package",
-              "version": "[4.3.0, )"
+              "version": "[9.0.0, )"
             },
             "linq2db": {
               "target": "Package",
               "version": "[5.4.1, )"
-            },
-            "linq2db.SqlServer": {
-              "target": "Package",
-              "version": "[5.4.1, )"
             }
           },
           "imports": [
@@ -86,21 +75,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
+    "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
+        "projectUniqueName": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
         "projectName": "PoupaPig.Infra",
-        "projectPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
+        "projectPath": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
         "packagesPath": "C:\\Users\\icaro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\obj\\",
+        "outputPath": "C:\\PoupaPig\\PoupaPig.Infra\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "F:\\VisualStudioSDks\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\icaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -108,17 +97,18 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Dominio.csproj": {
-                "projectPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Dominio.csproj"
+              "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
+                "projectPath": "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj"
               }
             }
           }
@@ -136,8 +126,18 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -154,21 +154,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {
+    "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
+        "projectUniqueName": "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
         "projectName": "PoupaPig.Web",
-        "projectPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
+        "projectPath": "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
         "packagesPath": "C:\\Users\\icaro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Web\\obj\\",
+        "outputPath": "C:\\PoupaPig\\PoupaPig.Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "F:\\VisualStudioSDks\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\icaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -176,17 +176,18 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
-                "projectPath": "C:\\Users\\icaro\\source\\repos\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj"
+              "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
+                "projectPath": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj"
               }
             }
           }
@@ -204,8 +205,18 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[7.0.19, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -225,7 +236,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

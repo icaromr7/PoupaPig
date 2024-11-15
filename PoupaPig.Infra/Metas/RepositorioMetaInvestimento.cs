@@ -1,59 +1,106 @@
-﻿using PoupaPig.Dominio.Metas;
+﻿using LinqToDB;
+using LinqToDB.Data;
+using PoupaPig.Dominio.Metas;
 using PoupaPig.Dominio.Metas.Servicos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PoupaPig.Infra.Metas
 {
-    public class RepositorioMetaInvestimento : IRepositorioMetaInvestimento
+    public class RepositorioMetaInvestimento : IRepositorioMetaInvestimento, IDisposable
     {
-        private readonly AppDbContext _context;
+        private readonly PoupaPigDataConnection _dataConnection;
 
-        // Injetando o DbContext através do construtor
-        public RepositorioMetaInvestimento(AppDbContext context)
+        // Injetando o PoupaPigDataConnection através do construtor
+        public RepositorioMetaInvestimento(PoupaPigDataConnection dataConnection)
         {
-            _context = context;
+            _dataConnection = dataConnection;
         }
 
         // Método para criar uma nova meta de investimento
         public void Criar(MetaInvestimento dados)
         {
-            _context.MetasInvestimento.Add(dados);
-            _context.SaveChanges();
+            try
+            {
+                using (var transaction = _dataConnection.BeginTransaction())
+                {
+                    _dataConnection.Insert(dados);
+                    transaction.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Logar o erro (exemplo: Console.WriteLine ou usando um logger)
+                Console.WriteLine($"Erro ao criar MetaInvestimento: {ex.Message}");
+                throw;
+            }
         }
 
         // Método para atualizar uma meta de investimento existente
         public void Atualizar(MetaInvestimento dados)
         {
-            var metaExistente = _context.MetasInvestimento.Find(dados.Id);
-            if (metaExistente != null)
+            try
             {
-                _context.Entry(metaExistente).CurrentValues.SetValues(dados);
-                _context.SaveChanges();
+                using (var transaction = _dataConnection.BeginTransaction())
+                {
+                    _dataConnection.Update(dados);
+                    transaction.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao atualizar MetaInvestimento: {ex.Message}");
+                throw;
             }
         }
 
         // Método para excluir uma meta de investimento pelo ID
         public void Excluir(int id)
         {
-            var meta = _context.MetasInvestimento.Find(id);
-            if (meta != null)
+            try
             {
-                _context.MetasInvestimento.Remove(meta);
-                _context.SaveChanges();
+                _dataConnection.GetTable<MetaInvestimento>().Delete(m => m.id == id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao excluir MetaInvestimento: {ex.Message}");
+                throw;
             }
         }
 
         // Método para obter uma meta de investimento pelo ID
         public MetaInvestimento ObterPorId(int id)
         {
-            return _context.MetasInvestimento.Find(id);
+            try
+            {
+                return _dataConnection.GetTable<MetaInvestimento>().FirstOrDefault(m => m.id == id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao obter MetaInvestimento por ID: {ex.Message}");
+                throw;
+            }
         }
 
         // Método para obter todas as metas de investimento
         public List<MetaInvestimento> ObterTodas()
         {
-            return _context.MetasInvestimento.ToList();
+            try
+            {
+                return _dataConnection.GetTable<MetaInvestimento>().ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao obter todas as MetaInvestimento: {ex.Message}");
+                throw;
+            }
+        }
+
+        // Liberar recursos explicitamente
+        public void Dispose()
+        {
+            _dataConnection.Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PoupaPig.Dominio.Bancos;
+﻿using LinqToDB;
+using PoupaPig.Dominio.Bancos;
 using PoupaPig.Dominio.Bancos.Servicos;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,53 +8,46 @@ namespace PoupaPig.Infra.Bancos
 {
     public class RepositorioBanco : IRepositorioBanco
     {
-        private readonly AppDbContext _context;
+        private readonly PoupaPigDataConnection _dataConnection;
 
-        // Injetando o DbContext através do construtor
-        public RepositorioBanco(AppDbContext context)
+        // Injetando o PoupaPigDataConnection através do construtor
+        public RepositorioBanco(PoupaPigDataConnection dataConnection)
         {
-            _context = context;
+            _dataConnection = dataConnection;
         }
 
         // Método para criar um novo banco
-        public void Criar(Banco dados)
+        public void Criar(banco dados)
         {
-            _context.Bancos.Add(dados);
-            _context.SaveChanges();
+            _dataConnection.Insert(dados);
         }
 
         // Método para atualizar um banco existente
-        public void Atualizar(Banco dados)
+        public void Atualizar(banco dados)
         {
-            var bancoExistente = _context.Bancos.Find(dados.Id);
+            var bancoExistente = _dataConnection.GetTable<banco>().FirstOrDefault(b => b.id == dados.id);
             if (bancoExistente != null)
             {
-                _context.Entry(bancoExistente).CurrentValues.SetValues(dados);
-                _context.SaveChanges();
+                _dataConnection.Update(dados);
             }
         }
 
         // Método para excluir um banco pelo ID
         public void Excluir(int id)
         {
-            var banco = _context.Bancos.Find(id);
-            if (banco != null)
-            {
-                _context.Bancos.Remove(banco);
-                _context.SaveChanges();
-            }
+            _dataConnection.GetTable<banco>().Delete(b => b.id == id);
         }
 
         // Método para obter um banco pelo ID
-        public Banco ObterPorId(int id)
+        public banco ObterPorId(int id)
         {
-            return _context.Bancos.Find(id);
+            return _dataConnection.GetTable<banco>().FirstOrDefault(b => b.id == id);
         }
 
         // Método para obter todos os bancos
-        public List<Banco> ObterTodas()
+        public List<banco> ObterTodas()
         {
-            return _context.Bancos.ToList();
+            return _dataConnection.GetTable<banco>().ToList();
         }
     }
 }

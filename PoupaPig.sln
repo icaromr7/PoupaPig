@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.9.34728.123
+VisualStudioVersion = 17.12.35506.116 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoupaPig.Dominio", "PoupaPig.Dominio.csproj", "{74D42275-C72C-4288-9A98-6E026BD128D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoupaPig.Dominio", "PoupaPig.Dominio\PoupaPig.Dominio.csproj", "{613A9850-29E6-4D34-BEB2-02E8E2D7C923}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoupaPig.Web", "PoupaPig.Web\PoupaPig.Web.csproj", "{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoupaPig.Infra", "PoupaPig.Infra\PoupaPig.Infra.csproj", "{26EA2F54-601F-4082-B4EB-3A2842BC5BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoupaPig.Infra", "PoupaPig.Infra\PoupaPig.Infra.csproj", "{D4D51778-E7C4-44ED-9D0E-0DFB1F583199}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoupaPig.Web", "PoupaPig.Web\PoupaPig.Web.csproj", "{0BC61FE9-D24F-47AB-A5EF-41C819A8E257}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +15,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{74D42275-C72C-4288-9A98-6E026BD128D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74D42275-C72C-4288-9A98-6E026BD128D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74D42275-C72C-4288-9A98-6E026BD128D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74D42275-C72C-4288-9A98-6E026BD128D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8D68E61-20EB-414F-AE7C-7D2CEDB6F4DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4D51778-E7C4-44ED-9D0E-0DFB1F583199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4D51778-E7C4-44ED-9D0E-0DFB1F583199}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4D51778-E7C4-44ED-9D0E-0DFB1F583199}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4D51778-E7C4-44ED-9D0E-0DFB1F583199}.Release|Any CPU.Build.0 = Release|Any CPU
+		{613A9850-29E6-4D34-BEB2-02E8E2D7C923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{613A9850-29E6-4D34-BEB2-02E8E2D7C923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{613A9850-29E6-4D34-BEB2-02E8E2D7C923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{613A9850-29E6-4D34-BEB2-02E8E2D7C923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26EA2F54-601F-4082-B4EB-3A2842BC5BF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26EA2F54-601F-4082-B4EB-3A2842BC5BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26EA2F54-601F-4082-B4EB-3A2842BC5BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26EA2F54-601F-4082-B4EB-3A2842BC5BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BC61FE9-D24F-47AB-A5EF-41C819A8E257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BC61FE9-D24F-47AB-A5EF-41C819A8E257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BC61FE9-D24F-47AB-A5EF-41C819A8E257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BC61FE9-D24F-47AB-A5EF-41C819A8E257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {59DC2AFA-6C6A-4F1F-B377-C8AF87821973}
 	EndGlobalSection
 EndGlobal

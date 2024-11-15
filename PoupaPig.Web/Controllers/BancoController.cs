@@ -15,24 +15,24 @@ public class BancoController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Criar([FromBody] Banco banco)
+    public IActionResult Criar([FromBody] banco banco)
     {
         _servicoBanco.Criar(banco);
-        return Ok("Banco criado com sucesso!");
+        return Ok("banco criado com sucesso!");
     }
 
     [HttpPut]
-    public IActionResult Atualizar([FromBody] Banco banco)
+    public IActionResult Atualizar([FromBody] banco banco)
     {
         _servicoBanco.Atualizar(banco);
-        return Ok("Banco atualizado com sucesso!");
+        return Ok("banco atualizado com sucesso!");
     }
 
     [HttpDelete("{id}")]
     public IActionResult Excluir(int id)
     {
         _servicoBanco.Excluir(id);
-        return Ok("Banco excluído com sucesso!");
+        return Ok("banco excluído com sucesso!");
     }
 
     [HttpGet("{id}")]
@@ -46,7 +46,7 @@ public class BancoController : ControllerBase
     [HttpGet]
     public IActionResult ObterTodas()
     {
-        List<Banco> bancos = _servicoBanco.ObterTodas();
+        List<banco> bancos = _servicoBanco.ObterTodas();
         return Ok(bancos);
     }
 }

@@ -1,4 +1,5 @@
-﻿using PoupaPig.Dominio.Transacoes;
+﻿using LinqToDB;
+using PoupaPig.Dominio.Transacoes;
 using PoupaPig.Dominio.Transacoes.Servicos;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,53 +8,43 @@ namespace PoupaPig.Infra.Transacoes
 {
     public class RepositorioTransacao : IRepositorioTransacao
     {
-        private readonly AppDbContext _context;
+        private readonly PoupaPigDataConnection _dataConnection;
 
-        // Injetando o DbContext através do construtor
-        public RepositorioTransacao(AppDbContext context)
+        // Injetando o PoupaPigDataConnection através do construtor
+        public RepositorioTransacao(PoupaPigDataConnection dataConnection)
         {
-            _context = context;
+            _dataConnection = dataConnection;
         }
 
         // Método para criar uma nova transação
         public void Criar(Transacao dados)
         {
-            _context.Transacoes.Add(dados);
-            _context.SaveChanges();
+            _dataConnection.Insert(dados);
         }
 
         // Método para atualizar os dados de uma transação existente
         public void Atualizar(Transacao dados)
         {
-            var transacaoExistente = _context.Transacoes.Find(dados.Id);
-            if (transacaoExistente != null)
-            {
-                _context.Entry(transacaoExistente).CurrentValues.SetValues(dados);
-                _context.SaveChanges();
-            }
+            // Atualizar diretamente sem necessidade de busca prévia
+            _dataConnection.Update(dados);
         }
 
         // Método para excluir uma transação pelo ID
         public void Excluir(int id)
         {
-            var transacao = _context.Transacoes.Find(id);
-            if (transacao != null)
-            {
-                _context.Transacoes.Remove(transacao);
-                _context.SaveChanges();
-            }
+            _dataConnection.GetTable<Transacao>().Delete(t => t.id == id);
         }
 
         // Método para obter uma transação pelo ID
         public Transacao ObterPorId(int id)
         {
-            return _context.Transacoes.Find(id);
+            return _dataConnection.GetTable<Transacao>().FirstOrDefault(t => t.id == id);
         }
 
         // Método para obter todas as transações
         public List<Transacao> ObterTodas()
         {
-            return _context.Transacoes.ToList();
+            return _dataConnection.GetTable<Transacao>().ToList();
         }
     }
 }

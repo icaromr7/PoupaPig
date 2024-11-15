@@ -42,7 +42,7 @@ public class UsuarioController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult AtualizarUsuario(int id, [FromBody] Usuario dados)
     {
-        if (dados == null || id != dados.Id)
+        if (dados == null || id != dados.id)
         {
             return BadRequest("Dados inválidos ou ID não corresponde.");
         }
@@ -69,7 +69,7 @@ public class UsuarioController : ControllerBase
     [HttpGet]
     public IActionResult ObterTodosUsuarios()
     {
-        var usuarios = _servicoUsuario.ObterTodos();
+        var usuarios = _servicoUsuario.ObterTodas();
         return Ok(usuarios);
     }
 }

@@ -1,4 +1,6 @@
-﻿using PoupaPig.Dominio.Assinaturas;
+﻿using LinqToDB;
+using LinqToDB.Data;
+using PoupaPig.Dominio.Assinaturas;
 using PoupaPig.Dominio.Assinaturas.Servicos;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,53 +9,50 @@ namespace PoupaPig.Infra.Assinaturas
 {
     public class RepositorioAssinatura : IRepositorioAssinatura
     {
-        private readonly AppDbContext _context;
+        private readonly PoupaPigDataConnection _dataConnection;
 
-        // Injetando o DbContext através do construtor
-        public RepositorioAssinatura(AppDbContext context)
+        // Injetando o DataConnection através do construtor
+        public RepositorioAssinatura(PoupaPigDataConnection dataConnection)
         {
-            _context = context;
+            _dataConnection = dataConnection;
         }
 
         // Método para criar uma nova assinatura
-        public void Criar(Assinatura dados)
+        public void Criar(assinatura dados)
         {
-            _context.Assinaturas.Add(dados);
-            _context.SaveChanges();
+            _dataConnection.Insert(dados);
         }
 
         // Método para atualizar uma assinatura existente
-        public void Atualizar(Assinatura dados)
+        public void Atualizar(assinatura dados)
         {
-            var assinaturaExistente = _context.Assinaturas.Find(dados.Id);
+            var assinaturaExistente = _dataConnection.GetTable<assinatura>().FirstOrDefault(a => a.id == dados.id);
             if (assinaturaExistente != null)
             {
-                _context.Entry(assinaturaExistente).CurrentValues.SetValues(dados);
-                _context.SaveChanges();
+                _dataConnection.Update(dados);
             }
         }
 
         // Método para excluir uma assinatura pelo ID
         public void Excluir(int id)
         {
-            var assinatura = _context.Assinaturas.Find(id);
+            var assinatura = _dataConnection.GetTable<assinatura>().FirstOrDefault(a => a.id == id);
             if (assinatura != null)
             {
-                _context.Assinaturas.Remove(assinatura);
-                _context.SaveChanges();
+                _dataConnection.Delete(assinatura);
             }
         }
 
         // Método para obter uma assinatura pelo ID
-        public Assinatura ObterPorId(int id)
+        public assinatura ObterPorId(int id)
         {
-            return _context.Assinaturas.Find(id);
+            return _dataConnection.GetTable<assinatura>().FirstOrDefault(a => a.id == id);
         }
 
         // Método para obter todas as assinaturas
-        public List<Assinatura> ObterTodas()
+        public List<assinatura> ObterTodas()
         {
-            return _context.Assinaturas.ToList();
+            return _dataConnection.GetTable<assinatura>().ToList();
         }
     }
 }

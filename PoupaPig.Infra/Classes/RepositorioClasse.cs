@@ -1,4 +1,5 @@
-﻿using PoupaPig.Dominio.Classes;
+﻿using LinqToDB;
+using PoupaPig.Dominio.Classes;
 using PoupaPig.Dominio.Classes.Servicos;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,53 +8,46 @@ namespace PoupaPig.Infra.Classes
 {
     public class RepositorioClasse : IRepositorioClasse
     {
-        private readonly AppDbContext _context;
+        private readonly PoupaPigDataConnection _dataConnection;
 
-        // Injetando o DbContext através do construtor
-        public RepositorioClasse(AppDbContext context)
+        // Injetando o PoupaPigDataConnection através do construtor
+        public RepositorioClasse(PoupaPigDataConnection dataConnection)
         {
-            _context = context;
+            _dataConnection = dataConnection;
         }
 
         // Método para criar uma nova classe
         public void Criar(Classe dados)
         {
-            _context.Classes.Add(dados);
-            _context.SaveChanges();
+            _dataConnection.Insert(dados);
         }
 
         // Método para atualizar uma classe existente
         public void Atualizar(Classe dados)
         {
-            var classeExistente = _context.Classes.Find(dados.Id);
+            var classeExistente = _dataConnection.GetTable<Classe>().FirstOrDefault(c => c.id == dados.id);
             if (classeExistente != null)
             {
-                _context.Entry(classeExistente).CurrentValues.SetValues(dados);
-                _context.SaveChanges();
+                _dataConnection.Update(dados);
             }
         }
 
         // Método para excluir uma classe pelo ID
         public void Excluir(int id)
         {
-            var classe = _context.Classes.Find(id);
-            if (classe != null)
-            {
-                _context.Classes.Remove(classe);
-                _context.SaveChanges();
-            }
+            _dataConnection.GetTable<Classe>().Delete(c => c.id == id);
         }
 
         // Método para obter uma classe pelo ID
         public Classe ObterPorId(int id)
         {
-            return _context.Classes.Find(id);
+            return _dataConnection.GetTable<Classe>().FirstOrDefault(c => c.id == id);
         }
 
         // Método para obter todas as classes
         public List<Classe> ObterTodas()
         {
-            return _context.Classes.ToList();
+            return _dataConnection.GetTable<Classe>().ToList();
         }
     }
 }

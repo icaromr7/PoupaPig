@@ -15,24 +15,24 @@ public class AssinaturaController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Criar([FromBody] Assinatura assinatura)
+    public IActionResult Criar([FromBody] assinatura assinatura)
     {
         _servicoAssinatura.Criar(assinatura);
-        return Ok("Assinatura criada com sucesso!");
+        return Ok("assinatura criada com sucesso!");
     }
 
     [HttpPut]
-    public IActionResult Atualizar([FromBody] Assinatura assinatura)
+    public IActionResult Atualizar([FromBody] assinatura assinatura)
     {
         _servicoAssinatura.Atualizar(assinatura);
-        return Ok("Assinatura atualizada com sucesso!");
+        return Ok("assinatura atualizada com sucesso!");
     }
 
     [HttpDelete("{id}")]
     public IActionResult Excluir(int id)
     {
         _servicoAssinatura.Excluir(id);
-        return Ok("Assinatura excluída com sucesso!");
+        return Ok("assinatura excluída com sucesso!");
     }
 
     [HttpGet("{id}")]
@@ -46,7 +46,7 @@ public class AssinaturaController : ControllerBase
     [HttpGet]
     public IActionResult ObterTodas()
     {
-        List<Assinatura> assinaturas = _servicoAssinatura.ObterTodas();
+        List<assinatura> assinaturas = _servicoAssinatura.ObterTodas();
         return Ok(assinaturas);
     }
 }
