@@ -1,30 +1,42 @@
-﻿namespace PoupaPig.Dominio.Assinaturas.Servicos
+﻿using PoupaPig.Dominio.Assinaturas;
+using PoupaPig.Dominio.Assinaturas.Servicos;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Assinaturas.Servicos
 {
-    public class ServicoUsuarioAssinatura : IServicoUsuarioAssinatura
+    public class ServicoUsuarioAssinatura
     {
-        public void Atualizar(UsuarioAssinatura dados)
+        private readonly IRepositorioUsuarioAssinatura _repositorio;
+
+        // Injetando o repositório através do construtor
+        public ServicoUsuarioAssinatura(IRepositorioUsuarioAssinatura repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
         public void Criar(UsuarioAssinatura dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
+        }
+
+        public void Atualizar(UsuarioAssinatura dados)
+        {
+            _repositorio.Atualizar(dados);
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
         public UsuarioAssinatura ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
         public List<UsuarioAssinatura> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

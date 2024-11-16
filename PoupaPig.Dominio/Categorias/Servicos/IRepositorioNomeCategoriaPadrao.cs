@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Categorias.Servicos
 {
-    public interface IServicoNomeCategoriaPadrao
+    public interface IRepositorioNomeCategoriaPadrao
     {
         List<NomeCategoriaPadrao> ObterTodas();
         NomeCategoriaPadrao ObterPorId(int id);

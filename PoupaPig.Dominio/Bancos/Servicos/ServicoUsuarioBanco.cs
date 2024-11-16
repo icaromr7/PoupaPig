@@ -1,30 +1,42 @@
-﻿namespace PoupaPig.Dominio.Bancos.Servicos
+﻿using PoupaPig.Dominio.Bancos;
+using PoupaPig.Dominio.Bancos.Servicos;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Bancos.Servicos
 {
-    public class ServicoUsuarioBanco : IServicoUsuarioBanco
+    public class ServicoUsuarioBanco
     {
-        public void Atualizar(UsuarioBanco dados)
+        private readonly IRepositorioUsuarioBanco _repositorio;
+
+        // Injetando o repositório através do construtor
+        public ServicoUsuarioBanco(IRepositorioUsuarioBanco repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
         public void Criar(UsuarioBanco dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
+        }
+
+        public void Atualizar(UsuarioBanco dados)
+        {
+            _repositorio.Atualizar(dados);
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
         public UsuarioBanco ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
         public List<UsuarioBanco> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

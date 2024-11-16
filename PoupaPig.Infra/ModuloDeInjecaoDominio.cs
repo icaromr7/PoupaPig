@@ -58,6 +58,20 @@ namespace PoupaPig.Dominio
             services.AddScoped<IRepositorioCartao, RepositorioCartao>();
             services.AddScoped<IRepositorioBanco, RepositorioBanco>();
             services.AddScoped<IRepositorioAssinatura, RepositorioAssinatura>();
+            services.AddScoped<IRepositorioUsuarioAssinatura, RepositorioUsuarioAssinatura>();
+            services.AddScoped<IRepositorioUsuarioBanco, RepositorioUsuarioBanco>();
+            services.AddScoped<IRepositorioUsuarioCartao, RepositorioUsuarioCartao>();
+            services.AddScoped<IRepositorioNomeCategoriaPadrao, RepositorioNomeCategoriaPadrao>();
+            services.AddScoped<IRepositorioUsuarioClasse, RepositorioUsuarioClasse>();
+            services.AddScoped<IRepositorioNomeTipoInvestimento, RepositorioNomeTipoInvestimento>();
+            services.AddScoped<IRepositorioNomeTipoObjetivo, RepositorioNomeTipoObjetivo>();
+            services.AddScoped<IRepositorioPeriodicidadeTransacao, RepositorioPeriodicidadeTransacao>();
+            services.AddScoped<IRepositorioRecorrencia, RepositorioRecorrencia>();
+            services.AddScoped<IRepositorioSentimentoTransacao, RepositorioSentimentoTransacao>();
+            services.AddScoped<IRepositorioSituacaoTransacao, RepositorioSituacaoTransacao>();
+            services.AddScoped<IRepositorioTipoPagamento, RepositorioTipoPagamento>();
+            services.AddScoped<IRepositorioTipoTransacao, RepositorioTipoTransacao>();
+            services.AddScoped<IRepositorioTransacaoMetaInvestimento, RepositorioTransacaoMetaInvestimento>();
             services.AddScoped<PoupaPigDataConnection>();
 
             return services;
