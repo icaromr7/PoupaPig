@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Metas.Servicos
 {
-    public interface IServicoNomeTipoInvestimento
+    public interface IRepositorioNomeTipoInvestimento
     {
         List<NomeTipoInvestimento> ObterTodas();
         NomeTipoInvestimento ObterPorId(int id);

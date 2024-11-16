@@ -1,30 +1,46 @@
-﻿namespace PoupaPig.Dominio.Transacoes.Servicos
+﻿using PoupaPig.Dominio.Transacoes;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Transacoes.Servicos
 {
-    public class ServicoSentimentoTransacao : IServicoSentimentoTransacao
+    public class ServicoSentimentoTransacao
     {
-        public void Atualizar(SentimentoTransacao dados)
+        private readonly IRepositorioSentimentoTransacao _repositorio;
+
+        // Construtor com injeção de dependência
+        public ServicoSentimentoTransacao(IRepositorioSentimentoTransacao repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
+        // Método para criar uma nova SentimentoTransacao
         public void Criar(SentimentoTransacao dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
         }
 
+        // Método para atualizar uma SentimentoTransacao existente
+        public void Atualizar(SentimentoTransacao dados)
+        {
+            _repositorio.Atualizar(dados);
+        }
+
+        // Método para excluir uma SentimentoTransacao pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
+        // Método para obter uma SentimentoTransacao pelo ID
         public SentimentoTransacao ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
+        // Método para obter todas as SentimentoTransacao
         public List<SentimentoTransacao> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

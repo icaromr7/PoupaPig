@@ -1,30 +1,45 @@
-﻿namespace PoupaPig.Dominio.Transacoes.Servicos
+﻿using PoupaPig.Dominio.Transacoes;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Transacoes.Servicos
 {
-    public class ServicoPeriodicidadeTransacao : IServicoPeriodicidadeTransacao
+    public class ServicoPeriodicidadeTransacao
     {
-        public void Atualizar(PeriodicidadeTransacao dados)
+        private readonly IRepositorioPeriodicidadeTransacao _repositorio;
+
+        public ServicoPeriodicidadeTransacao(IRepositorioPeriodicidadeTransacao repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
+        // Método para criar uma nova periodicidade de transação
         public void Criar(PeriodicidadeTransacao dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
         }
 
+        // Método para atualizar uma periodicidade de transação existente
+        public void Atualizar(PeriodicidadeTransacao dados)
+        {
+            _repositorio.Atualizar(dados);
+        }
+
+        // Método para excluir uma periodicidade de transação pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
+        // Método para obter uma periodicidade de transação pelo ID
         public PeriodicidadeTransacao ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
+        // Método para obter todas as periodicidades de transação
         public List<PeriodicidadeTransacao> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

@@ -1,30 +1,42 @@
-﻿namespace PoupaPig.Dominio.Cartoes.Servicos
+﻿using PoupaPig.Dominio.Cartoes;
+using PoupaPig.Dominio.Cartoes.Servicos;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Cartoes.Servicos
 {
-    public class ServicoUsuarioCartao : IServicoUsuarioCartao
+    public class ServicoUsuarioCartao
     {
-        public void Atualizar(UsuarioCartao dados)
+        private readonly IRepositorioUsuarioCartao _repositorio;
+
+        // Injetando o repositório através do construtor
+        public ServicoUsuarioCartao(IRepositorioUsuarioCartao repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
         public void Criar(UsuarioCartao dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
+        }
+
+        public void Atualizar(UsuarioCartao dados)
+        {
+            _repositorio.Atualizar(dados);
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
         public UsuarioCartao ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
         public List<UsuarioCartao> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

@@ -1,30 +1,46 @@
-﻿namespace PoupaPig.Dominio.Transacoes.Servicos
+﻿using PoupaPig.Dominio.Transacoes;
+using System.Collections.Generic;
+
+namespace PoupaPig.Dominio.Transacoes.Servicos
 {
-    public class ServicoRecorrencia : IServicoRecorrencia
+    public class ServicoRecorrencia
     {
-        public void Atualizar(Recorrencia dados)
+        private readonly IRepositorioRecorrencia _repositorio;
+
+        // Construtor com injeção de dependência
+        public ServicoRecorrencia(IRepositorioRecorrencia repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
+        // Método para criar uma nova recorrência
         public void Criar(Recorrencia dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
         }
 
+        // Método para atualizar uma recorrência existente
+        public void Atualizar(Recorrencia dados)
+        {
+            _repositorio.Atualizar(dados);
+        }
+
+        // Método para excluir uma recorrência pelo ID
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
+        // Método para obter uma recorrência pelo ID
         public Recorrencia ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
+        // Método para obter todas as recorrências
         public List<Recorrencia> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

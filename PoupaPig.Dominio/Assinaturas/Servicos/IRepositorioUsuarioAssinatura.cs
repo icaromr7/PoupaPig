@@ -1,6 +1,6 @@
 ﻿namespace PoupaPig.Dominio.Assinaturas.Servicos
 {
-    public interface IServicoUsuarioAssinatura
+    public interface IRepositorioUsuarioAssinatura
     {
         List<UsuarioAssinatura> ObterTodas();
         UsuarioAssinatura ObterPorId(int id);
