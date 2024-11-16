@@ -6,28 +6,43 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Registrar os serviços do domínio através do módulo de injeção
+        // Registrar os serviï¿½os do domï¿½nio atravï¿½s do mï¿½dulo de injeï¿½ï¿½o
         builder.Services.RegistrarServicos();
 
-        // Adicionar controladores para a aplicação
+        // Adicionar controladores para a aplicaï¿½ï¿½o
         builder.Services.AddControllers();
 
-        // Adicionar serviços do Swagger
+        // Adicionar serviï¿½os do Swagger
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        // Adicionar o serviÃ§o de CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin() // Permitir qualquer origem
+                      .AllowAnyMethod() // Permitir qualquer mÃ©todo (GET, POST, etc.)
+                      .AllowAnyHeader(); // Permitir qualquer cabeÃ§alho
+            });
+        });
+
         var app = builder.Build();
 
-        // Configurar o pipeline de requisições HTTP
+        // Configurar o pipeline de requisiï¿½ï¿½es HTTP
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection(); // Forçar uso de HTTPS
-        app.UseAuthorization(); // Ativar autorização
+        app.UseHttpsRedirection(); // Forï¿½ar uso de HTTPS
+
+        // Usar o CORS antes de mapear os controllers
+        app.UseCors("AllowAll");
+
+        app.UseAuthorization(); // Ativar autorizaï¿½ï¿½o
         app.MapControllers(); // Mapear os controllers
-        app.Run(); // Rodar a aplicação
+        app.Run(); // Rodar a aplicaï¿½ï¿½o
     }
 }

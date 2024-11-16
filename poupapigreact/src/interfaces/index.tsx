@@ -5,6 +5,11 @@ export interface TransactionData {
   type: string;
 }
 
+export interface GenericData {
+  id: number;
+  nome: string;
+}
+
 export interface user {
   id_usuario: number;
   nome_usuario: string;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Container,
@@ -47,6 +47,9 @@ import Ok from "../../assets/svg/ok.svg";
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 import { Button } from "../../components/Button";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
+import { getBancos, getCartoes } from "../../services/api";
+import { GenericData } from "../../interfaces";
+import { useAuth } from "../../context/AuthContext";
 
 const cards = [
   "Visa",
@@ -68,16 +71,58 @@ const data = [
 ];
 
 export function Profile() {
+  const { addToast } = useAuth();
   const totalRows = 11;
   const filledRows = data.length;
   const emptyRows = totalRows - filledRows;
-  const dataBenefits = (title: string, data: string[], titleButton: string) => {
+
+  const [cartoes, setCartoes] = useState<GenericData[]>([]);
+  const [assinaturas, setAssinaturas] = useState<GenericData[]>([]);
+  const [bancos, setBancos] = useState<GenericData[]>([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const data = await getBancos();
+        console.log("data:", data);
+      } catch (error) {
+        console.error("Erro ao buscar itens:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  const fetchCartoes = async () => {
+    console.log("oi");
+    try {
+      throw new Error("Erro forçado para teste");
+      const data = await getCartoes();
+      console.log("data:", data);
+      setCartoes(data);
+    } catch (error: any) {
+      console.log("erro");
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const dataBenefits = (
+    title: string,
+    data: string[],
+    titleButton: string,
+    onClick: () => void
+  ) => {
     const chunkedData = [];
     for (let i = 0; i < data.length; i += 3) {
       chunkedData.push(data.slice(i, i + 3));
     }
     return (
-      <ContainerBenefits>
+      <ContainerBenefits onClick={onClick}>
         <TitleBenefit>{title}</TitleBenefit>
         {chunkedData.map((group, index) => (
           <div key={index} style={{ display: "flex", alignItems: "center" }}>
@@ -135,9 +180,14 @@ export function Profile() {
       </CardFinancialControl>
       <ClientData>
         <Grid style={{ gap: 50 }}>
-          {dataBenefits("Suas bandeiras de cartão", cards, "Adicionar cartão")}
-          {dataBenefits("Suas contas bancárias", banks, "Adicionar banco")}
-          {dataBenefits("Suas assinaturas", signatures, "Adicionar assinatura")}
+          {dataBenefits(
+            "Suas bandeiras de cartão",
+            cards,
+            "Adicionar cartão",
+            fetchCartoes
+          )}
+          {/* {dataBenefits("Suas contas bancárias", banks, "Adicionar banco")}
+          {dataBenefits("Suas assinaturas", signatures, "Adicionar assinatura")} */}
           <BenefitContainer>
             <TextBenefit>
               Sabia que seu cartão, banco ou assinatura recorrente pode te dar
