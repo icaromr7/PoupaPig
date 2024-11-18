@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {}
+    "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {}
   },
   "projects": {
-    "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
+    "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj",
+        "projectUniqueName": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj",
         "projectName": "PoupaPig.Dominio",
-        "projectPath": "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj",
-        "packagesPath": "C:\\Users\\icaro\\.nuget\\packages\\",
-        "outputPath": "C:\\PoupaPig\\PoupaPig.Dominio\\obj\\",
+        "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj",
+        "packagesPath": "C:\\Users\\drmais\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\icaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\drmais\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -79,36 +73,30 @@
         }
       }
     },
-    "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
+    "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
+        "projectUniqueName": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
         "projectName": "PoupaPig.Infra",
-        "projectPath": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
-        "packagesPath": "C:\\Users\\icaro\\.nuget\\packages\\",
-        "outputPath": "C:\\PoupaPig\\PoupaPig.Infra\\obj\\",
+        "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
+        "packagesPath": "C:\\Users\\drmais\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\icaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\drmais\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
-                "projectPath": "C:\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj"
+              "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
+                "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj"
               }
             }
           }
@@ -158,36 +146,30 @@
         }
       }
     },
-    "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {
+    "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
+        "projectUniqueName": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
         "projectName": "PoupaPig.Web",
-        "projectPath": "C:\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
-        "packagesPath": "C:\\Users\\icaro\\.nuget\\packages\\",
-        "outputPath": "C:\\PoupaPig\\PoupaPig.Web\\obj\\",
+        "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
+        "packagesPath": "C:\\Users\\drmais\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\icaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\drmais\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
-                "projectPath": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj"
+              "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
+                "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj"
               }
             }
           }
