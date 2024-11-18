@@ -47,7 +47,7 @@ import Ok from "../../assets/svg/ok.svg";
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 import { Button } from "../../components/Button";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
-import { getBancos, getCartoes } from "../../services/api";
+import { getAssinaturas, getBancos, getCartoes } from "../../services/api";
 import { GenericData } from "../../interfaces";
 import { useAuth } from "../../context/AuthContext";
 
@@ -83,8 +83,10 @@ export function Profile() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const data = await getBancos();
-        console.log("data:", data);
+        const assinaturas = await getAssinaturas();
+        const bancos = await getBancos();
+        const cartoes = await getCartoes();
+        console.log("data:", bancos);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
       }

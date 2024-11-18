@@ -37,7 +37,7 @@ export function ConfigAccount() {
           <InputDiv>
             <Input name="password" placeholder="Senha" />
           </InputDiv>
-          <ImageUploader />
+          {/* <ImageUploader /> */}
         </BottomForm>
       </Column>
       <Column>

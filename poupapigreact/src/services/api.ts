@@ -255,9 +255,20 @@ export const getTransacaoMetaInvestimentoById = async (id: string | number) => {
 };
 
 //USUARIO
-export const postUsuario = async () => {
-  const response = await api.post("/Usuario");
-  return response.data;
+export const postUsuario = async (dados: {
+  nome_completo: string;
+  email: string;
+  senha: string;
+  foto_perfil: string;
+}) => {
+  try {
+    const response = await api.post("/Usuario", dados);
+    console.log("response.data", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar usuário:", error);
+    throw error;
+  }
 };
 export const putUsuario = async () => {
   const response = await api.put("/Usuario");
