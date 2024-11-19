@@ -7,5 +7,6 @@
         void Criar(CategoriaPadrao dados);
         void Atualizar(CategoriaPadrao dados);
         void Excluir(int id);
+        
     }
 }

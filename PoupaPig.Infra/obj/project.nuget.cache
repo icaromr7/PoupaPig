@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "BG0kZwM1QP0=",
+  "dgSpecHash": "VDzXjsqUW5E=",
   "success": true,
   "projectFilePath": "C:\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\icaro\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\icaro\\.nuget\\packages\\linq2db\\5.4.1\\linq2db.5.4.1.nupkg.sha512",
     "C:\\Users\\icaro\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.0\\microsoft.extensions.dependencyinjection.9.0.0.nupkg.sha512",
     "C:\\Users\\icaro\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.0\\microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512",

@@ -17,7 +17,7 @@ namespace PoupaPig.Dominio.Transacoes
         public decimal valor { get; set; }
 
         [Column(Name = "data_cadastro")]
-        public DateTime data_cadastro { get; set; }
+        public DateTime data_cadastro { get; set; } = DateTime.Now;
 
         [Column(Name = "categoria_id")]
         public int categoria_id { get; set; }
@@ -40,8 +40,15 @@ namespace PoupaPig.Dominio.Transacoes
         [Column(Name = "quantidade_parcela")]
         public int quantidade_parcela { get; set; }
 
+        private decimal _valor_parcela; // Variável de backing
+
         [Column(Name = "valor_parcela")]
-        public decimal valor_parcela { get; set; }
+        public decimal valor_parcela
+        {
+            get { return _valor_parcela; }
+            set { _valor_parcela = quantidade_parcela > 0 ? valor / quantidade_parcela : 0; }
+        }
+
 
         [Column(Name = "tipo_id")]
         public int tipo_id { get; set; }

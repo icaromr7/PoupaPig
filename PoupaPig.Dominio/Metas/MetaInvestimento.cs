@@ -1,5 +1,6 @@
 ﻿using LinqToDB.Mapping;
 using System;
+using System.Collections.Generic;
 
 namespace PoupaPig.Dominio.Metas
 {
@@ -17,7 +18,7 @@ namespace PoupaPig.Dominio.Metas
         public decimal valor_desejado { get; set; }
 
         [Column(Name = "data_criacao")]
-        public DateTime data_criacao { get; set; }
+        public DateTime data_criacao { get; set; } = DateTime.Now;
 
         [Column(Name = "data_resgate")]
         public DateTime data_resgate { get; set; }
@@ -45,5 +46,6 @@ namespace PoupaPig.Dominio.Metas
 
         [Column(Name = "usuario_id")]
         public int usuario_id { get; set; }
+
     }
 }

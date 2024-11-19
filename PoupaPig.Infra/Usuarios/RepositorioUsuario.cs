@@ -1,8 +1,6 @@
 ﻿using LinqToDB;
 using PoupaPig.Dominio.Usuarios;
 using PoupaPig.Dominio.Usuarios.Servicos;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PoupaPig.Infra.Usuarios
 {
@@ -51,6 +49,15 @@ namespace PoupaPig.Infra.Usuarios
         {
             return _dataConnection.GetTable<Usuario>()
                                   .FirstOrDefault(u => u.email == email);
+        }
+        // Método para verificar se o e-mail já está registrado
+        public bool EmailDuplicado(string email)
+        {
+            // Verifica se existe algum usuário com o e-mail fornecido
+            var usuario = _dataConnection.GetTable<Usuario>()
+                                         .FirstOrDefault(u => u.email == email);
+
+            return usuario != null; // Retorna verdadeiro se o e-mail estiver duplicado
         }
     }
 }
