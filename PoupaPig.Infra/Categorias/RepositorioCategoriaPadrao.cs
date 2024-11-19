@@ -49,5 +49,6 @@ namespace PoupaPig.Infra.Categorias
         {
             return _dataConnection.GetTable<CategoriaPadrao>().ToList();
         }
+
     }
 }

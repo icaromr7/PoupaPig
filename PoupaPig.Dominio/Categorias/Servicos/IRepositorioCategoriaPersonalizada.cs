@@ -7,5 +7,6 @@
         void Criar(CategoriaPersonalizada dados);
         void Atualizar(CategoriaPersonalizada dados);
         void Excluir(int id);
+        CategoriaPersonalizada ObterPorNome(string nome);
     }
 }

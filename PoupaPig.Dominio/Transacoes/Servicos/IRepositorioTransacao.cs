@@ -7,5 +7,7 @@
         void Criar(Transacao dados);
         void Atualizar(Transacao dados);
         void Excluir(int id);
+        decimal ObterSaldoPorUsuario(int usuario_id);
+        List<Transacao> ObterTransacoesPorMetaInvestimento(int idMetaInvestimento);
     }
 }

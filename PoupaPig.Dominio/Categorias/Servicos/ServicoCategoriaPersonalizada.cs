@@ -1,27 +1,44 @@
-﻿using PoupaPig.Dominio.Categorias;
-using System.Collections.Generic;
+﻿using FluentValidation;
 
 namespace PoupaPig.Dominio.Categorias.Servicos
 {
     public class ServicoCategoriaPersonalizada
     {
         private readonly IRepositorioCategoriaPersonalizada _repositorioCategoriaPersonalizada;
+        private readonly IValidator<CategoriaPersonalizada> _validadorCategoriaPersonalizada;
 
-        // Injetando o RepositorioCategoriaPersonalizada através do construtor
-        public ServicoCategoriaPersonalizada(IRepositorioCategoriaPersonalizada repositorioCategoriaPersonalizada)
+        // Injeção de dependência do repositório e do validador
+        public ServicoCategoriaPersonalizada(
+            IRepositorioCategoriaPersonalizada repositorioCategoriaPersonalizada,
+            IValidator<CategoriaPersonalizada> validadorCategoriaPersonalizada)
         {
             _repositorioCategoriaPersonalizada = repositorioCategoriaPersonalizada;
+            _validadorCategoriaPersonalizada = validadorCategoriaPersonalizada;
         }
 
         // Método para criar uma nova categoria personalizada
         public void Criar(CategoriaPersonalizada dados)
         {
+            // Validação antes de criar
+            var resultadoValidacao = _validadorCategoriaPersonalizada.Validate(dados);
+            if (!resultadoValidacao.IsValid)
+            {
+                throw new Exception(string.Join(", ", resultadoValidacao.Errors.Select(e => e.ErrorMessage)));
+            }
+
             _repositorioCategoriaPersonalizada.Criar(dados);
         }
 
         // Método para atualizar uma categoria personalizada existente
         public void Atualizar(CategoriaPersonalizada dados)
         {
+            // Validação antes de atualizar
+            var resultadoValidacao = _validadorCategoriaPersonalizada.Validate(dados);
+            if (!resultadoValidacao.IsValid)
+            {
+                throw new Exception(string.Join(", ", resultadoValidacao.Errors.Select(e => e.ErrorMessage)));
+            }
+
             _repositorioCategoriaPersonalizada.Atualizar(dados);
         }
 

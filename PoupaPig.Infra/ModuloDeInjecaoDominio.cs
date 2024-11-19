@@ -1,12 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using PoupaPig.Dominio.Assinaturas.Servicos;
 using PoupaPig.Dominio.Bancos.Servicos;
 using PoupaPig.Dominio.Cartoes.Servicos;
+using PoupaPig.Dominio.Categorias;
 using PoupaPig.Dominio.Categorias.Servicos;
 using PoupaPig.Dominio.Classes.Servicos;
+using PoupaPig.Dominio.Metas;
 using PoupaPig.Dominio.Metas.Servicos;
 using PoupaPig.Dominio.Questionarios.Servicos;
+using PoupaPig.Dominio.Transacoes;
 using PoupaPig.Dominio.Transacoes.Servicos;
+using PoupaPig.Dominio.Usuarios;
 using PoupaPig.Dominio.Usuarios.Servicos;
 using PoupaPig.Infra;
 using PoupaPig.Infra.Assinaturas;
@@ -72,6 +77,10 @@ namespace PoupaPig.Dominio
             services.AddScoped<IRepositorioTipoPagamento, RepositorioTipoPagamento>();
             services.AddScoped<IRepositorioTipoTransacao, RepositorioTipoTransacao>();
             services.AddScoped<IRepositorioTransacaoMetaInvestimento, RepositorioTransacaoMetaInvestimento>();
+            services.AddTransient<IValidator<CategoriaPersonalizada>, ValidadorCategoriaPersonalizada>();
+            services.AddTransient<IValidator<MetaInvestimento>, ValidadorMetaInvestimento>();
+            services.AddTransient<IValidator<Transacao>, ValidadorTransacao>();
+            services.AddTransient<IValidator<Usuario>, ValidadorUsuario>();
             services.AddScoped<PoupaPigDataConnection>();
 
             return services;

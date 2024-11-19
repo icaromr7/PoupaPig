@@ -46,5 +46,30 @@ namespace PoupaPig.Infra.Transacoes
         {
             return _dataConnection.GetTable<Transacao>().ToList();
         }
+
+        // Novo método para obter o saldo por usuario_id
+        public decimal ObterSaldoPorUsuario(int usuario_id)
+        {
+            var entradas = _dataConnection.GetTable<Transacao>()
+                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 1) // Tipo 1 = Entrada
+                .Sum(t => (decimal?)t.valor) ?? 0;
+
+            var saidas = _dataConnection.GetTable<Transacao>()
+                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2) // Tipo 2 = Saída
+                .Sum(t => (decimal?)t.valor) ?? 0;
+
+            return entradas - saidas;
+        }
+
+        public List<Transacao> ObterTransacoesPorMetaInvestimento(int idMetaInvestimento)
+        {
+            // Consulta para obter as transações associadas ao id_meta_investimento
+            var transacoes = _dataConnection.GetTable<Transacao>()
+                                .Where(t => t.nome_meta_investimento_id == idMetaInvestimento)
+                                .ToList();
+
+            return transacoes;
+        }
+
     }
 }

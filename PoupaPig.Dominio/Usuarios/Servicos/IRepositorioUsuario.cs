@@ -8,5 +8,6 @@
         void Atualizar(Usuario dados);
         void Excluir(int id);
         Usuario ObterPorEmail(string email);
+        bool EmailDuplicado(string email);
     }
 }

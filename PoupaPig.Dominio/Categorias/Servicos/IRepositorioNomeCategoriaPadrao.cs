@@ -7,5 +7,6 @@
         void Criar(NomeCategoriaPadrao dados);
         void Atualizar(NomeCategoriaPadrao dados);
         void Excluir(int id);
+        NomeCategoriaPadrao ObterPorNome(string nome);
     }
 }
