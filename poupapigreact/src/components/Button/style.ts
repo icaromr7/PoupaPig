@@ -10,7 +10,7 @@ interface ButtonStyleProps {
 }
 
 export const Container = styled.div<ButtonStyleProps>`
-  width: ${(props) => (props.$minWidth ? props.$minWidth : "170px")};
+  width: ${(props) => (props.$minWidth ? props.$minWidth : "120px")};
   height: ${(props) => (props.$height ? props.$height : "40px")};
   background-color: ${(props) =>
     props.$backgroundColor ? props.$backgroundColor : theme.colors.greenAEC};

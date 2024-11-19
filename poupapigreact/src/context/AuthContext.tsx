@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import ErroToast from "../components/ErroToast";
+import { Loading } from "../components/Loading";
 
 interface ToastInterface {
   title?: string;
@@ -30,6 +31,8 @@ interface AuthContextType {
   login: (code: string) => void;
   logout: () => void;
   addToast: (params: ToastInterface) => void;
+  isLoading: boolean;
+  setLoading: (loading: boolean) => void;
 }
 
 // Criando o contexto
@@ -40,6 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [userCode, setUserCode] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Recuperar o código do usuário do localStorage ao inicializar
   useEffect(() => {
@@ -48,6 +52,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setUserCode(storedUserCode);
     }
   }, []);
+
+  const setLoading = (loading: boolean) => {
+    setIsLoading(loading);
+  };
 
   const login = (code: string) => {
     setUserCode(code);
@@ -90,8 +98,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ userCode, login, logout, addToast }}>
+    <AuthContext.Provider
+      value={{ userCode, login, logout, addToast, isLoading, setLoading }}
+    >
       {children}
+      {isLoading && <Loading />}
     </AuthContext.Provider>
   );
 };

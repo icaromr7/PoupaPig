@@ -47,6 +47,10 @@ export const ContainerLogin = styled.div`
 
   display: flex;
   align-items: center;
+
+  @media (max-width: 800px) {
+    width: 80%;
+  }
 `;
 
 export const LogoLogin = styled.img`
@@ -91,6 +95,24 @@ export const ContainerMobileMenuLandpage = styled.div`
 `;
 
 export const ButtonsDivLandpageMobile = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ContainerMobileMenuDefault = styled.div`
+  width: 180px;
+  background-color: ${theme.colors.blue002};
+  border-radius: 20px;
+
+  position: absolute;
+  top: 80px;
+  right: 20px;
+`;
+
+export const ButtonsDivDefaultMobile = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;

@@ -138,6 +138,7 @@ export const TextTwo = styled.div`
   @media (max-width: 800px) {
     max-width: 300px;
     font-size: 14px;
+    left: -50px;
   }
 `;
 

@@ -19,6 +19,8 @@ import {
   ButtonsDivDefault,
   ContainerMobileMenuLandpage,
   ButtonsDivLandpageMobile,
+  ContainerMobileMenuDefault,
+  ButtonsDivDefaultMobile,
 } from "./style";
 import Logo from "../../assets/svg/logopp.svg";
 import LogoTitulo from "../../assets/svg/logotitulo.svg";
@@ -33,14 +35,21 @@ interface HeaderProps {
 
 export function Header({ type }: HeaderProps) {
   const isMobileScreen = useMobileScreen();
-  const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+  const [showMobileMenuLandpage, setShowMobileMenuLandpage] =
+    useState<boolean>(false);
+  const [showMobileMenuDefault, setShowMobileMenuDefault] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const [showConfig, setShowConfig] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleOpenMobileMenu = () => {
-    setShowMobileMenu(!showMobileMenu);
+  const handleOpenMobileMenuLandpage = () => {
+    setShowMobileMenuLandpage(!showMobileMenuLandpage);
+  };
+
+  const handleOpenMobileMenuDefault = () => {
+    setShowMobileMenuDefault(!showMobileMenuDefault);
   };
 
   const handleLogin = () => {
@@ -63,43 +72,6 @@ export function Header({ type }: HeaderProps) {
     navigate("/profile");
   };
 
-  const MobileMenuLandpage = (
-    <ContainerMobileMenuLandpage>
-      <ButtonsDivLandpageMobile>
-        <ButtonHeader title="Criar conta" onClick={handleSignIn} />
-        <ButtonHeader title="Entrar" onClick={handleLogin} />
-      </ButtonsDivLandpageMobile>
-    </ContainerMobileMenuLandpage>
-  );
-
-  const bodyLandpage = (
-    <ContainerLandpage>
-      <LogoLandpage src={Logo} alt="PoupaPig" />
-      {isMobileScreen ? (
-        <MenuIcon
-          style={{
-            color: theme.colors.whiteF2F,
-            width: 30,
-            height: 30,
-          }}
-          onClick={handleOpenMobileMenu}
-        />
-      ) : (
-        <ButtonsDiv>
-          <ButtonHeader title="Criar conta" onClick={handleSignIn} />
-          <ButtonHeader title="Entrar" onClick={handleLogin} />
-        </ButtonsDiv>
-      )}
-      {showMobileMenu && MobileMenuLandpage}
-    </ContainerLandpage>
-  );
-
-  const bodySignIn = (
-    <ContainerLogin>
-      <LogoLogin src={LogoTitulo} alt="poupapig" />
-    </ContainerLogin>
-  );
-
   const handleConfigMenu = () => {
     setShowConfig(!showConfig);
     setShowNotifications(false);
@@ -112,13 +84,21 @@ export function Header({ type }: HeaderProps) {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      console.log("menuRef.current", menuRef.current);
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
         setShowConfig(false);
+        setShowMobileMenuLandpage(false);
+        setShowMobileMenuDefault(false);
       }
     };
 
-    if (showNotifications || showConfig) {
+    if (
+      showNotifications ||
+      showConfig ||
+      showMobileMenuDefault ||
+      showMobileMenuLandpage
+    ) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -127,36 +107,108 @@ export function Header({ type }: HeaderProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showNotifications, showConfig]);
+  }, [
+    showNotifications,
+    showConfig,
+    showMobileMenuDefault,
+    showMobileMenuLandpage,
+  ]);
+
+  const MobileMenuLandpage = (
+    <ContainerMobileMenuLandpage>
+      <ButtonsDivLandpageMobile ref={menuRef}>
+        <ButtonHeader title="Criar conta" onClick={handleSignIn} />
+        <ButtonHeader title="Entrar" onClick={handleLogin} />
+      </ButtonsDivLandpageMobile>
+    </ContainerMobileMenuLandpage>
+  );
+
+  const MobileMenuDefault = (
+    <ContainerMobileMenuDefault>
+      <ButtonsDivDefaultMobile ref={menuRef}>
+        <ButtonHeader title="Home" onClick={handleHome} />
+        <ButtonHeader title="Nova transação" onClick={handleNewTransaction} />
+        <ButtonHeader title="Meu perfil" onClick={handleProfile} />
+        <ButtonHeader title="Notificações" onClick={handleNotificationMenu} />
+        {type === "profile" && (
+          <ButtonHeader title="Configurações" onClick={handleConfigMenu} />
+        )}
+      </ButtonsDivDefaultMobile>
+    </ContainerMobileMenuDefault>
+  );
+
+  const bodyLandpage = (
+    <ContainerLandpage>
+      <LogoLandpage src={Logo} alt="PoupaPig" />
+      {isMobileScreen ? (
+        <MenuIcon
+          style={{
+            color: theme.colors.whiteF2F,
+            width: 30,
+            height: 30,
+          }}
+          onClick={handleOpenMobileMenuLandpage}
+        />
+      ) : (
+        <ButtonsDiv>
+          <ButtonHeader title="Criar conta" onClick={handleSignIn} />
+          <ButtonHeader title="Entrar" onClick={handleLogin} />
+        </ButtonsDiv>
+      )}
+      {showMobileMenuLandpage && MobileMenuLandpage}
+    </ContainerLandpage>
+  );
+
+  const bodySignIn = (
+    <ContainerLogin>
+      <LogoLogin src={LogoTitulo} alt="poupapig" />
+    </ContainerLogin>
+  );
 
   const bodyDefault = (
     <ContainerDefault>
       <LogoDefault src={LogoTitulo} alt="PoupaPig" />
-      <ButtonsDivDefault>
-        <ButtonHeader title="Home" onClick={handleHome} />
-        <ButtonHeader title="Nova transação" onClick={handleNewTransaction} />
-        <ButtonHeader title="Meu perfil" onClick={handleProfile} />
-        {type === "profile" ? (
+      {isMobileScreen ? (
+        <MenuIcon
+          style={{
+            color: theme.colors.whiteF2F,
+            width: 30,
+            height: 30,
+          }}
+          onClick={handleOpenMobileMenuDefault}
+        />
+      ) : (
+        <ButtonsDivDefault>
+          <ButtonHeader title="Home" onClick={handleHome} />
+          <ButtonHeader title="Nova transação" onClick={handleNewTransaction} />
+          <ButtonHeader title="Meu perfil" onClick={handleProfile} />
+          {type === "profile" ? (
+            <ButtonHeader
+              icon={
+                <SettingsIcon
+                  style={{
+                    color: theme.colors.whiteF2F,
+                    width: 20,
+                    height: 20,
+                  }}
+                />
+              }
+              onClick={handleConfigMenu}
+            />
+          ) : (
+            <ButtonHeader />
+          )}
           <ButtonHeader
             icon={
-              <SettingsIcon
+              <NotificationsIcon
                 style={{ color: theme.colors.whiteF2F, width: 20, height: 20 }}
               />
             }
-            onClick={handleConfigMenu}
+            onClick={handleNotificationMenu}
           />
-        ) : (
-          <ButtonHeader />
-        )}
-        <ButtonHeader
-          icon={
-            <NotificationsIcon
-              style={{ color: theme.colors.whiteF2F, width: 20, height: 20 }}
-            />
-          }
-          onClick={handleNotificationMenu}
-        />
-      </ButtonsDivDefault>
+        </ButtonsDivDefault>
+      )}
+      {showMobileMenuDefault && MobileMenuDefault}
     </ContainerDefault>
   );
   return (

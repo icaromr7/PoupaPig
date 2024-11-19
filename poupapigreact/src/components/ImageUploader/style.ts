@@ -22,7 +22,6 @@ export const ImageInputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 `;
 
 export const ImagePreview = styled.img`

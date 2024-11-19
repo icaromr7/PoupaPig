@@ -45,6 +45,10 @@ export const BodyMain = styled.div<RoutesStyleProps>`
   display: flex;
   justify-content: center;
   padding: ${(props) => (props.$isLandpage ? "" : "20px 50px")};
+
+  @media (max-width: 800px) {
+    padding: 20px;
+  }
 `;
 
 export const Section3 = styled.div`

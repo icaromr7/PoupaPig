@@ -38,6 +38,7 @@ import {
   ValueSpent,
   LoadingBar,
   TotalCategory,
+  RowProfile,
 } from "./style";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -47,7 +48,7 @@ import Ok from "../../assets/svg/ok.svg";
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 import { Button } from "../../components/Button";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
-import { getBancos, getCartoes } from "../../services/api";
+import { getAssinaturas, getBancos, getCartoes } from "../../services/api";
 import { GenericData } from "../../interfaces";
 import { useAuth } from "../../context/AuthContext";
 
@@ -83,8 +84,10 @@ export function Profile() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const data = await getBancos();
-        console.log("data:", data);
+        const assinaturas = await getAssinaturas();
+        const bancos = await getBancos();
+        const cartoes = await getCartoes();
+        console.log("data:", bancos);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
       }
@@ -155,13 +158,13 @@ export function Profile() {
   return (
     <Container>
       <CardFinancialControl>
-        <Row>
+        <RowProfile>
           <ProfileImage></ProfileImage>
           <UserTitle>
             <WelcomeTitle>Olá, Fulano de tal!</WelcomeTitle>
             <Subtitle>Acompanhe aqui a situação da sua conta</Subtitle>
           </UserTitle>
-        </Row>
+        </RowProfile>
         <FinancialControlResume>
           <Image src={Ok} alt="PoupaPig"></Image>
           <MessageFinancialControl>

@@ -74,7 +74,7 @@ const schema = yup.object().shape({
 export function InputOutputForm() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const location = useLocation();
-  const transactionData: TransacaoInt = location.state?.transactionData;
+  const transactionData: TransacaoInt = location.state?.transactionData || {};
   const navigate = useNavigate();
   const [payment, setPayment] = useState<string>("");
   const [type, setType] = useState<"in" | "out" | undefined>(undefined);
@@ -222,7 +222,7 @@ export function InputOutputForm() {
                 register={register}
                 number={true}
                 fixedValue={
-                  transactionData && transactionData.quantidade_parcela
+                  transactionData && String(transactionData.quantidade_parcela)
                 }
                 isEditing={isEditing}
               />
