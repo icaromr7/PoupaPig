@@ -38,6 +38,7 @@ import {
   ValueSpent,
   LoadingBar,
   TotalCategory,
+  RowProfile,
 } from "./style";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -157,13 +158,13 @@ export function Profile() {
   return (
     <Container>
       <CardFinancialControl>
-        <Row>
+        <RowProfile>
           <ProfileImage></ProfileImage>
           <UserTitle>
             <WelcomeTitle>Olá, Fulano de tal!</WelcomeTitle>
             <Subtitle>Acompanhe aqui a situação da sua conta</Subtitle>
           </UserTitle>
-        </Row>
+        </RowProfile>
         <FinancialControlResume>
           <Image src={Ok} alt="PoupaPig"></Image>
           <MessageFinancialControl>

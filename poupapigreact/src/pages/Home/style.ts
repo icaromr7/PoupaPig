@@ -232,6 +232,10 @@ export const MoneyTipsContainer = styled.div`
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
   }
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const Image = styled.img`

@@ -4,6 +4,7 @@ import theme from "../../styles/theme";
 export const Container = styled.div`
   display: flex;
   gap: 20px;
+  width: 100%;
   justify-content: space-between;
 
   @media (max-width: 800px) {
@@ -37,6 +38,11 @@ export const NewTransactionDiv = styled.div`
 
   &:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 800px) {
+    height: 38vh;
+    flex-direction: column;
   }
 `;
 

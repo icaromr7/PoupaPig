@@ -106,6 +106,7 @@ export function Login() {
 
   const onSubmitLogin = (data: any) => {
     console.log("Dados do formulário:", data);
+    // const user = getLogin(data)
     navigate("/home");
   };
 
@@ -138,7 +139,7 @@ export function Login() {
 
   const handleSignIn = async () => {
     try {
-      const user = await getLogin();
+      // const user = await getLogin();
       navigate("/sign-in");
     } catch (error: any) {
       addToast({ message: error.message, type: "error" });
