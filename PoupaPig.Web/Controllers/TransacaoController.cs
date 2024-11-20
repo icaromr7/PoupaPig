@@ -40,7 +40,7 @@ namespace PoupaPig.API.Controllers
 
         // Endpoint para obter uma transação pelo ID
         [HttpGet("{id}")]
-        public IActionResult ObterPorId(int id)
+        public IActionResult ObterPorId([FromRoute] int id)
         {
             var transacao = _servicoTransacao.ObterPorId(id);
             if (transacao == null)
@@ -61,7 +61,7 @@ namespace PoupaPig.API.Controllers
 
         // Endpoint para atualizar uma transação existente
         [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, [FromBody] Transacao transacao)
+        public IActionResult Atualizar([FromRoute] int id, [FromBody] Transacao transacao)
         {
             if (transacao == null || transacao.id != id)
             {
@@ -87,7 +87,7 @@ namespace PoupaPig.API.Controllers
 
         // Endpoint para excluir uma transação pelo ID
         [HttpDelete("{id}")]
-        public IActionResult Excluir(int id)
+        public IActionResult Excluir([FromRoute] int id)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace PoupaPig.API.Controllers
 
         // Novo endpoint para obter o saldo do usuário
         [HttpGet("saldo/{usuarioId}")]
-        public IActionResult ObterSaldo(int usuarioId)
+        public IActionResult ObterSaldo([FromRoute] int usuarioId)
         {
             try
             {
@@ -122,123 +122,123 @@ namespace PoupaPig.API.Controllers
         }
 
         [HttpGet("gastos-por-categorias/{usuarioId}")]
-        public IActionResult GastosPorCategorias(int usuarioId)
+        public IActionResult GastosPorCategorias([FromRoute] int usuarioId)
         {
             var gastosPorCategorias = _servicoTransacao.GastosPorCategorias(usuarioId);
             return Ok(gastosPorCategorias);
         }
 
         [HttpGet("ganhos-vs-gastos/{usuarioId}")]
-        public IActionResult GanhosVsGastos(int usuarioId)
+        public IActionResult GanhosVsGastos([FromRoute] int usuarioId)
         {
             var (ganhos, gastos) = _servicoTransacao.GanhosVsGastos(usuarioId);
             return Ok(new { Ganhos = ganhos, Gastos = gastos });
         }
 
         [HttpGet("despesas-fixas-vs-variaveis/{usuarioId}")]
-        public IActionResult DespesasFixasVsVariaveis(int usuarioId)
+        public IActionResult DespesasFixasVsVariaveis([FromRoute] int usuarioId)
         {
             var (fixas, variaveis) = _servicoTransacao.DespesasFixasVsVariaveis(usuarioId);
             return Ok(new { Fixas = fixas, Variaveis = variaveis });
         }
 
         [HttpGet("gastos-por-dias-da-semana/{usuarioId}")]
-        public IActionResult GastosPorDiasDaSemana(int usuarioId)
+        public IActionResult GastosPorDiasDaSemana([FromRoute] int usuarioId)
         {
             var gastosPorDias = _servicoTransacao.GastosPorDiasDaSemana(usuarioId);
             return Ok(gastosPorDias);
         }
 
         [HttpGet("gastos-cartao-credito-vs-dinheiro/{usuarioId}")]
-        public IActionResult GastosCartaoCreditoVsDinheiro(int usuarioId)
+        public IActionResult GastosCartaoCreditoVsDinheiro([FromRoute] int usuarioId)
         {
             var (cartaoCredito, dinheiro) = _servicoTransacao.GastosCartaoCreditoVsDinheiro(usuarioId);
             return Ok(new { CartaoCredito = cartaoCredito, Dinheiro = dinheiro });
         }
 
         // 1. Gastos por Mês
-        [HttpGet("gastos-por-mes")]
-        public ActionResult<Dictionary<string, decimal>> GastosPorMes(int usuarioId, int? ano = null, int? mesInicio = null, int? mesFim = null)
+        [HttpGet("gastos-por-mes/{usuarioId}")]
+        public ActionResult<Dictionary<string, decimal>> GastosPorMes([FromRoute] int usuarioId, [FromQuery] int? ano = null, [FromQuery] int? mesInicio = null, [FromQuery] int? mesFim = null)
         {
             var gastos = _servicoTransacao.GastosPorMes(usuarioId, ano, mesInicio, mesFim);
             return Ok(gastos);
         }
 
         // 2. Saldo Acumulado ao Longo do Tempo
-        [HttpGet("saldo-acumulado")]
-        public ActionResult<Dictionary<string, decimal>> SaldoAcumulado(int usuarioId, int? ano = null, int? mesInicio = null, int? mesFim = null)
+        [HttpGet("saldo-acumulado/{usuarioId}")]
+        public ActionResult<Dictionary<string, decimal>> SaldoAcumulado([FromRoute] int usuarioId, [FromQuery] int? ano = null, [FromQuery] int? mesInicio = null, [FromQuery] int? mesFim = null)
         {
             var saldo = _servicoTransacao.SaldoAcumulado(usuarioId, ano, mesInicio, mesFim);
             return Ok(saldo);
         }
 
         // 3. Evolução de Metas/Investimentos
-        [HttpGet("evolucao-metas-investimentos")]
-        public ActionResult<Dictionary<string, decimal>> EvolucaoMetasInvestimentos(int usuarioId, int? anoInicio = null, int? anoFim = null)
+        [HttpGet("evolucao-metas-investimentos/{usuarioId}")]
+        public ActionResult<Dictionary<string, decimal>> EvolucaoMetasInvestimentos([FromRoute] int usuarioId, [FromQuery] int? anoInicio = null, [FromQuery] int? anoFim = null)
         {
             var evolucao = _servicoTransacao.EvolucaoMetasInvestimentos(usuarioId, anoInicio, anoFim);
             return Ok(evolucao);
         }
 
         // 4. Comparação de Gastos Mensais Anuais
-        [HttpGet("comparacao-gastos-mensais-anuais")]
-        public ActionResult<Dictionary<string, decimal>> ComparacaoGastosMensaisAnuais(int usuarioId, int anoInicio, int anoFim)
+        [HttpGet("comparacao-gastos-mensais-anuais/{usuarioId}")]
+        public ActionResult<Dictionary<string, decimal>> ComparacaoGastosMensaisAnuais([FromRoute] int usuarioId, [FromQuery] int anoInicio, [FromQuery] int anoFim)
         {
             var comparacao = _servicoTransacao.ComparacaoGastosMensaisAnuais(usuarioId, anoInicio, anoFim);
             return Ok(comparacao);
         }
 
         // 5. Gastos Totais por Período
-        [HttpGet("gastos-totais-periodo")]
-        public ActionResult<decimal> GastosTotaisPorPeriodo(int usuarioId, DateTime dataInicio, DateTime dataFim)
+        [HttpGet("gastos-totais-periodo/{usuarioId}")]
+        public ActionResult<decimal> GastosTotaisPorPeriodo([FromRoute] int usuarioId, [FromQuery] DateTime dataInicio, [FromQuery] DateTime dataFim)
         {
             var gastos = _servicoTransacao.GastosTotaisPorPeriodo(usuarioId, dataInicio, dataFim);
             return Ok(gastos);
         }
 
         // 6. Receitas Totais
-        [HttpGet("receitas-totais")]
-        public ActionResult<decimal> ReceitasTotais(int usuarioId, DateTime dataInicio, DateTime dataFim)
+        [HttpGet("receitas-totais/{usuarioId}")]
+        public ActionResult<decimal> ReceitasTotais([FromRoute] int usuarioId, [FromQuery] DateTime dataInicio, [FromQuery] DateTime dataFim)
         {
             var receitas = _servicoTransacao.ReceitasTotais(usuarioId, dataInicio, dataFim);
             return Ok(receitas);
         }
 
         // 7. Progresso em Metas Financeiras
-        [HttpGet("progresso-metas-financeiras")]
-        public ActionResult<decimal> ProgressoEmMetasFinanceiras(int usuarioId)
+        [HttpGet("progresso-metas-financeiras/{usuarioId}")]
+        public ActionResult<decimal> ProgressoEmMetasFinanceiras([FromRoute] int usuarioId)
         {
             var progresso = _servicoTransacao.ProgressoEmMetasFinanceiras(usuarioId);
             return Ok(progresso);
         }
 
         // 8. Retornos sobre Investimentos
-        [HttpGet("retornos-investimentos")]
-        public ActionResult<decimal> RetornosSobreInvestimentos(int usuarioId)
+        [HttpGet("retornos-investimentos/{usuarioId}")]
+        public ActionResult<decimal> RetornosSobreInvestimentos([FromRoute] int usuarioId)
         {
             var retornos = _servicoTransacao.RetornosSobreInvestimentos(usuarioId);
             return Ok(retornos);
         }
 
         // 9. Histórico de Transações
-        [HttpGet("historico-transacoes")]
-        public ActionResult<List<Transacao>> HistoricoDeTransacoes(int usuarioId, DateTime? dataInicio = null, DateTime? dataFim = null)
+        [HttpGet("historico-transacoes/{usuarioId}")]
+        public ActionResult<List<Transacao>> HistoricoDeTransacoes([FromRoute] int usuarioId, [FromQuery] DateTime? dataInicio = null, [FromQuery] DateTime? dataFim = null)
         {
             var historico = _servicoTransacao.HistoricoDeTransacoes(usuarioId, dataInicio, dataFim);
             return Ok(historico);
         }
 
         // 10. Previsões de Gastos
-        [HttpGet("previsoes-gastos")]
-        public ActionResult<decimal> PrevisoesDeGastos(int usuarioId, int mesesProjecao)
+        [HttpGet("previsoes-gastos/{usuarioId}")]
+        public ActionResult<decimal> PrevisoesDeGastos([FromRoute] int usuarioId, [FromQuery] int mesesProjecao)
         {
             var previsao = _servicoTransacao.PrevisoesDeGastos(usuarioId, mesesProjecao);
             return Ok(previsao);
         }
 
         // 11. Comparações Anuais
-        [HttpGet("comparacao-anual")]
-        public ActionResult<Dictionary<int, decimal>> ComparacaoAnual(int usuarioId, int anoInicio, int anoFim)
+        [HttpGet("comparacao-anual/{usuarioId}")]
+        public ActionResult<Dictionary<int, decimal>> ComparacaoAnual([FromRoute] int usuarioId, [FromQuery] int anoInicio, [FromQuery] int anoFim)
         {
             var comparacao = _servicoTransacao.ComparacaoAnual(usuarioId, anoInicio, anoFim);
             return Ok(comparacao);
