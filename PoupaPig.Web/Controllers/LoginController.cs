@@ -4,7 +4,6 @@ using PoupaPig.Dominio.Usuarios;
 
 namespace PoupaPig.Web.Controllers
 {
-    // Exemplo de como usar o serviço de login
     public class LoginController : ControllerBase
     {
         private readonly ServicoLogin _servicoLogin;
