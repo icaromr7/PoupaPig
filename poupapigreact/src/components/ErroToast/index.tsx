@@ -14,12 +14,6 @@ const ErrorToast = ({ title, message, closeToast, type }: ErroLoginProps) => {
     <Container $type={type}>
       <ContentTitle $type={type}>
         <Title>{title || `Erro`}</Title>
-        {/* <img
-          src={Close}
-          alt="Close"
-          style={{ paddingRight: "14px", cursor: "pointer" }}
-          onClick={closeToast}
-        /> */}
       </ContentTitle>
       <ErrorMessage>{message}</ErrorMessage>
     </Container>

@@ -13,16 +13,21 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ToolTipCustom from "../TooltipCustom";
 
+interface SelectData {
+  id: number;
+  nome: string;
+}
+
 interface CustomSelectProps {
   name: string;
   placeholder: string;
-  data: string[];
+  data: SelectData[];
   title?: string;
   error?: string;
   required?: boolean;
   fixedValue?: string;
   isEditing?: boolean;
-  onSelect: (option: string) => void;
+  onSelect?: (option: string) => void;
   register?: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
 }
@@ -55,7 +60,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
-    onSelect(option);
+    onSelect && onSelect(option);
     setValue(name, option, { shouldValidate: true });
   };
 
@@ -115,18 +120,18 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         </RightSide>
         {isOpen && (
           <OptionsList>
-            {data.map((option, index) => (
+            {data.map((option: any, index) => (
               <OptionItem
-                key={index}
+                key={option.id}
                 onClick={() => {
-                  handleSelectOption(option);
+                  handleSelectOption(option.id);
                   register &&
                     register(name, { required }).onChange({
                       target: { value: option },
                     });
                 }}
               >
-                {option}
+                {option.nome}
               </OptionItem>
             ))}
           </OptionsList>

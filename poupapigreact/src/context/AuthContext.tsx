@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import ErroToast from "../components/ErroToast";
 import { Loading } from "../components/Loading";
@@ -76,6 +77,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     onClose,
     closeOnClick,
   }: ToastInterface) => {
+    console.log("oi", message);
     if (message) {
       toast(
         <ErroToast
@@ -86,7 +88,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         />,
         {
           type: type || "error",
-          position: "top-right",
+          position: position || "top-right",
           autoClose: autoClose || 3000,
           closeOnClick: closeOnClick || true,
           icon: false,
@@ -103,6 +105,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     >
       {children}
       {isLoading && <Loading />}
+      <ToastContainer
+        toastStyle={{ padding: "0px" }}
+        style={{ width: "380px" }}
+      />
     </AuthContext.Provider>
   );
 };

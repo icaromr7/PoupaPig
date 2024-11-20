@@ -20,7 +20,7 @@ export const Overlay = styled.div`
 `;
 
 export const Container = styled.div`
-  min-width: 200px;
+  min-width: 300px;
   max-width: 500px;
   height: 220px;
   background-color: ${theme.colors.whiteF2F};
@@ -36,9 +36,17 @@ export const Container = styled.div`
 export const Header = styled.div`
   height: 30px;
   align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
-export const Title = styled.div``;
+export const Title = styled.div`
+  font-family: ${theme.fonts.fontMontserrat};
+  font-size: 16px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.black171};
+`;
 
 export const Close = styled(CloseIcon)`
   font-size: 2rem !important;

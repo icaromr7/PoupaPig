@@ -83,8 +83,10 @@ export const getClasseById = async (id: string | number) => {
 //LOGIN:
 export const getLogin = async (dados: { email: string; senha: string }) => {
   try {
-    const response = await axios.get("/login", {
-      params: dados,
+    console.log("entrei", dados);
+    const response = await api.post("/login", {
+      email: dados.email,
+      senha: dados.senha,
     });
     return response.data;
   } catch (error) {
@@ -92,6 +94,7 @@ export const getLogin = async (dados: { email: string; senha: string }) => {
     throw error;
   }
 };
+
 //META_INVESTIMENTO
 export const postMetaInvestimento = async () => {
   const response = await api.post("/MetaInvestimento");
@@ -265,10 +268,10 @@ export const postUsuario = async (dados: {
   nome_completo: string;
   email: string;
   senha: string;
-  foto_perfil: string;
+  // foto_perfil: string;
 }) => {
   try {
-    const response = await api.post("/Usuario", { params: dados });
+    const response = await api.post("/Usuario", dados);
     console.log("response.data", response.data);
     return response.data;
   } catch (error) {

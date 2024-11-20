@@ -13,20 +13,31 @@ export const LoadingOverlay = styled.div`
   z-index: 1000;
 `;
 
-export const LoadingSpinner = styled.div`
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top: 4px solid white;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 0.8s linear infinite;
+export const PulsingSvg = styled.img`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  animation: pulse 1.5s infinite;
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
     }
-    to {
-      transform: rotate(360deg);
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 `;

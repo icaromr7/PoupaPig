@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,11 +29,10 @@ import SignIn2 from "../../assets/svg/SignIn2.svg";
 
 //importações internas
 import Input from "../../components/Input";
-import ImageUploader from "../../components/ImageUploader";
 import { Button } from "../../components/Button";
 import CustomSelect from "../../components/CustomSelect";
 import { useAuth } from "../../context/AuthContext";
-import { postUsuario } from "../../services/api";
+import { getLogin, postUsuario } from "../../services/api";
 
 const schemaSignIn = yup.object().shape({
   nome_completo: yup
@@ -60,7 +59,7 @@ const schemaSignIn = yup.object().shape({
     .string()
     .oneOf([yup.ref("senha")], "As senhas devem ser iguais")
     .required("Campo obrigatório"),
-  foto_perfil: yup.mixed().nullable(),
+  // foto_perfil: yup.mixed().nullable(),
 });
 
 const schemaQuestionsPartOne = yup.object().shape({
@@ -87,6 +86,9 @@ const schemaQuestionsPartTwo = yup.object().shape({
 export function SignIn() {
   const navigate = useNavigate();
   const { addToast, setLoading } = useAuth();
+  const [emailAdress, setEmailAdress] = useState<string>("");
+  const [senhaUser, setSenhaUser] = useState<string>("");
+  const [user, setUser] = useState<number>(0);
   const [currentBody, setCurrentBody] = useState<
     "data" | "questions1" | "questions2"
   >("data");
@@ -140,17 +142,12 @@ export function SignIn() {
     navigate("/landpage");
   };
 
-  const onSubmitSignIn = (data: any) => {
-    const dadosUsuario = {
-      nome_completo: data.nome_completo,
-      email: data.email,
-      senha: data.senha,
-      foto_perfil: data.foto_perfil,
-    };
+  const onSubmitSignIn = async (data: any) => {
     try {
       setLoading(true);
-      console.log("data", dadosUsuario);
-      postUsuario(data);
+      await postUsuario(data);
+      setEmailAdress(data.email);
+      setSenhaUser(data.senha);
       setCurrentBody("questions1");
     } catch (error: any) {
       addToast({ message: error.message, type: "error" });
@@ -159,6 +156,24 @@ export function SignIn() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("entrei no useEffect");
+    const fetchUserData = async () => {
+      console.log("current body", currentBody);
+      if (currentBody === "questions1") {
+        const dados = { email: emailAdress, senha: senhaUser };
+        try {
+          console.log("no try");
+          const usuario = await getLogin(dados);
+          console.log("usuario", usuario);
+        } catch (error) {
+          console.error("Erro ao obter dados do login:", error);
+        }
+      }
+    };
+    fetchUserData();
+  }, [currentBody]);
 
   const handleSelect = (option: string) => {
     console.log("option", option);
@@ -199,26 +214,25 @@ export function SignIn() {
               error={errorsSignIn.confirmaEmail?.message}
               register={registerSignIn}
             />
+            <Input
+              name="senha"
+              placeholder="Senha"
+              customType="password"
+              error={errorsSignIn.senha?.message}
+              register={registerSignIn}
+            />
+            <Input
+              name="confirmaSenha"
+              placeholder="Confirme sua senha"
+              customType="password"
+              error={errorsSignIn.confirmaSenha?.message}
+              register={registerSignIn}
+            />
           </TopForm>
-          <BottomForm>
-            <InputDiv>
-              <Input
-                name="senha"
-                placeholder="Senha"
-                customType="password"
-                error={errorsSignIn.senha?.message}
-                register={registerSignIn}
-              />
-              <Input
-                name="confirmaSenha"
-                placeholder="Confirme sua senha"
-                customType="password"
-                error={errorsSignIn.confirmaSenha?.message}
-                register={registerSignIn}
-              />
-            </InputDiv>
+          {/* <BottomForm>
+            <InputDiv></InputDiv>
             <ImageUploader register={registerSignIn("foto_perfil")} />
-          </BottomForm>
+          </BottomForm> */}
         </Form>
         <ButtonsDiv>
           <Button
@@ -241,9 +255,9 @@ export function SignIn() {
       <ColumnLeft>
         <Title>Por que preencher esse formulário?</Title>
         <Text>
-          Dessa forma, conseguimos entender melhor o seu perfil e o motivo de
-          estar usando essa plataforma, e conseguimos direcionar dicas de
-          economia mais certeiras para você.
+          Assim, podemos compreender melhor o seu perfil e os motivos que o
+          trouxeram até esta plataforma, permitindo que ofereçamos dicas de
+          economia mais precisas e personalizadas para você.
         </Text>
         <Image src={SignIn2} alt="PoupaPig" />
       </ColumnLeft>
@@ -258,27 +272,28 @@ export function SignIn() {
             title="Quantos banheiros tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao1?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
+
           <CustomSelect
             name="questao2"
             title="Quantos trabalhadores domésticos tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao2?.message}
@@ -290,11 +305,11 @@ export function SignIn() {
             title="Quantos automóveis tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao3?.message}
@@ -306,11 +321,11 @@ export function SignIn() {
             title="Quantos microcomputadores tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao4?.message}
@@ -322,11 +337,11 @@ export function SignIn() {
             title="Quantas máquinas de lavar roupa tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao5?.message}
@@ -338,11 +353,11 @@ export function SignIn() {
             title="Quantas geladeiras tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao6?.message}
@@ -354,11 +369,11 @@ export function SignIn() {
             title="Quantos freezers tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsOne.questao7?.message}
@@ -400,11 +415,11 @@ export function SignIn() {
             title="Quantos DVDs tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao8?.message}
@@ -416,11 +431,11 @@ export function SignIn() {
             title="Quantos fornos de micro-ondas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao9?.message}
@@ -432,11 +447,11 @@ export function SignIn() {
             title="Quantas motocicletas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao10?.message}
@@ -448,11 +463,11 @@ export function SignIn() {
             title="Quantas máquinas secadoras de roupas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              "0 (zero)",
-              "1 (um)",
-              "2 (dois)",
-              "3 (três)",
-              "4 + (quatro ou mais)",
+              { id: 0, nome: "zero" },
+              { id: 1, nome: "um" },
+              { id: 2, nome: "dois" },
+              { id: 3, nome: "três" },
+              { id: 4, nome: "quatro ou mais" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao11?.message}
@@ -464,11 +479,14 @@ export function SignIn() {
             title="Qual é o grau de instrução do chefe da família?"
             placeholder="Escolha"
             data={[
-              "Analfabeto/Fundamental I incompleto",
-              "Fundamental I completo/Fundamental II incompleto",
-              "Fundamental II completo/Médio incompleto",
-              "Médio completo/Superior incompleto",
-              "Superior completo",
+              { id: 0, nome: "Analfabeto/Fundamental I incompleto" },
+              {
+                id: 1,
+                nome: "Fundamental I completo/Fundamental II incompleto",
+              },
+              { id: 2, nome: "Fundamental II completo/Médio incompleto" },
+              { id: 3, nome: "Médio completo/Superior incompleto" },
+              { id: 4, nome: "Superior completo" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao12?.message}
@@ -480,9 +498,9 @@ export function SignIn() {
             title="A água utilizada no seu domicílio é proveniente de?"
             placeholder="Escolha"
             data={[
-              "Rede geral de distribuição",
-              "Poço ou nascente",
-              "Outro meio",
+              { id: 0, nome: "Rede geral de distribuição" },
+              { id: 1, nome: "Poço ou nascente" },
+              { id: 2, nome: "Outro meio" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao13?.message}
@@ -493,7 +511,10 @@ export function SignIn() {
             name="questao14"
             title="A rua do seu domicílio é?"
             placeholder="Escolha"
-            data={["Asfaltada/Pavimentada", "Terra/Cascalho"]}
+            data={[
+              { id: 0, nome: "Asfaltada/Pavimentada" },
+              { id: 1, nome: "Terra/Cascalho" },
+            ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao14?.message}
             register={registerQuestionsTwo}
@@ -504,12 +525,12 @@ export function SignIn() {
             title="Qual valor se aproxima mais da sua renda mensal familiar (soma do salário de todos que moram com você)?"
             placeholder="Escolha"
             data={[
-              "até R$1.500,00",
-              "De R$1.500,00 a R$2.500,00",
-              "De R$2.500,00 a R$5.000,00",
-              "De R$5.000,00 a R$10.000,00",
-              "De R$10.000,00 a R$20.000,00",
-              "Acima de R$20.000,00",
+              { id: 0, nome: "até R$1.500,00" },
+              { id: 1, nome: "De R$1.500,00 a R$2.500,00" },
+              { id: 2, nome: "De R$2.500,00 a R$5.000,00" },
+              { id: 3, nome: "De R$5.000,00 a R$10.000,00" },
+              { id: 4, nome: "De R$10.000,00 a R$20.000,00" },
+              { id: 5, nome: "Acima de R$20.000,00" },
             ]}
             onSelect={handleSelect}
             error={errosQuestionsTwo.questao15?.message}

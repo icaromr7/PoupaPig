@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { Container, Line, TextObservation } from "./style";
-import { CustomModal } from "../CustomModal";
-import Checkbox from "../Checkbox";
+import { Container, Line } from "./style";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderMenuProps {

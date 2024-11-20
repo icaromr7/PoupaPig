@@ -29,6 +29,7 @@ export const Container = styled.div<ButtonStyleProps>`
   color: ${(props) =>
     props.$borderColor ? props.$borderColor : theme.colors.green065};
   font-weight: ${theme.fonts.fontWeightBold};
+  text-align: center;
 
   cursor: pointer;
 

@@ -20,9 +20,6 @@ import {
   Row,
   BenefitContainer,
   TextBenefit,
-  ContainerBenefits,
-  TitleBenefit,
-  NameBenefit,
   Side,
   Title,
   TableContainer,
@@ -51,58 +48,36 @@ import { FloatingAddButton } from "../../components/FloatingAddButton";
 import { getAssinaturas, getBancos, getCartoes } from "../../services/api";
 import { GenericData } from "../../interfaces";
 import { useAuth } from "../../context/AuthContext";
-
-const cards = [
-  "Visa",
-  "American Express",
-  "Mastercard",
-  "Elo",
-  "Hipercard",
-  "Diners Club",
-];
-const banks = ["Caixa", "Bradesco", "Banco do Brasil"];
-const signatures = ["Prime", "Kindle Unlimited", "Netflix", "MercadoLivre"];
-const data = [
-  {
-    date: "01/01/2024",
-    value: "R$1.000,00",
-    name: "Compra da Vitórya",
-    arrow: "down",
-  },
-];
+import { CustomModal } from "../../components/CustomModal";
+import CustomSelect from "../../components/CustomSelect";
+import { DataBenefits } from "../../components/DataBenefits";
 
 export function Profile() {
   const { addToast } = useAuth();
   const totalRows = 11;
-  const filledRows = data.length;
-  const emptyRows = totalRows - filledRows;
+  // const filledRows = data.length;
+  // const emptyRows = totalRows - filledRows;
 
-  const [cartoes, setCartoes] = useState<GenericData[]>([]);
-  const [assinaturas, setAssinaturas] = useState<GenericData[]>([]);
-  const [bancos, setBancos] = useState<GenericData[]>([]);
+  // useEffect(() => {
+  //   const fetchItems = async () => {
+  //     try {
+  //       const assinaturas = await getAssinaturas();
+  //       const bancos = await getBancos();
+  //       const cartoes = await getCartoes();
+  //       console.log("data:", bancos);
+  //     } catch (error) {
+  //       console.error("Erro ao buscar itens:", error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const assinaturas = await getAssinaturas();
-        const bancos = await getBancos();
-        const cartoes = await getCartoes();
-        console.log("data:", bancos);
-      } catch (error) {
-        console.error("Erro ao buscar itens:", error);
-      }
-    };
-
-    fetchItems();
-  }, []);
+  //   fetchItems();
+  // }, []);
 
   const fetchCartoes = async () => {
     console.log("oi");
     try {
-      throw new Error("Erro forçado para teste");
       const data = await getCartoes();
-      console.log("data:", data);
-      setCartoes(data);
+      return data;
     } catch (error: any) {
       console.log("erro");
       addToast({
@@ -114,36 +89,69 @@ export function Profile() {
     }
   };
 
-  const dataBenefits = (
-    title: string,
-    data: string[],
-    titleButton: string,
-    onClick: () => void
-  ) => {
-    const chunkedData = [];
-    for (let i = 0; i < data.length; i += 3) {
-      chunkedData.push(data.slice(i, i + 3));
+  const fetchAssinaturas = async () => {
+    console.log("oi");
+    try {
+      const data = await getCartoes();
+      return data;
+    } catch (error: any) {
+      console.log("erro");
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
     }
-    return (
-      <ContainerBenefits onClick={onClick}>
-        <TitleBenefit>{title}</TitleBenefit>
-        {chunkedData.map((group, index) => (
-          <div key={index} style={{ display: "flex", alignItems: "center" }}>
-            {group.map((x, idx) => (
-              <React.Fragment key={idx}>
-                <NameBenefit>{x}</NameBenefit>
-                {/* Adiciona "|" entre os itens, mas não após o último */}
-                {idx < group.length - 1 && (
-                  <span style={{ margin: "0 8px" }}>|</span>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        ))}
-        <Button title={titleButton} />
-      </ContainerBenefits>
-    );
   };
+
+  const fetchBancos = async () => {
+    console.log("oi");
+    try {
+      const data = await getCartoes();
+      return data;
+    } catch (error: any) {
+      console.log("erro");
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  // const dataBenefits = (
+  //   title: string,
+  //   data: string[],
+  //   titleButton: string,
+  //   onClick: () => void,
+  //   id: string
+  // ) => {
+
+  //   return (
+  //     <ContainerBenefits onClick={onClick}>
+  //       <TitleBenefit>{title}</TitleBenefit>
+  //       {chunkedData.map((group, index) => (
+  //         <div key={index} style={{ display: "flex", alignItems: "center" }}>
+  //           {group.map((x, idx) => (
+  //             <React.Fragment key={idx}>
+  //               <NameBenefit>{x}</NameBenefit>
+  //               {/* Adiciona "|" entre os itens, mas não após o último */}
+  //               {idx < group.length - 1 && (
+  //                 <span style={{ margin: "0 8px" }}>|</span>
+  //               )}
+  //             </React.Fragment>
+  //           ))}
+  //         </div>
+  //       ))}
+  //       <ButtonDiv>
+  //         <Button title={titleButton} minWidth="100%" />
+  //       </ButtonDiv>
+  //       <CustomModal />
+  //     </ContainerBenefits>
+  //   );
+  // };
 
   const CategorySpending = (
     <ContainerCategory>
@@ -183,20 +191,30 @@ export function Profile() {
       </CardFinancialControl>
       <ClientData>
         <Grid style={{ gap: 50 }}>
-          {dataBenefits(
-            "Suas bandeiras de cartão",
-            cards,
-            "Adicionar cartão",
-            fetchCartoes
-          )}
-          {/* {dataBenefits("Suas contas bancárias", banks, "Adicionar banco")}
-          {dataBenefits("Suas assinaturas", signatures, "Adicionar assinatura")} */}
+          <DataBenefits
+            title="Suas bandeiras de cartão"
+            id="cartao-id-escolha"
+            titleButton="Adicionar cartão"
+            onClick={fetchCartoes}
+          />
+          <DataBenefits
+            title="Suas contas bancárias"
+            id="banco-id-escolha"
+            titleButton="Adicionar banco"
+            onClick={fetchBancos}
+          />
+          <DataBenefits
+            title="Suas assinaturas"
+            id="assinatura-id-escolha"
+            titleButton="Adicionar assinatura"
+            onClick={fetchAssinaturas}
+          />
           <BenefitContainer>
             <TextBenefit>
               Sabia que seu cartão, banco ou assinatura recorrente pode te dar
               benefícios?
             </TextBenefit>
-            <Button title="Confira seus benefícios!" />
+            <Button title="Confira seus benefícios!" minWidth="100%" />
           </BenefitContainer>
         </Grid>
         <Row>
@@ -216,7 +234,7 @@ export function Profile() {
                   </TableRow>
                 </TableHeader>
                 <tbody>
-                  {data.map((row, index) => (
+                  {/* {data.map((row, index) => (
                     <TableRow key={index} even={index % 2 === 0}>
                       <TableCell>{row.date}</TableCell>
                       <TableCell>{row.value}</TableCell>
@@ -229,8 +247,8 @@ export function Profile() {
                         )}
                       </IconCell>
                     </TableRow>
-                  ))}
-                  {Array.from({ length: emptyRows }).map((_, index) => (
+                  ))} */}
+                  {/* {Array.from({ length: emptyRows }).map((_, index) => (
                     <TableRow
                       key={`empty-${index}`}
                       even={(filledRows + index) % 2 === 0}
@@ -240,7 +258,7 @@ export function Profile() {
                       <TableCell />
                       <IconCell />
                     </TableRow>
-                  ))}
+                  ))} */}
                 </tbody>
               </Table>
             </TableContainer>
