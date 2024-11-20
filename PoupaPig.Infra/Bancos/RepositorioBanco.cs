@@ -49,5 +49,15 @@ namespace PoupaPig.Infra.Bancos
         {
             return _dataConnection.GetTable<Banco>().ToList();
         }
+
+        public List<Banco> ObterBancosPorUsuario(int usuarioId)
+        {
+            return (from ub in _dataConnection.GetTable<UsuarioBanco>()
+                    join b in _dataConnection.GetTable<Banco>()
+                    on ub.banco_id equals b.id
+                    where ub.usuario_id == usuarioId
+                    select b).ToList();
+        }
+
     }
 }

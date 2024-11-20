@@ -42,5 +42,10 @@ namespace PoupaPig.Dominio.Bancos.Servicos
         {
             return _repositorioBanco.ObterTodas();
         }
+
+        public List<Banco> ObterBancosPorUsuario(int usuarioId)
+        {
+            return _repositorioBanco.ObterBancosPorUsuario(usuarioId);
+        }
     }
 }

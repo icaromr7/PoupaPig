@@ -7,5 +7,6 @@
         void Criar(Classe dados);
         void Atualizar(Classe dados);
         void Excluir(int id);
+        List<Classe> ObterClassesPorUsuario(int usuarioId);
     }
 }

@@ -51,5 +51,14 @@ namespace PoupaPig.Infra.Assinaturas
         {
             return _dataConnection.GetTable<Assinatura>().ToList();
         }
+        public List<Assinatura> ObterAssinaturasPorUsuario(int usuarioId)
+        {
+            return (from ua in _dataConnection.GetTable<UsuarioAssinatura>()
+                    join a in _dataConnection.GetTable<Assinatura>()
+                    on ua.assinatura_id equals a.id
+                    where ua.usuario_id == usuarioId
+                    select a).ToList();
+        }
+
     }
 }

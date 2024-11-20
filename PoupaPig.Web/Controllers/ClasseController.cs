@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoupaPig.Dominio.Classes;
 using PoupaPig.Dominio.Classes.Servicos;
+using PoupaPig.Infra.Classes;
 using System.Collections.Generic;
 
 [ApiController]
@@ -47,6 +48,13 @@ public class ClasseController : ControllerBase
     public IActionResult ObterTodas()
     {
         List<Classe> classes = _servicoClasse.ObterTodas();
+        return Ok(classes);
+    }
+
+    [HttpGet("usuario/{usuarioId}")]
+    public IActionResult ObterClassesPorUsuario(int usuarioId)
+    {
+        var classes = _servicoClasse.ObterClassesPorUsuario(usuarioId);
         return Ok(classes);
     }
 }
