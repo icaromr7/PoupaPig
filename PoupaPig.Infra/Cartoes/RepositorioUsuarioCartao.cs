@@ -1,8 +1,6 @@
 ﻿using LinqToDB;
 using PoupaPig.Dominio.Cartoes;
 using PoupaPig.Dominio.Cartoes.Servicos;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PoupaPig.Infra.Cartoes
 {
@@ -48,6 +46,6 @@ namespace PoupaPig.Infra.Cartoes
         public List<UsuarioCartao> ObterTodas()
         {
             return _dataConnection.GetTable<UsuarioCartao>().ToList();
-        }
+        }        
     }
 }

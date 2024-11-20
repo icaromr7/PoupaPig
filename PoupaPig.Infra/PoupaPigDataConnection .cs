@@ -7,7 +7,9 @@ namespace PoupaPig.Infra
     public class PoupaPigDataConnection : DataConnection
     {
         private static readonly string ConnectionString =
-            "Host=ep-rapid-field-a5h3k9p9.us-east-2.aws.neon.tech;Database=poupapig;Username=poupapig_owner;Password=fRSaKo40kYCB;SSL Mode=Require";
+            "Host=ep-calm-wave-a5z5c44k.us-east-2.aws.neon.tech;Database=poupapig;Username=poupapig_owner;Password=tOp7s6jzHmSX;SSL Mode=Require";
+
+
 
         public PoupaPigDataConnection() : base("PostgreSQL", ConnectionString)
         {

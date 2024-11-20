@@ -49,5 +49,15 @@ namespace PoupaPig.Infra.Classes
         {
             return _dataConnection.GetTable<Classe>().ToList();
         }
+
+        public List<Classe> ObterClassesPorUsuario(int usuarioId)
+        {
+            return (from uc in _dataConnection.GetTable<UsuarioClasse>()
+                    join c in _dataConnection.GetTable<Classe>()
+                    on uc.classe_id equals c.id
+                    where uc.usuario_id == usuarioId
+                    select c).ToList();
+        }
+
     }
 }

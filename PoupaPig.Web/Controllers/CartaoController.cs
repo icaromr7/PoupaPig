@@ -49,4 +49,10 @@ public class CartaoController : ControllerBase
         List<Cartao> cartoes = _servicoCartao.ObterTodas();
         return Ok(cartoes);
     }
+    [HttpGet("usuario/{usuarioId}")]
+    public IActionResult ObterCartoesPorUsuario(int usuarioId)
+    {
+        var cartoes = _servicoCartao.ObterCartoesPorUsuario(usuarioId);
+        return Ok(cartoes);
+    }
 }

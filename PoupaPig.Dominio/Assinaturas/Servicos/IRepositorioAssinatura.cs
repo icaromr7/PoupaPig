@@ -7,5 +7,6 @@
         void Criar(Assinatura dados);
         void Atualizar(Assinatura dados);
         void Excluir(int id);
+        List<Assinatura> ObterAssinaturasPorUsuario(int usuarioId);
     }
 }
