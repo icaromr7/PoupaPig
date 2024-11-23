@@ -38,6 +38,12 @@ import { TransactionData } from "../../interfaces";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 import { ModalEconomyTips } from "../../components/ModalEconomyTips";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getGanhosVsGastos,
+  getRetornoInvestimentos,
+  getSaldo,
+} from "../../services/api";
 
 const dataExemplo: TransactionData[] = [
   {
@@ -131,19 +137,8 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
   const checkScrollPosition = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      console.log("scroll", scrollLeft, scrollWidth, clientWidth);
-
       setShowLeftArrow(scrollLeft > 0);
-      console.log("left:", scrollLeft);
-
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
-      console.log(
-        "right:",
-        scrollLeft,
-        clientWidth,
-        scrollWidth,
-        scrollLeft + clientWidth < scrollWidth
-      );
     }
   };
 
@@ -151,12 +146,6 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
     if (scrollRef.current) {
       const totalWidth = data.length * 165;
       const containerWidth = scrollRef.current.offsetWidth;
-      console.log(
-        "mnedidas",
-        totalWidth,
-        containerWidth,
-        totalWidth > containerWidth
-      );
       setShowArrows(totalWidth > containerWidth);
       checkScrollPosition();
     }
@@ -189,8 +178,6 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
       }
     };
   }, [data]);
-
-  console.log("show arrows", showArrows);
 
   return (
     <ScrollContainer>
@@ -233,10 +220,18 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
 };
 
 export function Home() {
+  const { addToast, setLoading, userCode, login } = useAuth();
   const [inOut, setInOut] = useState<TransactionData[]>([]);
   const [budget, setBudget] = useState<TransactionData[]>([]);
   const [investment, setInvestment] = useState<TransactionData[]>([]);
   const [showModalTips, setShowModalTips] = useState<boolean>(false);
+  //valores do resumo
+  const [livres, setLivres] = useState<number>(0);
+  const [gastos, setGastos] = useState<number>(0);
+  const [devendo, setDevendo] = useState<number>(0);
+  const [orcado, setOrcado] = useState<number>(0);
+  const [livreSemOrcado, setLivreSemOrcado] = useState<number>(0);
+  const [investido, setInvestido] = useState<number>(0);
 
   useEffect(() => {
     // Separar os dados por tipo
@@ -252,6 +247,27 @@ export function Home() {
     setBudget(budgetData);
     setInvestment(investmentData);
   }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      console.log("oii fetchUserData", userCode);
+      if (userCode) {
+        try {
+          const lancamentos = await getGanhosVsGastos(Number(userCode));
+          setLivres(lancamentos.ganhos);
+          setGastos(lancamentos.gastos);
+          const devedor = await getSaldo(Number(userCode));
+          setDevendo(devedor.saldo);
+          const investimento = await getRetornoInvestimentos(Number(userCode));
+          setInvestido(investimento);
+        } catch (error: any) {
+          addToast({ message: error.message, type: "error" });
+          console.error("Erro ao obter dados financeiros do usuário", error);
+        }
+      }
+    };
+    fetchUserData();
+  }, [userCode]);
 
   return (
     <Container>

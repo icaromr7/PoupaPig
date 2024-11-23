@@ -41,7 +41,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   required,
   fixedValue,
   isEditing,
-  onSelect,
+  // onSelect,
   register,
   setValue,
   ...rest
@@ -53,15 +53,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const selectRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
-    console.log("oi?", isOpen);
     setIsOpen(!isOpen);
   };
 
-  const handleSelectOption = (option: string) => {
-    setSelectedOption(option);
+  const handleSelectOption = (option: SelectData) => {
+    setSelectedOption(option.nome);
     setIsOpen(false);
-    onSelect && onSelect(option);
-    setValue(name, option, { shouldValidate: true });
+    // onSelect && onSelect(option.id);
+    setValue(name, option.id - 1, { shouldValidate: true });
   };
 
   useEffect(() => {
@@ -124,7 +123,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
               <OptionItem
                 key={option.id}
                 onClick={() => {
-                  handleSelectOption(option.id);
+                  handleSelectOption(option);
                   register &&
                     register(name, { required }).onChange({
                       target: { value: option },

@@ -10,10 +10,12 @@ export interface GenericData {
   nome: string;
 }
 
-export interface user {
-  id_usuario: number;
-  nome_usuario: string;
-  email_usuario: string;
+export interface UserInt {
+  id: number;
+  nome_completo: string;
+  email: string;
+  data_criacao?: string;
+  senha?: string;
 }
 
 export interface CategoriaInt {

@@ -50,7 +50,7 @@ export function FinancialControlProfile() {
   const clientData: ClientSituationProps = {
     valor_livre: 2189.56,
     valor_gastos: 1053.41,
-    valor_devendo: 1000.56,
+    valor_devendo: 2000.56,
     valor_orcado: 289,
     valor_livre_sem_devedor: 1900.56,
     valor_investido: 15000,

@@ -29,7 +29,7 @@ interface ToastInterface {
 // Definindo a estrutura do contexto
 interface AuthContextType {
   userCode: string | null;
-  login: (code: string) => void;
+  login: (code: number) => void;
   logout: () => void;
   addToast: (params: ToastInterface) => void;
   isLoading: boolean;
@@ -58,9 +58,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setIsLoading(loading);
   };
 
-  const login = (code: string) => {
-    setUserCode(code);
-    localStorage.setItem("userCode", code); // Armazenar o código no localStorage
+  const login = (code: number) => {
+    const codeAsString = String(code);
+    setUserCode(codeAsString);
+    localStorage.setItem("userCode", codeAsString);
   };
 
   const logout = () => {

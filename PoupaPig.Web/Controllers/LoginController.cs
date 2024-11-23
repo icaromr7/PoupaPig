@@ -15,7 +15,7 @@ namespace PoupaPig.Web.Controllers
             _servicoLogin = servicoLogin;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public IActionResult Login([FromBody] Login login)
         {
             try

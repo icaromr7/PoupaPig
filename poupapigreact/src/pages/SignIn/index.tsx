@@ -32,7 +32,8 @@ import Input from "../../components/Input";
 import { Button } from "../../components/Button";
 import CustomSelect from "../../components/CustomSelect";
 import { useAuth } from "../../context/AuthContext";
-import { getLogin, postUsuario } from "../../services/api";
+import { getLogin, postQuestionario, postUsuario } from "../../services/api";
+import { UserInt } from "../../interfaces";
 
 const schemaSignIn = yup.object().shape({
   nome_completo: yup
@@ -63,32 +64,32 @@ const schemaSignIn = yup.object().shape({
 });
 
 const schemaQuestionsPartOne = yup.object().shape({
-  questao1: yup.string().required("Campo obrigatório"),
-  questao2: yup.string().required("Campo obrigatório"),
-  questao3: yup.string().required("Campo obrigatório"),
-  questao4: yup.string().required("Campo obrigatório"),
-  questao5: yup.string().required("Campo obrigatório"),
-  questao6: yup.string().required("Campo obrigatório"),
-  questao7: yup.string().required("Campo obrigatório"),
+  banheiros: yup.number().required("Campo obrigatório"),
+  trabalhadores_domesticos: yup.number().required("Campo obrigatório"),
+  automoveis: yup.number().required("Campo obrigatório"),
+  microcomputadores: yup.number().required("Campo obrigatório"),
+  maquinas_lavar_roupa: yup.number().required("Campo obrigatório"),
+  geladeiras: yup.number().required("Campo obrigatório"),
+  freezers: yup.number().required("Campo obrigatório"),
 });
 
 const schemaQuestionsPartTwo = yup.object().shape({
-  questao8: yup.string().required("Campo obrigatório"),
-  questao9: yup.string().required("Campo obrigatório"),
-  questao10: yup.string().required("Campo obrigatório"),
-  questao11: yup.string().required("Campo obrigatório"),
-  questao12: yup.string().required("Campo obrigatório"),
-  questao13: yup.string().required("Campo obrigatório"),
-  questao14: yup.string().required("Campo obrigatório"),
-  questao15: yup.string().required("Campo obrigatório"),
+  dvds: yup.number().required("Campo obrigatório"),
+  fornos_microondas: yup.number().required("Campo obrigatório"),
+  motocicletas: yup.number().required("Campo obrigatório"),
+  maquinas_secar_roupa: yup.number().required("Campo obrigatório"),
+  grau_instrucao: yup.number().required("Campo obrigatório"),
+  origem_agua: yup.number().required("Campo obrigatório"),
+  tipo_rua: yup.number().required("Campo obrigatório"),
+  salario: yup.number().required("Campo obrigatório"),
 });
 
 export function SignIn() {
   const navigate = useNavigate();
-  const { addToast, setLoading } = useAuth();
+  const { addToast, setLoading, userCode, login } = useAuth();
   const [emailAdress, setEmailAdress] = useState<string>("");
   const [senhaUser, setSenhaUser] = useState<string>("");
-  const [user, setUser] = useState<number>(0);
+  const [formData, setFormData] = useState({});
   const [currentBody, setCurrentBody] = useState<
     "data" | "questions1" | "questions2"
   >("data");
@@ -127,14 +128,26 @@ export function SignIn() {
     }
   };
 
-  const handleLogin = (data: any) => {
-    console.log("Dados do formulário:", data);
-    navigate("/login");
+  const handleLogin = async (data: any) => {
+    console.log("data", data);
+    const combinedData = { ...formData, ...data, usuario_id: userCode };
+    console.log("Dados combinados:", combinedData);
+
+    try {
+      setLoading(true);
+      await postQuestionario(combinedData);
+      navigate("/home");
+    } catch (error: any) {
+      addToast({ message: error.message, type: "error" });
+      console.error("Erro ao postar dados do questionário:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleQuestionsSecondPart = (data: any) => {
     console.log("Dados do formulário:", data);
-
+    setFormData((prev) => ({ ...prev, ...data }));
     setCurrentBody("questions2");
   };
 
@@ -158,26 +171,20 @@ export function SignIn() {
   };
 
   useEffect(() => {
-    console.log("entrei no useEffect");
     const fetchUserData = async () => {
-      console.log("current body", currentBody);
       if (currentBody === "questions1") {
         const dados = { email: emailAdress, senha: senhaUser };
         try {
-          console.log("no try");
-          const usuario = await getLogin(dados);
-          console.log("usuario", usuario);
-        } catch (error) {
+          const usuario: UserInt = await getLogin(dados);
+          login(usuario.id);
+        } catch (error: any) {
+          addToast({ message: error.message, type: "error" });
           console.error("Erro ao obter dados do login:", error);
         }
       }
     };
     fetchUserData();
   }, [currentBody]);
-
-  const handleSelect = (option: string) => {
-    console.log("option", option);
-  };
 
   const dataForm = (
     <ContainerForm>
@@ -268,115 +275,108 @@ export function SignIn() {
             perguntas abaixo:
           </TextForm>
           <CustomSelect
-            name="questao1"
+            name="banheiros"
             title="Quantos banheiros tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao1?.message}
+            error={errosQuestionsOne.banheiros?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
 
           <CustomSelect
-            name="questao2"
+            name="trabalhadores_domesticos"
             title="Quantos trabalhadores domésticos tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao2?.message}
+            error={errosQuestionsOne.trabalhadores_domesticos?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
           <CustomSelect
-            name="questao3"
+            name="automoveis"
             title="Quantos automóveis tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao3?.message}
+            error={errosQuestionsOne.automoveis?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
           <CustomSelect
-            name="questao4"
+            name="microcomputadores"
             title="Quantos microcomputadores tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao4?.message}
+            error={errosQuestionsOne.microcomputadores?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
           <CustomSelect
-            name="questao5"
+            name="maquinas_lavar_roupa"
             title="Quantas máquinas de lavar roupa tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao5?.message}
+            error={errosQuestionsOne.maquinas_lavar_roupa?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
           <CustomSelect
-            name="questao6"
+            name="geladeiras"
             title="Quantas geladeiras tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao6?.message}
+            error={errosQuestionsOne.geladeiras?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
           <CustomSelect
-            name="questao7"
+            name="freezers"
             title="Quantos freezers tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsOne.questao7?.message}
+            error={errosQuestionsOne.freezers?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
           />
@@ -411,129 +411,121 @@ export function SignIn() {
       <ColumnRightQuestions>
         <TopForm>
           <CustomSelect
-            name="questao8"
+            name="dvds"
             title="Quantos DVDs tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao8?.message}
+            error={errosQuestionsTwo.dvds?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao9"
+            name="fornos_microondas"
             title="Quantos fornos de micro-ondas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao9?.message}
+            error={errosQuestionsTwo.fornos_microondas?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao10"
+            name="motocicletas"
             title="Quantas motocicletas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao10?.message}
+            error={errosQuestionsTwo.motocicletas?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao11"
+            name="maquinas_secar_roupa"
             title="Quantas máquinas secadoras de roupas tem no seu domicílio?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "zero" },
-              { id: 1, nome: "um" },
-              { id: 2, nome: "dois" },
-              { id: 3, nome: "três" },
-              { id: 4, nome: "quatro ou mais" },
+              { id: 1, nome: "Zero" },
+              { id: 2, nome: "Um" },
+              { id: 3, nome: "Dois" },
+              { id: 4, nome: "Três" },
+              { id: 5, nome: "Quatro ou mais" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao11?.message}
+            error={errosQuestionsTwo.maquinas_secar_roupa?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao12"
+            name="grau_instrucao"
             title="Qual é o grau de instrução do chefe da família?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "Analfabeto/Fundamental I incompleto" },
+              { id: 1, nome: "Analfabeto/Fundamental I incompleto" },
               {
-                id: 1,
+                id: 2,
                 nome: "Fundamental I completo/Fundamental II incompleto",
               },
-              { id: 2, nome: "Fundamental II completo/Médio incompleto" },
-              { id: 3, nome: "Médio completo/Superior incompleto" },
-              { id: 4, nome: "Superior completo" },
+              { id: 3, nome: "Fundamental II completo/Médio incompleto" },
+              { id: 4, nome: "Médio completo/Superior incompleto" },
+              { id: 5, nome: "Superior completo" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao12?.message}
+            error={errosQuestionsTwo.grau_instrucao?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao13"
+            name="origem_agua"
             title="A água utilizada no seu domicílio é proveniente de?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "Rede geral de distribuição" },
-              { id: 1, nome: "Poço ou nascente" },
-              { id: 2, nome: "Outro meio" },
+              { id: 1, nome: "Rede geral de distribuição" },
+              { id: 2, nome: "Poço ou nascente" },
+              { id: 3, nome: "Outro meio" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao13?.message}
+            error={errosQuestionsTwo.origem_agua?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao14"
+            name="tipo_rua"
             title="A rua do seu domicílio é?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "Asfaltada/Pavimentada" },
-              { id: 1, nome: "Terra/Cascalho" },
+              { id: 1, nome: "Asfaltada/Pavimentada" },
+              { id: 2, nome: "Terra/Cascalho" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao14?.message}
+            error={errosQuestionsTwo.tipo_rua?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />
           <CustomSelect
-            name="questao15"
+            name="salario"
             title="Qual valor se aproxima mais da sua renda mensal familiar (soma do salário de todos que moram com você)?"
             placeholder="Escolha"
             data={[
-              { id: 0, nome: "até R$1.500,00" },
-              { id: 1, nome: "De R$1.500,00 a R$2.500,00" },
-              { id: 2, nome: "De R$2.500,00 a R$5.000,00" },
-              { id: 3, nome: "De R$5.000,00 a R$10.000,00" },
-              { id: 4, nome: "De R$10.000,00 a R$20.000,00" },
-              { id: 5, nome: "Acima de R$20.000,00" },
+              { id: 1, nome: "até R$1.500,00" },
+              { id: 2, nome: "De R$1.500,00 a R$2.500,00" },
+              { id: 3, nome: "De R$2.500,00 a R$5.000,00" },
+              { id: 4, nome: "De R$5.000,00 a R$10.000,00" },
+              { id: 5, nome: "De R$10.000,00 a R$20.000,00" },
+              { id: 6, nome: "Acima de R$20.000,00" },
             ]}
-            onSelect={handleSelect}
-            error={errosQuestionsTwo.questao15?.message}
+            error={errosQuestionsTwo.salario?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
           />

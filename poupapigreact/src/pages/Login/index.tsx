@@ -22,10 +22,11 @@ import Input from "../../components/Input";
 import { Button } from "../../components/Button";
 import { useAuth } from "../../context/AuthContext";
 import { getLogin } from "../../services/api";
+import { UserInt } from "../../interfaces";
 
 const schema = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
-  password: yup
+  senha: yup
     .string()
     .min(8, "A senha deve ter pelo menos 8 caracteres")
     .matches(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula")
@@ -67,7 +68,7 @@ const schemaPassword = yup.object().shape({
 
 export function Login() {
   const navigate = useNavigate();
-  const { addToast } = useAuth();
+  const { addToast, setLoading, login } = useAuth();
   const [currentBody, setCurrentBody] = useState<
     "login" | "emailPassword" | "codePassword" | "newPassword"
   >("login");
@@ -104,10 +105,19 @@ export function Login() {
     resolver: yupResolver(schemaPassword),
   });
 
-  const onSubmitLogin = (data: any) => {
-    console.log("Dados do formulário:", data);
-    // const user = getLogin(data)
-    navigate("/home");
+  const onSubmitLogin = async (data: any) => {
+    try {
+      setLoading(true);
+      const dados = { email: data.email, senha: data.senha };
+      const usuario: UserInt = await getLogin(dados);
+      login(usuario.id);
+      navigate("/home");
+    } catch (error: any) {
+      addToast({ message: error.message, type: "error" });
+      console.error("Erro ao obter dados do login:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onSubmitEmailPassword = (data: any) => {
@@ -156,10 +166,10 @@ export function Login() {
         register={register}
       />
       <Input
-        name="password"
+        name="senha"
         placeholder="Senha"
         customType="password"
-        error={errors.password?.message}
+        error={errors.senha?.message}
         register={register}
       />
       <Options>
