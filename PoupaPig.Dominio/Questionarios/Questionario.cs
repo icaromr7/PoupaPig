@@ -2,6 +2,7 @@
 
 namespace PoupaPig.Dominio.Questionarios
 {
+    [Table(Name = "questionario")]
     public class Questionario
     {
         [PrimaryKey, Identity]
