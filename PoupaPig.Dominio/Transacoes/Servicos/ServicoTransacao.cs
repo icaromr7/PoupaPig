@@ -200,7 +200,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> EvolucaoMetasInvestimentos(int usuarioId, int? anoInicio = null, int? anoFim = null)
         {
             var metasInvestimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.tipo_id == 3); // Supondo que o tipo 3 seja investimentos
+                .Where(t => t.usuario_id == usuarioId );
 
             if (anoInicio.HasValue)
             {
@@ -250,15 +250,15 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal ReceitasTotais(int usuarioId, DateTime dataInicio, DateTime dataFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.data_transacao >= dataInicio && t.data_transacao <= dataFim && t.tipo_id == 1); // Tipo 1 para receitas
+                .Where(t => t.usuario_id == usuarioId && t.data_transacao >= dataInicio && t.data_transacao <= dataFim);
 
             return transacoes.Sum(t => t.valor);
         }
 
-        public decimal ProgressoEmMetasFinanceiras(int usuarioId)
+        public decimal ProgressoEmMetasFinanceiras(int usuarioId, int metaInvestimentoId)
         {
             var metasFinanceiras = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.tipo_id == 4); // Supondo tipo 4 para metas financeiras
+                .Where(t => t.usuario_id == usuarioId && t.nome_meta_investimento_id == metaInvestimentoId);
 
             return metasFinanceiras.Sum(t => t.valor);
         }
@@ -266,7 +266,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal RetornosSobreInvestimentos(int usuarioId)
         {
             var investimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.tipo_id == 3); // Tipo 3 para investimentos
+                .Where(t => t.usuario_id == usuarioId && t.nome_meta_investimento_id != 0 && t.tipo_id == 1);
 
             return investimentos.Sum(t => t.valor);
         }
