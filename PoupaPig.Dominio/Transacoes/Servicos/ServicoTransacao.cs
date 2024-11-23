@@ -60,7 +60,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> GastosPorCategorias(int usuarioId)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.valor > 0)
+                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.situacao_id == 1)
                 .GroupBy(t => t.categoria_id)
                 .ToDictionary(g => g.Key.ToString(), g => g.Sum(t => t.valor));
 
@@ -71,7 +71,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public (decimal Ganhos, decimal Gastos) GanhosVsGastos(int usuarioId)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId);
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             decimal ganhos = transacoes
                 .Where(t => t.tipo_id == 1) 
@@ -88,7 +88,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public (decimal Fixas, decimal Variaveis) DespesasFixasVsVariaveis(int usuarioId)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId);
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             decimal fixas = transacoes
                 .Where(t => t.periodicidade_id == 1) // 1 representa despesas fixas (transações fixas)
@@ -106,7 +106,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> GastosPorDiasDaSemana(int usuarioId)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.valor > 0)
+                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.situacao_id == 1)
                 .GroupBy(t => t.data_transacao.DayOfWeek)
                 .ToDictionary(
                     g => g.Key.ToString(),
@@ -120,7 +120,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public (decimal CartaoCredito, decimal Dinheiro) GastosCartaoCreditoVsDinheiro(int usuarioId)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId);
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             decimal cartaoCredito = transacoes
                 .Where(t => t.tipo_pagamento_id == 2) // Supondo tipo 1 para cartão de crédito
@@ -135,7 +135,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> GastosPorMes(int usuarioId, int? ano = null, int? mesInicio = null, int? mesFim = null)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.valor > 0);
+                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.situacao_id == 1);
 
             if (ano.HasValue)
             {
@@ -162,7 +162,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> SaldoAcumulado(int usuarioId, int? ano = null, int? mesInicio = null, int? mesFim = null)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId);
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             if (ano.HasValue)
             {
@@ -200,7 +200,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> EvolucaoMetasInvestimentos(int usuarioId, int? anoInicio = null, int? anoFim = null)
         {
             var metasInvestimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId );
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             if (anoInicio.HasValue)
             {
@@ -222,7 +222,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> ComparacaoGastosMensaisAnuais(int usuarioId, int anoInicio, int anoFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.data_transacao.Year >= anoInicio && t.data_transacao.Year <= anoFim)
+                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.data_transacao.Year >= anoInicio && t.data_transacao.Year <= anoFim && t.situacao_id == 1)
                 .GroupBy(t => new { t.data_transacao.Year, t.data_transacao.Month })
                 .Select(g => new
                 {
@@ -242,7 +242,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal GastosTotaisPorPeriodo(int usuarioId, DateTime dataInicio, DateTime dataFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.data_transacao >= dataInicio && t.data_transacao <= dataFim);
+                .Where(t => t.usuario_id == usuarioId && t.data_transacao >= dataInicio && t.data_transacao <= dataFim && t.situacao_id == 1);
 
             return transacoes.Sum(t => t.valor);
         }
@@ -250,7 +250,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal ReceitasTotais(int usuarioId, DateTime dataInicio, DateTime dataFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.data_transacao >= dataInicio && t.data_transacao <= dataFim);
+                .Where(t => t.usuario_id == usuarioId && t.data_transacao >= dataInicio && t.data_transacao <= dataFim && t.situacao_id == 1);
 
             return transacoes.Sum(t => t.valor);
         }
@@ -258,7 +258,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal ProgressoEmMetasFinanceiras(int usuarioId, int metaInvestimentoId)
         {
             var metasFinanceiras = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.nome_meta_investimento_id == metaInvestimentoId);
+                .Where(t => t.usuario_id == usuarioId && t.nome_meta_investimento_id == metaInvestimentoId && t.situacao_id == 1);
 
             return metasFinanceiras.Sum(t => t.valor);
         }
@@ -274,7 +274,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public List<Transacao> HistoricoDeTransacoes(int usuarioId, DateTime? dataInicio = null, DateTime? dataFim = null)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId);
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             if (dataInicio.HasValue)
             {
@@ -292,7 +292,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal PrevisoesDeGastos(int usuarioId, int mesesProjecao)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.valor > 0)
+                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.tipo_id == 2)
                 .OrderBy(t => t.data_transacao)
                 .TakeLast(mesesProjecao);
 
@@ -304,13 +304,47 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<int, decimal> ComparacaoAnual(int usuarioId, int anoInicio, int anoFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.data_transacao.Year >= anoInicio && t.data_transacao.Year <= anoFim);
+                .Where(t => t.usuario_id == usuarioId && t.data_transacao.Year >= anoInicio && t.data_transacao.Year <= anoFim && t.situacao_id == 1);
 
             var comparacaoAnual = transacoes
                 .GroupBy(t => t.data_transacao.Year)
                 .ToDictionary(g => g.Key, g => g.Sum(t => t.valor));
 
             return comparacaoAnual;
+        }
+
+        public decimal ObterValorOrcadoTotal(int usuarioId)
+        {
+            var entradas = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.tipo_id == 1 && t.situacao_id == 2) // Tipo 1 = Entrada
+                .Sum(t => (decimal?)t.valor) ?? 0;
+            var saidas = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.tipo_id == 2 && t.situacao_id == 2) // Tipo 2 = Saída
+                .Sum(t => (decimal?)t.valor) ?? 0;
+
+            return entradas - saidas;
+        }
+        public List<Transacao> ObterOrcamentos(int usuarioId)
+        {
+            var valoresOrcamento = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 2).ToList();
+            
+            return valoresOrcamento;
+        }
+        public List<Transacao> ObterLancamentos(int usuarioId)
+        {
+            var valoresOrcamento = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1).ToList();
+
+            return valoresOrcamento;
+        }
+
+        public List<Transacao> ObterInvestimentos(int usuarioId)
+        {
+            var Investimentos = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.nome_meta_investimento_id != 0).ToList();
+
+            return Investimentos;
         }
 
     }

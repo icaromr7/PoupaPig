@@ -244,5 +244,32 @@ namespace PoupaPig.API.Controllers
             return Ok(comparacao);
         }
 
+        [HttpGet("valor-orcado/{usuarioId}")]
+        public IActionResult ObterValorOrcadoTotal([FromRoute] int usuarioId)
+        {
+            var valorOrcadoTotal = _servicoTransacao.ObterValorOrcadoTotal(usuarioId);
+            return Ok(valorOrcadoTotal);
+        }
+
+        [HttpGet("orcamentos/{usuarioId}")]
+        public IActionResult ObterOrcamentos([FromRoute] int usuarioId)
+        {
+            var valoresOrcadomento = _servicoTransacao.ObterOrcamentos(usuarioId);
+            return Ok(valoresOrcadomento);
+        }
+
+        [HttpGet("lancamentos/{usuarioId}")]
+        public IActionResult ObterLancamentos([FromRoute] int usuarioId)
+        {
+            var valoresOrcadomento = _servicoTransacao.ObterLancamentos(usuarioId);
+            return Ok(valoresOrcadomento);
+        }
+
+        [HttpGet("investimentos/{usuarioId}")]
+        public IActionResult ObterInvestimentos([FromRoute] int usuarioId)
+        {
+            var valoresOrcadomento = _servicoTransacao.ObterInvestimentos(usuarioId);
+            return Ok(valoresOrcadomento);
+        }
     }
 }
