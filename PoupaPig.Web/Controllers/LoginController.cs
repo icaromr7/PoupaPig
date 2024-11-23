@@ -4,6 +4,8 @@ using PoupaPig.Dominio.Usuarios;
 
 namespace PoupaPig.Web.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
         private readonly ServicoLogin _servicoLogin;

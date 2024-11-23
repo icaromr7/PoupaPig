@@ -206,9 +206,9 @@ namespace PoupaPig.API.Controllers
 
         // 7. Progresso em Metas Financeiras
         [HttpGet("progresso-metas-financeiras/{usuarioId}")]
-        public ActionResult<decimal> ProgressoEmMetasFinanceiras([FromRoute] int usuarioId)
+        public ActionResult<decimal> ProgressoEmMetasFinanceiras([FromRoute] int usuarioId, [FromQuery] int metaInvestimentoid)
         {
-            var progresso = _servicoTransacao.ProgressoEmMetasFinanceiras(usuarioId);
+            var progresso = _servicoTransacao.ProgressoEmMetasFinanceiras(usuarioId, metaInvestimentoid);
             return Ok(progresso);
         }
 
