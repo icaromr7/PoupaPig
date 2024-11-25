@@ -311,6 +311,30 @@ export const getGanhosVsGastos = async (id: number) => {
 //   );
 //   return response.data;
 // };
+// export const getValorOrcado = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/valor-orcado/${id}`
+//   );
+//   return response.data;
+// };
+// export const getOrcamentos = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/orcamentos/${id}`
+//   );
+//   return response.data;
+// };
+// export const getLancamentos = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/lancamentos/${id}`
+//   );
+//   return response.data;
+// };
+// export const getInvestimentos = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/investimentos/${id}`
+//   );
+//   return response.data;
+// };
 export const getRetornoInvestimentos = async (id: number) => {
   const response = await api.get(`/Transacao/retornos-investimentos/${id}`);
   return response.data;

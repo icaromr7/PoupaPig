@@ -17,8 +17,6 @@ import {
   ColumnRightQuestions,
   Form,
   TopForm,
-  BottomForm,
-  InputDiv,
   ButtonsDiv,
   TextForm,
 } from "./style";

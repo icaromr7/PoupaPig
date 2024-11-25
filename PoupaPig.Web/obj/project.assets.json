@@ -815,19 +815,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\VITORYA\\.nuget\\packages\\": {}
+    "C:\\Users\\drmais\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
+      "projectUniqueName": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
       "projectName": "PoupaPig.Web",
-      "projectPath": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
-      "packagesPath": "C:\\Users\\VITORYA\\.nuget\\packages\\",
-      "outputPath": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Web\\obj\\",
+      "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\PoupaPig.Web.csproj",
+      "packagesPath": "C:\\Users\\drmais\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\VITORYA\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\drmais\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -839,8 +839,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
-              "projectPath": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj"
+            "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj": {
+              "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj"
             }
           }
         }
@@ -892,13 +892,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problema ao ler o arquivo de cache E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Web\\obj\\project.nuget.cache: After parsing a value an unexpected character was encountered: \". Path 'expectedPackageFiles[12]', line 21, position 4."
-    }
-  ]
+  }
 }
