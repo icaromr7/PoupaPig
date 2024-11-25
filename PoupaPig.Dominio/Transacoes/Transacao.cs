@@ -25,8 +25,8 @@ namespace PoupaPig.Dominio.Transacoes
         [Column(Name = "banco_id")]
         public int banco_id { get; set; }
 
-        [Column(Name = "nome_meta_investimento_id")]
-        public int nome_meta_investimento_id { get; set; }
+        [Column(Name = "meta_investimento_id")]
+        public int meta_investimento_id { get; set; }
 
         [Column(Name = "tipo_pagamento_id")]
         public int tipo_pagamento_id { get; set; }

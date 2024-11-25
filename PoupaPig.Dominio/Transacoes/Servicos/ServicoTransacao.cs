@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace PoupaPig.Dominio.Transacoes.Servicos
@@ -258,7 +259,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal ProgressoEmMetasFinanceiras(int usuarioId, int metaInvestimentoId)
         {
             var metasFinanceiras = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.nome_meta_investimento_id == metaInvestimentoId && t.situacao_id == 1);
+                .Where(t => t.usuario_id == usuarioId && t.meta_investimento_id == metaInvestimentoId && t.situacao_id == 1);
 
             return metasFinanceiras.Sum(t => t.valor);
         }
@@ -266,7 +267,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public decimal RetornosSobreInvestimentos(int usuarioId)
         {
             var investimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.nome_meta_investimento_id != 0 && t.tipo_id == 1);
+                .Where(t => t.usuario_id == usuarioId && t.meta_investimento_id != 0 && t.tipo_id == 1);
 
             return investimentos.Sum(t => t.valor);
         }
@@ -342,10 +343,100 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public List<Transacao> ObterInvestimentos(int usuarioId)
         {
             var Investimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.nome_meta_investimento_id != 0).ToList();
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.meta_investimento_id != 0).ToList();
 
             return Investimentos;
         }
+        public List<Lancamento> ObterLancamento(int usuarioId)
+        {
+            var valoresLacamentos = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1).ToList();
+            return ConverterTransacaoEmLancamento(valoresLacamentos);
+        }
 
+        public List<Lancamento> ConverterTransacaoEmLancamento(List<Transacao> transacoes)
+        {
+            var lancamentos = new List<Lancamento>();
+            foreach (var transacao in transacoes)
+            {
+                var lancamento = new Lancamento()
+                {
+                    tipo = transacao.tipo_id,
+                    valor = transacao.valor,
+                    nome = transacao.nome,
+                    data = transacao.data_transacao
+                };
+                lancamentos.Add(lancamento);
+            }
+            return lancamentos;
+        }
+        public List<Orcamento> ObterOrcamento(int usuarioId)
+        {
+            var valoresOrcamento = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 2).ToList();
+            return ConverterTransacaoEmOrcamento(valoresOrcamento);
+        }
+
+        public List<Orcamento> ConverterTransacaoEmOrcamento(List<Transacao> transacoes)
+        {
+            var orcamentos = new List<Orcamento>();
+            foreach (var transacao in transacoes)
+            {
+                var orcamento = new Orcamento()
+                {
+                    valor = transacao.valor,
+                    nome = transacao.nome,
+                    data = transacao.data_transacao
+                };
+                orcamentos.Add(orcamento);
+            }
+            return orcamentos;
+        }
+
+        public List<Investimento> ObterInvestimento(int usuarioId)
+        {
+            var Investimentos = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.meta_investimento_id != 0).ToList();
+            return ConverterTransacaoEmInvestimento(Investimentos);
+        }
+
+        public List<Investimento> ConverterTransacaoEmInvestimento(List<Transacao> transacoes)
+        {
+            var investimentos = new List<Investimento>();
+            foreach (var transacao in transacoes)
+            {
+                var investimento = new Investimento()
+                {
+                    valor = transacao.valor,
+                    nome = transacao.nome,
+                    data = transacao.data_transacao
+                };
+                investimentos.Add(investimento);
+            }
+            return investimentos;
+        }
+
+    }
+
+    public class Lancamento
+    {
+        public int tipo { get; set; }
+        public decimal valor { get; set; }
+        public string nome { get; set; }
+        public DateTime data { get; set; }
+    }
+
+    public class Orcamento
+    {
+        public decimal valor { get; set; }
+        public string nome { get; set; }
+        public DateTime data { get; set; }
+    }
+
+    public class Investimento
+    {
+        public decimal valor { get; set; }
+        public string nome { get; set; }
+        public DateTime data { get; set; }
     }
 }
