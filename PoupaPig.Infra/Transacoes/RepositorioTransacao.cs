@@ -65,7 +65,7 @@ namespace PoupaPig.Infra.Transacoes
         {
             // Consulta para obter as transações associadas ao id_meta_investimento
             var transacoes = _dataConnection.GetTable<Transacao>()
-                                .Where(t => t.nome_meta_investimento_id == idMetaInvestimento)
+                                .Where(t => t.meta_investimento_id == idMetaInvestimento)
                                 .ToList();
 
             return transacoes;
