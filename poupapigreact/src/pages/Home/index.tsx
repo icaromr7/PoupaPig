@@ -220,18 +220,10 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
 };
 
 export function Home() {
-  const { addToast, setLoading, userCode, login } = useAuth();
   const [inOut, setInOut] = useState<TransactionData[]>([]);
   const [budget, setBudget] = useState<TransactionData[]>([]);
   const [investment, setInvestment] = useState<TransactionData[]>([]);
   const [showModalTips, setShowModalTips] = useState<boolean>(false);
-  //valores do resumo
-  const [livres, setLivres] = useState<number>(0);
-  const [gastos, setGastos] = useState<number>(0);
-  const [devendo, setDevendo] = useState<number>(0);
-  const [orcado, setOrcado] = useState<number>(0);
-  const [livreSemOrcado, setLivreSemOrcado] = useState<number>(0);
-  const [investido, setInvestido] = useState<number>(0);
 
   useEffect(() => {
     // Separar os dados por tipo
@@ -247,27 +239,6 @@ export function Home() {
     setBudget(budgetData);
     setInvestment(investmentData);
   }, []);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      console.log("oii fetchUserData", userCode);
-      if (userCode) {
-        try {
-          const lancamentos = await getGanhosVsGastos(Number(userCode));
-          setLivres(lancamentos.ganhos);
-          setGastos(lancamentos.gastos);
-          const devedor = await getSaldo(Number(userCode));
-          setDevendo(devedor.saldo);
-          const investimento = await getRetornoInvestimentos(Number(userCode));
-          setInvestido(investimento);
-        } catch (error: any) {
-          addToast({ message: error.message, type: "error" });
-          console.error("Erro ao obter dados financeiros do usuário", error);
-        }
-      }
-    };
-    fetchUserData();
-  }, [userCode]);
 
   return (
     <Container>

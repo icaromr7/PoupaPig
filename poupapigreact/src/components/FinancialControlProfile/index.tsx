@@ -23,6 +23,12 @@ import Emergency from "../../assets/svg/emergencia.svg";
 import { numberToCurrency } from "../../utils/bibli";
 import { Button } from "../Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getGanhosVsGastos,
+  getRetornoInvestimentos,
+  getSaldo,
+} from "../../services/api";
 
 interface FinancialControlProfileProps {
   situation: "ok" | "attention" | "emergency";
@@ -38,6 +44,7 @@ interface ClientSituationProps {
 }
 
 export function FinancialControlProfile() {
+  const { addToast, setLoading, userCode, login } = useAuth();
   const navigate = useNavigate();
   const [messageSituation, setMessageSituation] = useState<string>("");
   const [iconSituation, setIconSituation] = useState<string>("");
@@ -47,6 +54,14 @@ export function FinancialControlProfile() {
   const [hex, setHex] = useState<string>("");
   const [hexBackground, setHexBackground] = useState<string>("");
 
+  //valores do resumo
+  const [livres, setLivres] = useState<number>(0);
+  const [gastos, setGastos] = useState<number>(0);
+  const [devendo, setDevendo] = useState<number>(0);
+  const [orcado, setOrcado] = useState<number>(0);
+  const [livreSemOrcado, setLivreSemOrcado] = useState<number>(0);
+  const [investido, setInvestido] = useState<number>(0);
+
   const clientData: ClientSituationProps = {
     valor_livre: 2189.56,
     valor_gastos: 1053.41,
@@ -55,6 +70,27 @@ export function FinancialControlProfile() {
     valor_livre_sem_devedor: 1900.56,
     valor_investido: 15000,
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      console.log("oii fetchUserData", userCode);
+      if (userCode) {
+        try {
+          const lancamentos = await getGanhosVsGastos(Number(userCode));
+          setLivres(lancamentos.ganhos);
+          setGastos(lancamentos.gastos);
+          const devedor = await getSaldo(Number(userCode));
+          setDevendo(devedor.saldo);
+          const investimento = await getRetornoInvestimentos(Number(userCode));
+          setInvestido(investimento);
+        } catch (error: any) {
+          addToast({ message: error.message, type: "error" });
+          console.error("Erro ao obter dados financeiros do usuário", error);
+        }
+      }
+    };
+    fetchUserData();
+  }, [userCode]);
 
   const handleNewTransaction = () => {
     navigate("/new-transaction");
@@ -117,21 +153,21 @@ export function FinancialControlProfile() {
     <Container $hex={hexToRgb(hex)}>
       <Title>Seu controle financeiro</Title>
       <ResumeContainer $hex={hexToRgb(hexBackground)}>
-        {valueSign("livres", 2189.56, hex)}
+        {valueSign("livres", livres, hex)}
         <SituationMessage>
           <Image src={iconSituation} alt="PoupaPig" />
           <Message>{messageSituation}</Message>
         </SituationMessage>
       </ResumeContainer>
-      {valueSign("gasto", 1053.41, theme.colors.redF63)}
-      {valueSign("devendo", 548.29, theme.colors.yellowDAD)}
+      {valueSign("gasto", gastos, theme.colors.redF63)}
+      {valueSign("devendo", devendo, theme.colors.yellowDAD)}
       {valueSign("orçado", 289, theme.colors.orangeEE7)}
       {valueSign(
         "livre sem valor dos orçamentos",
         1900.56,
         theme.colors.greenAEC
       )}
-      {valueSign("investido", 15000, theme.colors.blue038)}
+      {valueSign("investido", investido, theme.colors.blue038)}
       <Button
         title="Adicionar transação"
         onClick={handleNewTransaction}

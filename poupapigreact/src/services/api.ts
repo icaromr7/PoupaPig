@@ -9,20 +9,20 @@ const api = axios.create({
 });
 
 //ASSINATURAS:
-// export const getAssinaturas = async () => {
-//   const response = await api.get("/Assinatura");
-//   return response.data;
-// };
+export const getAssinaturas = async () => {
+  const response = await api.get("/Assinatura");
+  return response.data;
+};
 // export const getAssinaturaById = async (id: string | number) => {
 //   const response = await api.get(`/Assinatura/${id}`);
 //   return response.data;
 // };
 
 //BANCOS:
-// export const getBancos = async () => {
-//   const response = await api.get("/Banco");
-//   return response.data;
-// };
+export const getBancos = async () => {
+  const response = await api.get("/Banco");
+  return response.data;
+};
 // export const getBancoById = async (id: string | number) => {
 //   const response = await api.get(`/Banco/${id}`);
 //   return response.data;

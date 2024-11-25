@@ -58,20 +58,20 @@ export function Profile() {
   // const filledRows = data.length;
   // const emptyRows = totalRows - filledRows;
 
-  // useEffect(() => {
-  //   const fetchItems = async () => {
-  //     try {
-  //       const assinaturas = await getAssinaturas();
-  //       const bancos = await getBancos();
-  //       const cartoes = await getCartoes();
-  //       console.log("data:", bancos);
-  //     } catch (error) {
-  //       console.error("Erro ao buscar itens:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const assinaturas = await getAssinaturas();
+        const bancos = await getBancos();
+        const cartoes = await getCartoes();
+        console.log("data:", assinaturas, bancos, cartoes);
+      } catch (error) {
+        console.error("Erro ao buscar itens:", error);
+      }
+    };
 
-  //   fetchItems();
-  // }, []);
+    fetchItems();
+  }, []);
 
   const fetchCartoes = async () => {
     console.log("oi");
