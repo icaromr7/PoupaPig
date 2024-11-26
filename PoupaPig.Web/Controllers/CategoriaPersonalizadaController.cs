@@ -73,10 +73,10 @@ public class CategoriaPersonalizadaController : ControllerBase
     }
 
     // Endpoint para obter todas as categorias personalizadas
-    [HttpGet]
-    public IActionResult ObterTodas()
+    [HttpGet("usuario/{usuarioId}")]
+    public IActionResult ObterTodas(int usuarioId)
     {
-        var categorias = _servicoCategoriaPersonalizada.ObterTodas();
+        var categorias = _servicoCategoriaPersonalizada.ObterTodas(usuarioId);
         return Ok(categorias);
     }
 }

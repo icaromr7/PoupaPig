@@ -55,9 +55,9 @@ namespace PoupaPig.Dominio.Categorias.Servicos
         }
 
         // Método para obter todas as categorias personalizadas
-        public List<CategoriaPersonalizada> ObterTodas()
+        public List<CategoriaPersonalizada> ObterTodas(int usuarioId)
         {
-            return _repositorioCategoriaPersonalizada.ObterTodas();
+            return _repositorioCategoriaPersonalizada.ObterTodas(usuarioId);
         }
     }
 }

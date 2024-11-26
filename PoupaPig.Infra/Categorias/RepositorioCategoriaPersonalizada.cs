@@ -45,9 +45,11 @@ namespace PoupaPig.Infra.Categorias
         }
 
         // Método para obter todas as categorias personalizadas
-        public List<CategoriaPersonalizada> ObterTodas()
+        public List<CategoriaPersonalizada> ObterTodas(int usuarioId)
         {
-            return _dataConnection.GetTable<CategoriaPersonalizada>().ToList();
+            return _dataConnection.GetTable<CategoriaPersonalizada>()
+                .Where(c=> c.usuario_id == usuarioId)
+                .ToList();
         }
         public CategoriaPersonalizada ObterPorNome(string nome)
         {
