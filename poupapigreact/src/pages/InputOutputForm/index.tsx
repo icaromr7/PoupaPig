@@ -55,7 +55,7 @@ const schema = yup.object().shape({
     .matches(/^[0-9]*$/, "Apenas números são permitidos"),
   categoria_id: yup.string().required("Campo obrigatório"),
   banco_id: yup.string().nullable().notRequired(),
-  nome_meta_investimento_id: yup.string().nullable().notRequired(),
+  meta_investimento_id: yup.string().nullable().notRequired(),
   tipo_pagamento_id: yup.string().required("Campo obrigatório"),
   recorrencia_id: yup.string().nullable().notRequired(),
   data_transacao: yup.string().nullable().notRequired(),
@@ -483,16 +483,16 @@ export function InputOutputForm() {
                 isEditing={isEditing}
               />
               <CustomSelect
-                name="nome_meta_investimento_id"
+                name="meta_investimento_id"
                 placeholder="Relacionar com investimento/meta:"
                 data={["Investimento 1", "Meta 2"]}
                 onSelect={handleSelect}
-                error={errors.nome_meta_investimento_id?.message}
+                error={errors.meta_investimento_id?.message}
                 register={register}
                 setValue={setValue}
                 fixedValue={
                   transactionData &&
-                  String(transactionData.nome_meta_investimento_id)
+                  String(transactionData.meta_investimento_id)
                 }
                 isEditing={isEditing}
               />

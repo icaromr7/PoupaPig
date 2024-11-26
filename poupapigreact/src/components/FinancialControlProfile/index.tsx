@@ -28,6 +28,7 @@ import {
   getGanhosVsGastos,
   getRetornoInvestimentos,
   getSaldo,
+  getValorOrcado,
 } from "../../services/api";
 
 interface FinancialControlProfileProps {
@@ -62,26 +63,21 @@ export function FinancialControlProfile() {
   const [livreSemOrcado, setLivreSemOrcado] = useState<number>(0);
   const [investido, setInvestido] = useState<number>(0);
 
-  const clientData: ClientSituationProps = {
-    valor_livre: 2189.56,
-    valor_gastos: 1053.41,
-    valor_devendo: 2000.56,
-    valor_orcado: 289,
-    valor_livre_sem_devedor: 1900.56,
-    valor_investido: 15000,
-  };
-
   useEffect(() => {
     const fetchUserData = async () => {
       console.log("oii fetchUserData", userCode);
       if (userCode) {
         try {
+          //valores de resumo
           const lancamentos = await getGanhosVsGastos(Number(userCode));
           setLivres(lancamentos.ganhos);
           setGastos(lancamentos.gastos);
           const devedor = await getSaldo(Number(userCode));
           setDevendo(devedor.saldo);
+          const orcados = await getValorOrcado(Number(userCode));
+          setOrcado(orcados);
           const investimento = await getRetornoInvestimentos(Number(userCode));
+          setLivreSemOrcado(lancamentos.ganhos - orcados);
           setInvestido(investimento);
         } catch (error: any) {
           addToast({ message: error.message, type: "error" });
@@ -97,8 +93,7 @@ export function FinancialControlProfile() {
   };
 
   useEffect(() => {
-    const calculo =
-      clientData.valor_livre_sem_devedor - clientData.valor_devendo;
+    const calculo = livreSemOrcado - devendo;
 
     if (calculo > 0) {
       setSituation("ok");
@@ -126,7 +121,7 @@ export function FinancialControlProfile() {
       setIconSituation(Emergency);
       return;
     }
-  }, []);
+  }, [investido]);
 
   const hexToRgb = (hex: string) => {
     const bigint = parseInt(hex.replace("#", ""), 16);
@@ -161,10 +156,10 @@ export function FinancialControlProfile() {
       </ResumeContainer>
       {valueSign("gasto", gastos, theme.colors.redF63)}
       {valueSign("devendo", devendo, theme.colors.yellowDAD)}
-      {valueSign("orçado", 289, theme.colors.orangeEE7)}
+      {valueSign("orçado", orcado, theme.colors.orangeEE7)}
       {valueSign(
         "livre sem valor dos orçamentos",
-        1900.56,
+        livreSemOrcado,
         theme.colors.greenAEC
       )}
       {valueSign("investido", investido, theme.colors.blue038)}

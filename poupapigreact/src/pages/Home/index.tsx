@@ -41,6 +41,9 @@ import { ModalEconomyTips } from "../../components/ModalEconomyTips";
 import { useAuth } from "../../context/AuthContext";
 import {
   getGanhosVsGastos,
+  getInvestimentos,
+  getLancamentos,
+  getOrcamentos,
   getRetornoInvestimentos,
   getSaldo,
 } from "../../services/api";
@@ -220,10 +223,41 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
 };
 
 export function Home() {
+  const { addToast, setLoading, userCode, login } = useAuth();
   const [inOut, setInOut] = useState<TransactionData[]>([]);
   const [budget, setBudget] = useState<TransactionData[]>([]);
   const [investment, setInvestment] = useState<TransactionData[]>([]);
   const [showModalTips, setShowModalTips] = useState<boolean>(false);
+  const [todosLancamentos, setTodosLancamentos] = useState<number>(0);
+  const [todosOrcamentos, setTodosOrcamentos] = useState<number>(0);
+  const [todosInvestimentos, setTodosInvestimentos] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      console.log("oii fetchUserData", userCode);
+      if (userCode) {
+        try {
+          //valores listados
+          const total_lancamentos = await getLancamentos(Number(userCode));
+          setTodosLancamentos(total_lancamentos);
+          const total_orcamentos = await getOrcamentos(Number(userCode));
+          setTodosOrcamentos(total_orcamentos);
+          const total_investimentos = await getInvestimentos(Number(userCode));
+          setTodosInvestimentos(total_investimentos);
+          console.log(
+            "total:",
+            total_lancamentos,
+            total_orcamentos,
+            total_investimentos
+          );
+        } catch (error: any) {
+          addToast({ message: error.message, type: "error" });
+          console.error("Erro ao obter dados financeiros do usuário", error);
+        }
+      }
+    };
+    fetchUserData();
+  }, [userCode]);
 
   useEffect(() => {
     // Separar os dados por tipo

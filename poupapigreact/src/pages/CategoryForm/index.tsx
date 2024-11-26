@@ -19,26 +19,21 @@ import Input from "../../components/Input";
 import { Button } from "../../components/Button";
 import { IconPicker } from "../../utils/bibli";
 import { CategoriaInt } from "../../interfaces";
+import { useAuth } from "../../context/AuthContext";
+import { postCategoriaPersonalizada } from "../../services/api";
 
 const schema = yup.object().shape({
-  nome_id: yup
+  nome: yup
     .string()
     .required("Campo obrigatório")
     .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
-  valor_minimo: yup
-    .string()
-    .matches(/^[0-9]*$/, "Apenas números são permitidos")
-    .nullable()
-    .notRequired(),
-  valor_maximo: yup
-    .string()
-    .matches(/^[0-9]*$/, "Apenas números são permitidos")
-    .nullable()
-    .notRequired(),
+  valor_minimo: yup.number().nullable().notRequired(),
+  valor_maximo: yup.number().nullable().notRequired(),
   icone: yup.string().nullable(),
 });
 
 export function CategoryForm() {
+  const { addToast, setLoading, userCode, login } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const location = useLocation();
   const categoryData: CategoriaInt = location.state?.categoryData;
@@ -71,17 +66,41 @@ export function CategoryForm() {
     setIsEditing(true);
   };
 
+  const handleFormCategory = async (data: any) => {
+    console.log("data", data);
+    const combinedData = { ...data, usuario_id: Number(userCode) };
+    console.log("Dados combinados:", combinedData);
+    try {
+      setLoading(true);
+      await postCategoriaPersonalizada(combinedData);
+      navigate("/category-list");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        console.error("Erro da API:", error.response.data);
+        addToast({ message: error.response.data, type: "error" });
+      } else {
+        console.error("Erro desconhecido:", error);
+        addToast({
+          message: "Erro desconhecido ao enviar os dados",
+          type: "error",
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Container>
       <Title>Lançamentos na conta</Title>
       <Content>
         <InputDiv>
           <Input
-            name="nome_id"
+            name="nome"
             placeholder="Nome categoria"
-            error={errors.nome_id?.message}
+            error={errors.nome?.message}
             register={register}
-            fixedValue={categoryData && categoryData.nome_id}
+            fixedValue={categoryData && categoryData.nome}
             isEditing={isEditing}
           />
           <Input
@@ -122,7 +141,7 @@ export function CategoryForm() {
             onClick={
               categoryData && !isEditing
                 ? handleEditForm
-                : handleSubmit(handleCategoryList)
+                : handleSubmit(handleFormCategory)
             }
           />
         </ButtonsDiv>

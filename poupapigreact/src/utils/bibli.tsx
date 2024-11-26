@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as MuiIcons from "@mui/icons-material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
+import PoupaPigIcon from "../assets/svg/iconepig.svg";
 
 import StyledIcon from "../components/StyledIcon";
 
@@ -599,7 +600,7 @@ export const showIconPicked = (iconName: string) => {
   const IconComponent = iconMapping[iconName];
 
   if (!IconComponent) {
-    return <div>Ícone não encontrado</div>;
+    return <img src={PoupaPigIcon} style={{ width: 24 }} />;
   }
 
   return <StyledIcon IconComponent={IconComponent} />;

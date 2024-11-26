@@ -25,45 +25,18 @@ import { Button } from "../../components/Button";
 import { CustomModal } from "../../components/CustomModal";
 import { CategoriaInt } from "../../interfaces";
 import { showIconPicked } from "../../utils/bibli";
-
-// Lista de categorias (exemplo)
-const dataCategory: CategoriaInt[] = [
-  {
-    id: 1,
-    nome_id: "Ifood",
-    icone: "LunchDiningIcon",
-    valor_minimo: 0,
-    valor_maximo: 1000,
-  },
-  {
-    id: 2,
-    nome_id: "Uber",
-    valor_minimo: 100,
-    valor_maximo: 5000,
-  },
-  {
-    id: 3,
-    nome_id: "Make",
-    icone: "CardTravelIcon",
-  },
-  {
-    id: 4,
-    nome_id: "Cabelo",
-    icone: "Face3Icon",
-    valor_minimo: 0,
-    valor_maximo: 200,
-  },
-  {
-    id: 5,
-    nome_id: "Pet",
-    icone: "PetsIcon",
-    valor_minimo: 200,
-  },
-];
+import {
+  getCategoriaPadrao,
+  getCategoriaPersonalizada,
+  getNomeCategoriaPadrao,
+} from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export function CategoryList() {
+  const { addToast, setLoading, userCode } = useAuth();
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
+  const [categorias, setCategorias] = useState<CategoriaInt[]>([]);
 
   const handleEditData = (data: CategoriaInt) => {
     navigate("/category-form", { state: { categoryData: data } });
@@ -82,6 +55,49 @@ export function CategoryList() {
     navigate("/category-form");
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userCode) {
+        try {
+          setLoading(true);
+          //categorias padrão do sistema
+          const categorias = await getCategoriaPadrao();
+          const nomesCat = await getNomeCategoriaPadrao();
+          // Criando um mapa para acelerar a busca de nomes por id
+          const nomePorId = new Map(
+            nomesCat.map((nomeCat: any) => [nomeCat.id, nomeCat.nome])
+          );
+
+          // Substituindo nome_id pelo nome correspondente
+          const categoriasComNomes = categorias.map((categoria: any) => {
+            const nome = nomePorId.get(categoria.nome_id);
+            return {
+              id: categoria.id,
+              nome,
+              icone: categoria.icone,
+              valor_minimo: categoria.valor_minimo,
+              valor_maximo: categoria.valor_maximo,
+            };
+          });
+
+          // Atualizando as categorias
+          setCategorias(categoriasComNomes);
+
+          const categoriasPersonalizadas = await getCategoriaPersonalizada();
+          console.log("categorias personalizadas", categoriasPersonalizadas);
+
+          setCategorias((prev) => [...prev, ...categoriasPersonalizadas]);
+        } catch (error: any) {
+          addToast({ message: error.message, type: "error" });
+          console.error("Erro ao obter as categorias padrões", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchUserData();
+  }, [userCode]);
+
   const itemCategory = (data: CategoriaInt) => {
     return (
       <ContainerItem key={data.id}>
@@ -94,9 +110,9 @@ export function CategoryList() {
         </Symbol>{" "}
         {/* Exibe o ícone, se disponível */}
         <Input
-          name={data.nome_id}
-          placeholder={data.nome_id}
-          fixedValue={data.nome_id}
+          name={data.nome}
+          placeholder={data.nome}
+          fixedValue={data.nome}
         />
         <Button
           title="Editar"
@@ -132,7 +148,7 @@ export function CategoryList() {
       </MainColumn>
       <MainColumn>
         <Column>
-          {dataCategory.map((category: CategoriaInt, key) =>
+          {categorias.map((category: CategoriaInt, key) =>
             itemCategory(category)
           )}
         </Column>

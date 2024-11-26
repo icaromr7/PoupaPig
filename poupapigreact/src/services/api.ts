@@ -39,28 +39,42 @@ export const getCartoes = async () => {
 // };
 
 //CATEGORIA PADRÃO:
-// export const getCategoriaPadrao = async () => {
-//   const response = await api.get("/CategoriaPadrao");
-//   return response.data;
-// };
+export const getCategoriaPadrao = async () => {
+  const response = await api.get("/CategoriaPadrao");
+  return response.data;
+};
 // export const getCategoriaPadraoById = async (id: string | number) => {
 //   const response = await api.get(`/CategoriaPadrao/${id}`);
 //   return response.data;
 // };
 
 //CATEGORIA PERSONALIZADA:
-// export const postCategoriaPersonalizada = async () => {
-//   const response = await api.post("/CategoriaPersonalizada");
-//   return response.data;
-// };
+export const postCategoriaPersonalizada = async (dados: any) => {
+  try {
+    const response = await api.post("/CategoriaPersonalizada", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao postar categoria personalizada:", error);
+    throw error;
+  }
+};
 // export const putCategoriaPersonalizada = async () => {
 //   const response = await api.put("/CategoriaPersonalizada");
 //   return response.data;
 // };
-// export const getCategoriaPersonalizada = async () => {
-//   const response = await api.get("/CategoriaPersonalizada");
-//   return response.data;
-// };
+export const getCategoriaPersonalizada = async () => {
+  try {
+    const response = await api.get("/CategoriaPersonalizada");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao fazer obter categorias", error);
+    throw error;
+  }
+};
 // export const deleteCategoriaPersonalizada = async (id: string | number) => {
 //   const response = await api.delete(`/CategoriaPersonalizada/${id}`);
 //   return response.data;
@@ -115,10 +129,10 @@ export const getLogin = async (dados: { email: string; senha: string }) => {
 // };
 
 //NOME CATEGORIA PADRÃO:
-// export const getNomeCategoriaPadrao = async () => {
-//   const response = await api.get("/NomeCategoriaPadrao");
-//   return response.data;
-// };
+export const getNomeCategoriaPadrao = async () => {
+  const response = await api.get("/NomeCategoriaPadrao");
+  return response.data;
+};
 // export const getNomeCategoriaPadraoById = async (id: string | number) => {
 //   const response = await api.get(`/NomeCategoriaPadrao/${id}`);
 //   return response.data;
@@ -167,7 +181,7 @@ export const postQuestionario = async (dados: any) => {
     console.log("sucesso?");
     return response.data;
   } catch (error) {
-    console.error("Erro ao postar o questionáriodiscurpa:", error);
+    console.error("Erro ao postar o questionário:", error);
     throw error;
   }
 };
@@ -311,30 +325,22 @@ export const getGanhosVsGastos = async (id: number) => {
 //   );
 //   return response.data;
 // };
-// export const getValorOrcado = async (id: number) => {
-//   const response = await api.get(
-//     `/Transacao/valor-orcado/${id}`
-//   );
-//   return response.data;
-// };
-// export const getOrcamentos = async (id: number) => {
-//   const response = await api.get(
-//     `/Transacao/orcamentos/${id}`
-//   );
-//   return response.data;
-// };
-// export const getLancamentos = async (id: number) => {
-//   const response = await api.get(
-//     `/Transacao/lancamentos/${id}`
-//   );
-//   return response.data;
-// };
-// export const getInvestimentos = async (id: number) => {
-//   const response = await api.get(
-//     `/Transacao/investimentos/${id}`
-//   );
-//   return response.data;
-// };
+export const getValorOrcado = async (id: number) => {
+  const response = await api.get(`/Transacao/valor-orcado/${id}`);
+  return response.data;
+};
+export const getOrcamentos = async (id: number) => {
+  const response = await api.get(`/Transacao/orcamentos/${id}`);
+  return response.data;
+};
+export const getLancamentos = async (id: number) => {
+  const response = await api.get(`/Transacao/lancamentos/${id}`);
+  return response.data;
+};
+export const getInvestimentos = async (id: number) => {
+  const response = await api.get(`/Transacao/investimentos/${id}`);
+  return response.data;
+};
 export const getRetornoInvestimentos = async (id: number) => {
   const response = await api.get(`/Transacao/retornos-investimentos/${id}`);
   return response.data;

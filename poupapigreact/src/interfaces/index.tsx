@@ -20,10 +20,11 @@ export interface UserInt {
 
 export interface CategoriaInt {
   id: number;
-  nome_id: string;
+  nome: string;
   icone?: string;
   valor_minimo?: number;
   valor_maximo?: number;
+  usuario_id?: number;
 }
 
 export interface TransacaoInt {
@@ -32,7 +33,7 @@ export interface TransacaoInt {
   valor: number;
   categoria_id: number;
   banco_id?: number;
-  nome_meta_investimento_id?: number;
+  meta_investimento_id?: number;
   tipo_pagamento_id: number;
   recorrencia_id?: number;
   data_transacao?: string;
