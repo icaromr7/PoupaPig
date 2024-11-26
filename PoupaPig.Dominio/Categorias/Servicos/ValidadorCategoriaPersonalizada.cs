@@ -20,7 +20,7 @@ namespace PoupaPig.Dominio.Categorias.Servicos
             // Validação do nome da categoria personalizada
             RuleFor(categoria => categoria.nome)
                 .NotEmpty().WithMessage("O nome da categoria personalizada é obrigatório.")
-                .Length(5, 100).WithMessage("O nome da categoria personalizada deve ter entre 5 e 100 caracteres.")
+                .Length(2, 100).WithMessage("O nome da categoria personalizada deve ter entre 5 e 100 caracteres.")
                 .Must(NomeNaoExistente).WithMessage("O nome da categoria personalizada já está em uso. Escolha outro nome.");
         }
 
