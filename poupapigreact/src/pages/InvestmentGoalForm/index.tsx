@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -25,8 +25,16 @@ import TextField from "../../components/TextField";
 import { Button } from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
 import { useLocation, useNavigate } from "react-router-dom";
-import { InvestimentoMetaInt } from "../../interfaces";
+import { GenericData, InvestimentoMetaInt } from "../../interfaces";
 import ToolTipCustom from "../../components/TooltipCustom";
+import {
+  getBancos,
+  getNomeTipoInvestimento,
+  getRecorrencia,
+  postMetaInvestimento,
+  putMetaInvestimento,
+} from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 const schema = yup.object().shape({
   nome: yup
@@ -48,16 +56,22 @@ const schema = yup.object().shape({
 });
 
 export function InvestmentGoalForm() {
+  const { addToast, setLoading, userCode } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const location = useLocation();
   const investmentGoalData: InvestimentoMetaInt =
     location.state?.investmentGoalData;
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [investment, setInvestment] = useState<boolean>(false);
   const [goal, setGoal] = useState<boolean>(false);
   const data = ["Opção 1", "Opção 2", "Opção 3", "Opção 4", "Opção 5"];
-  const [textValue, setTextValue] = useState<string>("");
+  // const [textValue, setTextValue] = useState<string>("");
+  const [recorrencias, setRecorrencias] = useState<GenericData[]>([]);
+  const [bancos, setBancos] = useState<GenericData[]>([]);
+  const [tiposInvestimentos, setTiposInvestimentos] = useState<GenericData[]>(
+    []
+  );
 
   const {
     register,
@@ -68,14 +82,14 @@ export function InvestmentGoalForm() {
     resolver: yupResolver(schema),
   });
 
-  const handleTextChange = (value: string) => {
-    setTextValue(value);
-  };
+  // const handleTextChange = (value: string) => {
+  //   setTextValue(value);
+  // };
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-    console.log("Data selecionada:", date);
-  };
+  // const handleDateChange = (date: Date | null) => {
+  //   setSelectedDate(date);
+  //   console.log("Data selecionada:", date);
+  // };
 
   const handleInvestment = (checked: boolean) => {
     if (checked) {
@@ -95,8 +109,40 @@ export function InvestmentGoalForm() {
     }
   };
 
-  const handleInvestmentGoalList = () => {
-    navigate("/investment-goal-list");
+  const handleInvestmentGoalList = async () => {
+    const params = new URLSearchParams(location.search);
+    const isEditing = params.get("editing") === "true";
+    const combinedData = {
+      ...data,
+      usuario_id: Number(userCode),
+      ...(investmentGoalData && { id: investmentGoalData.id }),
+    };
+    console.log("Dados combinados:", combinedData);
+
+    if (isEditing) {
+      console.log("entrei no put");
+      try {
+        setLoading(true);
+        await putMetaInvestimento(combinedData);
+      } catch (error: any) {
+        console.error("Erro da API:", error.response.data);
+        addToast({ message: error.message, type: "error" });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      console.log("entrei no post");
+      try {
+        setLoading(true);
+        await postMetaInvestimento(combinedData);
+        navigate("/investment-goal-list");
+      } catch (error: any) {
+        console.error("Erro da API:", error.response.data);
+        addToast({ message: error.message, type: "error" });
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleCancelForm = () => {
@@ -109,6 +155,65 @@ export function InvestmentGoalForm() {
 
   const handleEditForm = () => {
     setIsEditing(true);
+  };
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const banco = await fetchBancos();
+        setBancos(banco);
+        const recorrencia = await fetchRecorrencia();
+        setRecorrencias(recorrencia);
+        const tipoInvestimento = await fetchTipoInvestimento();
+        setTiposInvestimentos(tipoInvestimento);
+      } catch (error) {
+        console.error("Erro ao buscar itens:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  const fetchBancos = async () => {
+    try {
+      const data = await getBancos();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchRecorrencia = async () => {
+    try {
+      const data = await getRecorrencia();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchTipoInvestimento = async () => {
+    try {
+      const data = await getNomeTipoInvestimento();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
   };
 
   return (
@@ -136,7 +241,7 @@ export function InvestmentGoalForm() {
           <CustomSelect
             name="banco_id"
             placeholder="Banco"
-            data={["Banco 1", "Banco 1"]}
+            data={bancos}
             onSelect={handleSelect}
             error={errors.banco_id?.message}
             register={register}
@@ -149,7 +254,7 @@ export function InvestmentGoalForm() {
           <CustomSelect
             name="recorrencia_pretendida_id"
             placeholder="Recorrência pretendida"
-            data={["Recorrência 1", "Recorrência 1"]}
+            data={recorrencias}
             onSelect={handleSelect}
             error={errors.recorrencia_pretendida_id?.message}
             register={register}
@@ -205,7 +310,7 @@ export function InvestmentGoalForm() {
               <CustomSelect
                 name="tipo_investimento_id"
                 placeholder="Tipo de investimento"
-                data={data}
+                data={tiposInvestimentos}
                 onSelect={handleSelect}
                 error={errors.tipo_investimento_id?.message}
                 register={register}

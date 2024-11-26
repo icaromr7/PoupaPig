@@ -62,13 +62,23 @@ export const postCategoriaPersonalizada = async (dados: any) => {
     throw error;
   }
 };
-// export const putCategoriaPersonalizada = async () => {
-//   const response = await api.put("/CategoriaPersonalizada");
-//   return response.data;
-// };
-export const getCategoriaPersonalizada = async () => {
+export const putCategoriaPersonalizada = async (dados: any) => {
+  console.log("dados", dados);
   try {
-    const response = await api.get("/CategoriaPersonalizada");
+    const response = await api.put("/CategoriaPersonalizada", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao editar categoria personalizada:", error);
+    throw error;
+  }
+};
+export const getCategoriaPersonalizada = async (id: number) => {
+  try {
+    const response = await api.get(`/CategoriaPersonalizada/usuario/${id}`);
     return response.data;
   } catch (error) {
     console.error("Erro ao fazer obter categorias", error);
@@ -107,14 +117,32 @@ export const getLogin = async (dados: { email: string; senha: string }) => {
 };
 
 //META_INVESTIMENTO
-// export const postMetaInvestimento = async () => {
-//   const response = await api.post("/MetaInvestimento");
-//   return response.data;
-// };
-// export const putMetaInvestimento = async () => {
-//   const response = await api.put("/MetaInvestimento");
-//   return response.data;
-// };
+export const postMetaInvestimento = async (dados: any) => {
+  try {
+    const response = await api.post("/MetaInvestimento", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao fazer postar investimento/meta", error);
+    throw error;
+  }
+};
+export const putMetaInvestimento = async (dados: any) => {
+  try {
+    const response = await api.put("/MetaInvestimento", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao fazer postar investimento/meta", error);
+    throw error;
+  }
+};
 // export const getMetaInvestimento = async () => {
 //   const response = await api.get("/MetaInvestimento");
 //   return response.data;
@@ -139,10 +167,10 @@ export const getNomeCategoriaPadrao = async () => {
 // };
 
 //NOME TIPO INVESTIMENTO:
-// export const getNomeTipoInvestimento = async () => {
-//   const response = await api.get("/NomeTipoInvestimento");
-//   return response.data;
-// };
+export const getNomeTipoInvestimento = async () => {
+  const response = await api.get("/NomeTipoInvestimento");
+  return response.data;
+};
 // export const getNomeTipoInvestimentoById = async (id: string | number) => {
 //   const response = await api.get(`/NomeTipoInvestimento/${id}`);
 //   return response.data;
@@ -203,10 +231,10 @@ export const postQuestionario = async (dados: any) => {
 // };
 
 //RECORRENCIA:
-// export const getRecorrencia = async () => {
-//   const response = await api.get("/Recorrencia");
-//   return response.data;
-// };
+export const getRecorrencia = async () => {
+  const response = await api.get("/Recorrencia");
+  return response.data;
+};
 // export const getRecorrenciaById = async (id: string | number) => {
 //   const response = await api.get(`/Recorrencia/${id}`);
 //   return response.data;

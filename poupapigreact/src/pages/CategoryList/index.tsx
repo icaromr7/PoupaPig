@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 //style, icons e assets
@@ -37,9 +37,10 @@ export function CategoryList() {
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
   const [categorias, setCategorias] = useState<CategoriaInt[]>([]);
+  const flag = useRef<boolean>(true);
 
   const handleEditData = (data: CategoriaInt) => {
-    navigate("/category-form", { state: { categoryData: data } });
+    navigate("/category-form?editing=true", { state: { categoryData: data } });
   };
 
   const handleDeleteModal = () => {
@@ -83,7 +84,9 @@ export function CategoryList() {
           // Atualizando as categorias
           setCategorias(categoriasComNomes);
 
-          const categoriasPersonalizadas = await getCategoriaPersonalizada();
+          const categoriasPersonalizadas = await getCategoriaPersonalizada(
+            Number(userCode)
+          );
           console.log("categorias personalizadas", categoriasPersonalizadas);
 
           setCategorias((prev) => [...prev, ...categoriasPersonalizadas]);
@@ -95,12 +98,18 @@ export function CategoryList() {
         }
       }
     };
-    fetchUserData();
+    if (flag.current) {
+      fetchUserData();
+      console.log("passei");
+      setTimeout(() => {
+        flag.current = false;
+      }, 1000);
+    }
   }, [userCode]);
 
   const itemCategory = (data: CategoriaInt) => {
     return (
-      <ContainerItem key={data.id}>
+      <ContainerItem key={`${data.id}-${data.nome}`}>
         <Symbol>
           {data.icone ? (
             showIconPicked(data.icone)

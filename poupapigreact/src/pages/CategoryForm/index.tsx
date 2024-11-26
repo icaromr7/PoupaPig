@@ -20,20 +20,43 @@ import { Button } from "../../components/Button";
 import { IconPicker } from "../../utils/bibli";
 import { CategoriaInt } from "../../interfaces";
 import { useAuth } from "../../context/AuthContext";
-import { postCategoriaPersonalizada } from "../../services/api";
+import {
+  postCategoriaPersonalizada,
+  putCategoriaPersonalizada,
+} from "../../services/api";
 
 const schema = yup.object().shape({
   nome: yup
     .string()
     .required("Campo obrigatório")
     .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
-  valor_minimo: yup.number().nullable().notRequired(),
-  valor_maximo: yup.number().nullable().notRequired(),
-  icone: yup.string().nullable(),
+  valor_minimo: yup
+    .number()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value
+    )
+    .default(0) // Retorna 0 se o valor for vazio ou nulo
+    .notRequired(),
+  valor_maximo: yup
+    .number()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value
+    )
+    .default(0) // Retorna 0 se o valor for vazio ou nulo
+    .notRequired(),
+  icone: yup
+    .string()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value
+    )
+    .default(null),
 });
 
 export function CategoryForm() {
-  const { addToast, setLoading, userCode, login } = useAuth();
+  const { addToast, setLoading, userCode } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const location = useLocation();
   const categoryData: CategoriaInt = location.state?.categoryData;
@@ -67,26 +90,39 @@ export function CategoryForm() {
   };
 
   const handleFormCategory = async (data: any) => {
-    console.log("data", data);
-    const combinedData = { ...data, usuario_id: Number(userCode) };
+    const params = new URLSearchParams(location.search);
+    const isEditing = params.get("editing") === "true";
+    const combinedData = {
+      ...data,
+      usuario_id: Number(userCode),
+      ...(categoryData && { id: categoryData.id }),
+    };
     console.log("Dados combinados:", combinedData);
-    try {
-      setLoading(true);
-      await postCategoriaPersonalizada(combinedData);
-      navigate("/category-list");
-    } catch (error: any) {
-      if (error.response && error.response.data) {
+
+    if (isEditing) {
+      console.log("entrei no put");
+      try {
+        setLoading(true);
+        await putCategoriaPersonalizada(combinedData);
+        navigate("/category-list");
+      } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.response.data, type: "error" });
-      } else {
-        console.error("Erro desconhecido:", error);
-        addToast({
-          message: "Erro desconhecido ao enviar os dados",
-          type: "error",
-        });
+        addToast({ message: error.message, type: "error" });
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      console.log("entrei no post");
+      try {
+        setLoading(true);
+        await postCategoriaPersonalizada(combinedData);
+        navigate("/category-list");
+      } catch (error: any) {
+        console.error("Erro da API:", error.response.data);
+        addToast({ message: error.message, type: "error" });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
