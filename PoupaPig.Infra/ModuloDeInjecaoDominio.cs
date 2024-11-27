@@ -55,6 +55,7 @@ namespace PoupaPig.Dominio
             services.AddScoped<ServicoTransacaoMetaInvestimento>();
             services.AddScoped<ServicoUsuario>();
             services.AddScoped<ServicoLogin>();
+            services.AddScoped<ServicoMetaInvestimentoDetalhes>();
             services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
             services.AddScoped<IRepositorioTransacao, RepositorioTransacao>();
             services.AddScoped<IRepositorioQuestionario, RepositorioQuestionario>();
