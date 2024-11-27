@@ -1,8 +1,6 @@
 ﻿using LinqToDB;
 using PoupaPig.Dominio.Categorias;
 using PoupaPig.Dominio.Categorias.Servicos;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PoupaPig.Infra.Categorias
 {
@@ -26,6 +24,7 @@ namespace PoupaPig.Infra.Categorias
         public void Atualizar(CategoriaPadrao dados)
         {
             var categoriaExistente = _dataConnection.GetTable<CategoriaPadrao>().FirstOrDefault(c => c.id == dados.id);
+            dados.nome_id = categoriaExistente.nome_id;
             if (categoriaExistente != null)
             {
                 _dataConnection.Update(dados);

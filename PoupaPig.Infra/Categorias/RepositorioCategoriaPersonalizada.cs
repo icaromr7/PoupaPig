@@ -51,9 +51,9 @@ namespace PoupaPig.Infra.Categorias
                 .Where(c=> c.usuario_id == usuarioId)
                 .ToList();
         }
-        public CategoriaPersonalizada ObterPorNome(string nome)
+        public CategoriaPersonalizada ObterPorNome(string nome, int usuarioId)
         {
-            return _dataConnection.GetTable<CategoriaPersonalizada>().FirstOrDefault(c => c.nome == nome);
+            return _dataConnection.GetTable<CategoriaPersonalizada>().FirstOrDefault(c => c.nome == nome && c.usuario_id == usuarioId);
         }
     }
 }
