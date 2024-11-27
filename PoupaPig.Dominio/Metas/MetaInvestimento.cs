@@ -19,7 +19,7 @@ namespace PoupaPig.Dominio.Metas
         public DateTime data_criacao { get; set; } = DateTime.Now;
 
         [Column(Name = "data_resgate")]
-        public DateTime data_resgate { get; set; }
+        public DateTime? data_resgate { get; set; }
 
         [Column(Name = "tipo_objetivo_id")]
         public int tipo_objetivo_id { get; set; }
