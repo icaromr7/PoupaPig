@@ -30,7 +30,7 @@ const TextField: React.FC<TextFieldProps> = ({
       <SelectBox $isFixed={fixedValue !== undefined && !isEditing}>
         <textarea
           placeholder={placeholder}
-          value={fixedValue || value || ""}
+          value={fixedValue && !isEditing ? fixedValue.toString() : undefined}
           rows={6}
           disabled={fixedValue !== undefined && !isEditing}
           {...(register && register(name))}

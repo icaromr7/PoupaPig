@@ -13,10 +13,8 @@ import ToolTipCustom from "../TooltipCustom";
 interface CustomSelectDateProps {
   placeholder: string;
   name: string;
-  register?: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
   error?: string;
-  required?: boolean;
   fixedValue?: string;
   isEditing?: boolean;
 }
@@ -24,10 +22,8 @@ interface CustomSelectDateProps {
 const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
   placeholder,
   name,
-  register,
   setValue,
   error,
-  required,
   fixedValue,
   isEditing,
 }) => {
@@ -39,7 +35,7 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
     if (fixedValue) {
       const defaultDate = new Date(fixedValue);
       setSelectedDate(defaultDate);
-      setValue(name, defaultDate);
+      setValue(name, defaultDate.toISOString()); // Converter para ISO 8601
     }
   }, [fixedValue, name, setValue]);
 
@@ -47,7 +43,7 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
     setSelectedDate(date);
     setIsOpen(false);
     if (date) {
-      setValue(name, date);
+      setValue(name, date.toISOString()); // Converter para ISO 8601
     }
   };
 
@@ -82,7 +78,9 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
         $isFixed={fixedValue !== undefined && !isEditing}
       >
         <span>
-          {selectedDate ? selectedDate.toLocaleDateString() : placeholder}
+          {selectedDate
+            ? selectedDate.toLocaleDateString("pt-BR") // Exibe como DD/MM/AAAA
+            : placeholder}
         </span>
         <KeyboardArrowDownIcon style={{ color: theme.colors.blue038 }} />
         {error && (

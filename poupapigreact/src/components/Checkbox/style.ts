@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
+export const Line = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;

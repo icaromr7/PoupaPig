@@ -177,10 +177,10 @@ export const getNomeTipoInvestimento = async () => {
 // };
 
 //NOME TIPO OBJETIVO:
-// export const getNomeTipoObjetivo = async () => {
-//   const response = await api.get("/NomeTipoObjetivo");
-//   return response.data;
-// };
+export const getNomeTipoObjetivo = async () => {
+  const response = await api.get("/NomeTipoObjetivo");
+  return response.data;
+};
 // export const getNomeTipoObjetivoById = async (id: string | number) => {
 //   const response = await api.get(`/NomeTipoObjetivo/${id}`);
 //   return response.data;

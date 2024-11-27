@@ -33,8 +33,11 @@ export const FormRegister = styled.div`
 `;
 
 export const Line = styled.div`
+  width: 100%;
   display: flex;
   gap: 10px;
+
+  position: relative;
 `;
 
 export const FormRegisterRight = styled.div`
@@ -73,5 +76,4 @@ export const FirtsColumn = styled.div`
 export const ErrorDiv = styled.div`
   position: absolute;
   right: -30px;
-  top: 40px;
 `;

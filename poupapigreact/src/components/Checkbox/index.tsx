@@ -1,54 +1,63 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import {
+  Line,
   CheckboxContainer,
   HiddenCheckbox,
   StyledCheckbox,
   Label,
 } from "./style";
+import { GenericData } from "../../interfaces";
 
-interface CheckboxProps {
-  label: string;
+interface CheckboxSelectProps {
   name: string;
-  checked?: boolean;
-  onChange: (checked: boolean) => void;
-  register?: UseFormRegister<any>;
+  data: GenericData[];
   setValue?: UseFormSetValue<any>;
+  setInvestment: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
-  label,
+const CheckboxSelect: React.FC<CheckboxSelectProps> = ({
   name,
-  checked = false,
-  onChange,
-  register,
+  data,
   setValue,
+  setInvestment,
 }) => {
-  // Se `setValue` estiver presente, garante que o valor esteja sincronizado com o formulário
-  useEffect(() => {
-    if (setValue) {
-      setValue(name, checked);
-    }
-  }, [checked, name, setValue]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const handleCheckboxChange = () => {
-    onChange(!checked);
+  const handleCheckboxChange = (id: number) => {
+    const newValue = id === selectedId ? null : id;
+    setSelectedId(newValue);
+
     if (setValue) {
-      setValue(name, !checked); // Atualiza o valor do formulário
+      setValue(name, newValue);
+    }
+    if (id === 2) {
+      setInvestment(true);
+    } else {
+      setInvestment(false);
     }
   };
 
   return (
-    <CheckboxContainer>
-      <HiddenCheckbox
-        checked={checked}
-        onChange={handleCheckboxChange}
-        {...(register && register(name))}
-      />
-      <StyledCheckbox checked={checked} onClick={handleCheckboxChange} />
-      <Label onClick={handleCheckboxChange}>{label}</Label>
-    </CheckboxContainer>
+    <Line>
+      {data.map((item) => (
+        <CheckboxContainer key={item.id}>
+          <HiddenCheckbox
+            type="checkbox"
+            checked={selectedId === item.id}
+            onChange={() => handleCheckboxChange(item.id)}
+          />
+          <StyledCheckbox
+            checked={selectedId === item.id}
+            onClick={() => handleCheckboxChange(item.id)}
+          />
+          <Label onClick={() => handleCheckboxChange(item.id)}>
+            {item.nome}
+          </Label>
+        </CheckboxContainer>
+      ))}
+    </Line>
   );
 };
 
-export default Checkbox;
+export default CheckboxSelect;

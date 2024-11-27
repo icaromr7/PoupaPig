@@ -27,6 +27,7 @@ interface CustomSelectProps {
   required?: boolean;
   fixedValue?: string;
   isEditing?: boolean;
+  minus?: boolean;
   onSelect?: (option: string) => void;
   register?: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -41,6 +42,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   required,
   fixedValue,
   isEditing,
+  minus = false,
   // onSelect,
   register,
   setValue,
@@ -60,7 +62,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     setSelectedOption(option.nome);
     setIsOpen(false);
     // onSelect && onSelect(option.id);
-    setValue(name, option.id - 1, { shouldValidate: true });
+    if (minus) {
+      setValue(name, option.id - 1, { shouldValidate: true });
+    } else {
+      setValue(name, option.id, { shouldValidate: true });
+    }
   };
 
   useEffect(() => {

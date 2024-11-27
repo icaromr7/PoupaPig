@@ -68,6 +68,10 @@ export function InvestmentGoalList() {
     setModalDelete(false);
   };
 
+  const handleInvestmentGoalForm = () => {
+    navigate("/investment-goal-form");
+  };
+
   const itemInvestment = (data: any, key: any) => {
     return (
       <ContainerItem>
@@ -162,7 +166,11 @@ export function InvestmentGoalList() {
           </Information>
         </InfoColumn>
         <ButtonsDiv>
-          <Button title="Adicionar investimento ou meta" minWidth="300px" />
+          <Button
+            title="Adicionar investimento ou meta"
+            minWidth="300px"
+            onClick={handleInvestmentGoalForm}
+          />
         </ButtonsDiv>
       </MainColumn>
       {modalDelete && (

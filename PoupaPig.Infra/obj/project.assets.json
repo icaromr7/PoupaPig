@@ -339,19 +339,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\VITORYA\\.nuget\\packages\\": {}
+    "C:\\Users\\drmais\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
+      "projectUniqueName": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
       "projectName": "PoupaPig.Infra",
-      "projectPath": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
-      "packagesPath": "C:\\Users\\VITORYA\\.nuget\\packages\\",
-      "outputPath": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Infra\\obj\\",
+      "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\PoupaPig.Infra.csproj",
+      "packagesPath": "C:\\Users\\drmais\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Infra\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\VITORYA\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\drmais\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -363,8 +363,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
-              "projectPath": "E:\\ADS\\6 Periodo\\PI\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj"
+            "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj": {
+              "projectPath": "C:\\Users\\drmais\\Desktop\\Vitorya\\PoupaPig\\PoupaPig.Dominio\\PoupaPig.Dominio.csproj"
             }
           }
         }

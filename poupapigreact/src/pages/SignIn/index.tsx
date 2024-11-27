@@ -286,6 +286,7 @@ export function SignIn() {
             error={errosQuestionsOne.banheiros?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
 
           <CustomSelect
@@ -302,6 +303,7 @@ export function SignIn() {
             error={errosQuestionsOne.trabalhadores_domesticos?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
           <CustomSelect
             name="automoveis"
@@ -317,6 +319,7 @@ export function SignIn() {
             error={errosQuestionsOne.automoveis?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
           <CustomSelect
             name="microcomputadores"
@@ -332,6 +335,7 @@ export function SignIn() {
             error={errosQuestionsOne.microcomputadores?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
           <CustomSelect
             name="maquinas_lavar_roupa"
@@ -347,6 +351,7 @@ export function SignIn() {
             error={errosQuestionsOne.maquinas_lavar_roupa?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
           <CustomSelect
             name="geladeiras"
@@ -362,6 +367,7 @@ export function SignIn() {
             error={errosQuestionsOne.geladeiras?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
           <CustomSelect
             name="freezers"
@@ -377,6 +383,7 @@ export function SignIn() {
             error={errosQuestionsOne.freezers?.message}
             register={registerQuestionsOne}
             setValue={setValueQuestionsOne}
+            minus
           />
         </TopForm>
         <ButtonsDiv>
@@ -422,6 +429,7 @@ export function SignIn() {
             error={errosQuestionsTwo.dvds?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="fornos_microondas"
@@ -437,6 +445,7 @@ export function SignIn() {
             error={errosQuestionsTwo.fornos_microondas?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="motocicletas"
@@ -452,6 +461,7 @@ export function SignIn() {
             error={errosQuestionsTwo.motocicletas?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="maquinas_secar_roupa"
@@ -467,6 +477,7 @@ export function SignIn() {
             error={errosQuestionsTwo.maquinas_secar_roupa?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="grau_instrucao"
@@ -485,6 +496,7 @@ export function SignIn() {
             error={errosQuestionsTwo.grau_instrucao?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="origem_agua"
@@ -498,6 +510,7 @@ export function SignIn() {
             error={errosQuestionsTwo.origem_agua?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="tipo_rua"
@@ -510,6 +523,7 @@ export function SignIn() {
             error={errosQuestionsTwo.tipo_rua?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
           <CustomSelect
             name="salario"
@@ -526,6 +540,7 @@ export function SignIn() {
             error={errosQuestionsTwo.salario?.message}
             register={registerQuestionsTwo}
             setValue={setValueQuestionsTwo}
+            minus
           />
         </TopForm>
         <ButtonsDiv>

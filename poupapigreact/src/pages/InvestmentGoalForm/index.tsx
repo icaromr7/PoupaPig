@@ -30,6 +30,7 @@ import ToolTipCustom from "../../components/TooltipCustom";
 import {
   getBancos,
   getNomeTipoInvestimento,
+  getNomeTipoObjetivo,
   getRecorrencia,
   postMetaInvestimento,
   putMetaInvestimento,
@@ -42,16 +43,20 @@ const schema = yup.object().shape({
     .required("Campo obrigatório")
     .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
   valor_desejado: yup
-    .string()
-    .required("Campo obrigatório")
-    .matches(/^[0-9]*$/, "Apenas números são permitidos"),
+    .number()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value
+    )
+    .default(0)
+    .notRequired(),
+  banco_id: yup.number().required("Campo obrigatório"),
+  recorrencia_pretendida_id: yup.number().required("Campo obrigatório"),
+  tipo_objetivo_id: yup.number().required("Campo obrigatório"),
+  tipo_investimento_id: yup.number().nullable().notRequired(),
   data_resgate: yup.string().nullable().notRequired(),
-  tipo_objetivo_id: yup.string().required("Campo obrigatório"),
-  tipo_investimento_id: yup.string().nullable().notRequired(),
-  banco_id: yup.string().required("Campo obrigatório"),
-  recorrencia_pretendida_id: yup.string().required("Campo obrigatório"),
-  porcentagem_rendimento: yup.string().nullable().notRequired(),
-  tipo_taxa_juros_id: yup.string().nullable().notRequired(),
+  porcentagem_rendimento: yup.number().nullable().notRequired(),
+  tipo_taxa_juros_id: yup.number().nullable().notRequired(),
   observacao: yup.string().nullable().notRequired(),
 });
 
@@ -62,16 +67,13 @@ export function InvestmentGoalForm() {
   const investmentGoalData: InvestimentoMetaInt =
     location.state?.investmentGoalData;
   const navigate = useNavigate();
-  // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [investment, setInvestment] = useState<boolean>(false);
-  const [goal, setGoal] = useState<boolean>(false);
-  const data = ["Opção 1", "Opção 2", "Opção 3", "Opção 4", "Opção 5"];
-  // const [textValue, setTextValue] = useState<string>("");
   const [recorrencias, setRecorrencias] = useState<GenericData[]>([]);
   const [bancos, setBancos] = useState<GenericData[]>([]);
   const [tiposInvestimentos, setTiposInvestimentos] = useState<GenericData[]>(
     []
   );
+  const [tipoObjetivo, setTipoObjetivo] = useState<GenericData[]>([]);
 
   const {
     register,
@@ -82,34 +84,7 @@ export function InvestmentGoalForm() {
     resolver: yupResolver(schema),
   });
 
-  // const handleTextChange = (value: string) => {
-  //   setTextValue(value);
-  // };
-
-  // const handleDateChange = (date: Date | null) => {
-  //   setSelectedDate(date);
-  //   console.log("Data selecionada:", date);
-  // };
-
-  const handleInvestment = (checked: boolean) => {
-    if (checked) {
-      setInvestment(true);
-      setGoal(false);
-    } else {
-      setInvestment(false);
-    }
-  };
-
-  const handleGoal = (checked: boolean) => {
-    if (checked) {
-      setGoal(true);
-      setInvestment(false);
-    } else {
-      setGoal(false);
-    }
-  };
-
-  const handleInvestmentGoalList = async () => {
+  const handleInvestmentGoalList = async (data: any) => {
     const params = new URLSearchParams(location.search);
     const isEditing = params.get("editing") === "true";
     const combinedData = {
@@ -117,7 +92,7 @@ export function InvestmentGoalForm() {
       usuario_id: Number(userCode),
       ...(investmentGoalData && { id: investmentGoalData.id }),
     };
-    console.log("Dados combinados:", combinedData);
+    console.log("Dados combinados:", combinedData, isEditing);
 
     if (isEditing) {
       console.log("entrei no put");
@@ -149,10 +124,6 @@ export function InvestmentGoalForm() {
     navigate("/new-transaction");
   };
 
-  const handleSelect = (option: string) => {
-    console.log("option", option);
-  };
-
   const handleEditForm = () => {
     setIsEditing(true);
   };
@@ -166,6 +137,8 @@ export function InvestmentGoalForm() {
         setRecorrencias(recorrencia);
         const tipoInvestimento = await fetchTipoInvestimento();
         setTiposInvestimentos(tipoInvestimento);
+        const tipoObj = await getNomeTipoObjetivo();
+        setTipoObjetivo(tipoObj);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
       }
@@ -242,7 +215,6 @@ export function InvestmentGoalForm() {
             name="banco_id"
             placeholder="Banco"
             data={bancos}
-            onSelect={handleSelect}
             error={errors.banco_id?.message}
             register={register}
             setValue={setValue}
@@ -255,7 +227,6 @@ export function InvestmentGoalForm() {
             name="recorrencia_pretendida_id"
             placeholder="Recorrência pretendida"
             data={recorrencias}
-            onSelect={handleSelect}
             error={errors.recorrencia_pretendida_id?.message}
             register={register}
             setValue={setValue}
@@ -265,28 +236,14 @@ export function InvestmentGoalForm() {
             }
             isEditing={isEditing}
           />
-          {/* <CustomSelectDate
-            placeholder="Data limite"
-            onDateChange={handleDateChange}
-          /> */}
           <Line style={{ alignSelf: "center", gap: 100 }}>
             <Checkbox
-              label="Investimento"
-              name="investment"
-              checked={investment}
-              onChange={handleInvestment}
-              register={register}
+              name="tipo_objetivo_id"
+              data={tipoObjetivo}
               setValue={setValue}
+              setInvestment={setInvestment}
             />
-            <Checkbox
-              label="Meta"
-              name="goal"
-              checked={goal}
-              onChange={handleGoal}
-              register={register}
-              setValue={setValue}
-            />
-            {errors.tipo_investimento_id?.message && (
+            {errors.tipo_objetivo_id?.message && (
               <ErrorDiv>
                 <ErrorOutlineIcon
                   style={{
@@ -295,11 +252,11 @@ export function InvestmentGoalForm() {
                     height: 20,
                   }}
                   className="error-circle"
-                  data-tooltip-id={`tooltip-error-input-tipo_investimento_id`}
+                  data-tooltip-id={`tooltip-error-input-tipo_objetivo_id`}
                 />
                 <ToolTipCustom
-                  title={errors.tipo_investimento_id?.message}
-                  id={`tooltip-error-input-tipo_investimento_id`}
+                  title={errors.tipo_objetivo_id?.message}
+                  id={`tooltip-error-input-tipo_objetivo_id`}
                 />
               </ErrorDiv>
             )}
@@ -311,7 +268,6 @@ export function InvestmentGoalForm() {
                 name="tipo_investimento_id"
                 placeholder="Tipo de investimento"
                 data={tiposInvestimentos}
-                onSelect={handleSelect}
                 error={errors.tipo_investimento_id?.message}
                 register={register}
                 setValue={setValue}
@@ -325,7 +281,6 @@ export function InvestmentGoalForm() {
                 name="data_resgate"
                 placeholder="Data permitida para retirada"
                 error={errors.data_resgate?.message}
-                register={register}
                 setValue={setValue}
                 fixedValue={
                   investmentGoalData && String(investmentGoalData.data_resgate)
@@ -348,8 +303,7 @@ export function InvestmentGoalForm() {
                 <CustomSelect
                   name="tipo_taxa_juros_id"
                   placeholder="Tipo de taxa"
-                  data={data}
-                  onSelect={handleSelect}
+                  data={recorrencias}
                   error={errors.tipo_taxa_juros_id?.message}
                   register={register}
                   setValue={setValue}
