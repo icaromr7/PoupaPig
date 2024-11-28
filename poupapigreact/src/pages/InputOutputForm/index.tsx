@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -42,7 +42,22 @@ import TextField from "../../components/TextField";
 import { Button } from "../../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import ToolTipCustom from "../../components/TooltipCustom";
-import { TransacaoInt } from "../../interfaces";
+import {
+  CategoriaInt,
+  GenericData,
+  InvestimentoMetaInt,
+  TransacaoInt,
+} from "../../interfaces";
+import { useAuth } from "../../context/AuthContext";
+import {
+  getBancos,
+  getCategoriaPadrao,
+  getCategoriaPersonalizada,
+  getMetaInvestimento,
+  getNomeCategoriaPadrao,
+  getRecorrencia,
+  getTipoPagamento,
+} from "../../services/api";
 
 const schema = yup.object().shape({
   nome: yup
@@ -72,6 +87,7 @@ const schema = yup.object().shape({
 });
 
 export function InputOutputForm() {
+  const { addToast, setLoading, userCode } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const location = useLocation();
   const transactionData: TransacaoInt = location.state?.transactionData || {};
@@ -87,6 +103,14 @@ export function InputOutputForm() {
   const [sentiment, setSentiment] = useState<
     "happy" | "anxious" | "sad" | undefined
   >(undefined);
+
+  const [categorias, setCategorias] = useState<GenericData[]>([]);
+  const [bancos, setBancos] = useState<GenericData[]>([]);
+  const [tiposPagamentos, setTiposPagamentos] = useState<GenericData[]>([]);
+  const [recorrencias, setRecorrencias] = useState<GenericData[]>([]);
+  const [metasInvestimentos, setMetasInvestimentos] = useState<GenericData[]>(
+    []
+  );
 
   const {
     register,
@@ -153,6 +177,142 @@ export function InputOutputForm() {
     setIsEditing(true);
   };
 
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        setLoading(true);
+        const categoria = await fetchCategorias();
+        setCategorias(categoria || []);
+        const banco = await fetchBancos();
+        setBancos(banco);
+        const tipoPag = await fetchTipoPagamento();
+        setTiposPagamentos(tipoPag);
+        const recorrencia = await fetchRecorrencia();
+        setRecorrencias(recorrencia);
+        const investimento = await fetchInvestimentos();
+        setMetasInvestimentos(investimento);
+      } catch (error) {
+        console.error("Erro ao buscar itens:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, [userCode]);
+
+  const fetchCategorias = async () => {
+    if (!userCode) {
+      return [];
+    }
+
+    if (userCode) {
+      try {
+        setLoading(true);
+
+        // Obtemos as categorias padrão e os nomes
+        const categorias = await getCategoriaPadrao();
+        console.log("categorias", categorias);
+        const nomesCat = await getNomeCategoriaPadrao();
+        const nomePorId = new Map(
+          nomesCat.map((nomeCat: any) => [
+            nomeCat.id,
+            nomeCat.nome,
+            nomeCat.padrao,
+          ])
+        );
+
+        // Transformamos as categorias padrão para conter apenas id e nome
+        const categoriasComNomes = categorias.map((categoria: any) => ({
+          id: categoria.id,
+          nome: nomePorId.get(categoria.nome_id),
+          padrao: categoria.padrao,
+        }));
+
+        // Obtemos as categorias personalizadas e transformamos também
+        const categoriasPersonalizadas = await getCategoriaPersonalizada(
+          Number(userCode)
+        );
+        const categoriasPersonalizadasSimplificadas =
+          categoriasPersonalizadas.map((categoria: any) => ({
+            id: categoria.id,
+            nome: categoria.nome,
+          }));
+
+        // Retornamos o array combinado, contendo apenas id e nome
+        return [
+          ...categoriasComNomes,
+          ...categoriasPersonalizadasSimplificadas,
+        ];
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias padrões", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const fetchBancos = async () => {
+    try {
+      const data = await getBancos();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchTipoPagamento = async () => {
+    try {
+      const data = await getTipoPagamento();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchRecorrencia = async () => {
+    try {
+      const data = await getRecorrencia();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchInvestimentos = async () => {
+    if (userCode) {
+      try {
+        setLoading(true);
+        const metaInvestimento = await getMetaInvestimento();
+        return metaInvestimento.map(({ id, nome }: InvestimentoMetaInt) => ({
+          id,
+          nome,
+        }));
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias padrões", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <Container>
       <Title>Lançamentos na conta</Title>
@@ -179,7 +339,7 @@ export function InputOutputForm() {
             <CustomSelect
               name="categoria_id"
               placeholder="Categoria"
-              data={["Categoria 1", "Categoria 2"]}
+              data={categorias}
               onSelect={handleSelect}
               error={errors.categoria_id?.message}
               register={register}
@@ -192,7 +352,7 @@ export function InputOutputForm() {
             <CustomSelect
               name="banco_id"
               placeholder="Banco"
-              data={["Banco 1", "Banco 1"]}
+              data={bancos}
               onSelect={handleSelect}
               error={errors.banco_id?.message}
               register={register}
@@ -203,7 +363,7 @@ export function InputOutputForm() {
             <CustomSelect
               name="tipo_pagamento_id"
               placeholder="Forma de pagamento"
-              data={tipo_pagamento}
+              data={tiposPagamentos}
               onSelect={handleSelectPayment}
               error={errors.tipo_pagamento_id?.message}
               register={register}
@@ -232,7 +392,7 @@ export function InputOutputForm() {
               <CustomSelect
                 name="recorrencia_id"
                 placeholder="Recorrência"
-                data={["Recorrência 1", "Recorrência 2"]}
+                data={recorrencias}
                 onSelect={handleSelect}
                 error={errors.recorrencia_id?.message}
                 register={register}
@@ -475,17 +635,16 @@ export function InputOutputForm() {
                 name="data_transacao"
                 placeholder="Data da transação"
                 error={errors.data_transacao?.message}
-                register={register}
                 setValue={setValue}
-                fixedValue={
-                  transactionData && String(transactionData.data_transacao)
-                }
+                // fixedValue={
+                //   transactionData && String(transactionData.data_transacao)
+                // }
                 isEditing={isEditing}
               />
               <CustomSelect
                 name="meta_investimento_id"
                 placeholder="Relacionar com investimento/meta:"
-                data={["Investimento 1", "Meta 2"]}
+                data={metasInvestimentos}
                 onSelect={handleSelect}
                 error={errors.meta_investimento_id?.message}
                 register={register}

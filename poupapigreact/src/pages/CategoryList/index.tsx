@@ -61,15 +61,12 @@ export function CategoryList() {
       if (userCode) {
         try {
           setLoading(true);
-          //categorias padrão do sistema
           const categorias = await getCategoriaPadrao();
           const nomesCat = await getNomeCategoriaPadrao();
-          // Criando um mapa para acelerar a busca de nomes por id
           const nomePorId = new Map(
             nomesCat.map((nomeCat: any) => [nomeCat.id, nomeCat.nome])
           );
 
-          // Substituindo nome_id pelo nome correspondente
           const categoriasComNomes = categorias.map((categoria: any) => {
             const nome = nomePorId.get(categoria.nome_id);
             return {
@@ -81,7 +78,6 @@ export function CategoryList() {
             };
           });
 
-          // Atualizando as categorias
           setCategorias(categoriasComNomes);
 
           const categoriasPersonalizadas = await getCategoriaPersonalizada(

@@ -8,6 +8,7 @@ export interface TransactionData {
 export interface GenericData {
   id: number;
   nome: string;
+  padrao?: boolean;
 }
 
 export interface UserInt {
@@ -25,6 +26,7 @@ export interface CategoriaInt {
   valor_minimo?: number;
   valor_maximo?: number;
   usuario_id?: number;
+  padrao?: boolean;
 }
 
 export interface TransacaoInt {

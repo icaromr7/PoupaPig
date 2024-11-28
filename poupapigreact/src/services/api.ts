@@ -55,13 +55,23 @@ export const getCartoes = async () => {
 
 //CATEGORIA PADRÃO:
 export const getCategoriaPadrao = async () => {
-  const response = await api.get("/CategoriaPadrao");
-  return response.data;
+  try {
+    const response = await api.get("/CategoriaPadrao");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar categorias:", error);
+    throw error;
+  }
 };
-// export const getCategoriaPadraoById = async (id: string | number) => {
-//   const response = await api.get(`/CategoriaPadrao/${id}`);
-//   return response.data;
-// };
+export const getCategoriaPadraoById = async (id: number) => {
+  try {
+    const response = await api.get(`/CategoriaPadrao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar categoria:", error);
+    throw error;
+  }
+};
 
 //CATEGORIA PERSONALIZADA:
 export const postCategoriaPersonalizada = async (dados: any) => {
@@ -315,11 +325,36 @@ export const getRecorrenciaById = async (id: number) => {
 //   return response.data;
 // };
 
+//TIPO PAGAMENTO:
+export const getTipoPagamento = async () => {
+  try {
+    const response = await api.get("/TipoPagamento");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
+export const getTipoPagamentoById = async (id: number) => {
+  try {
+    const response = await api.get(`/TipoPagamento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
+
 //TIPO TRANSACAO:
-// export const getTipoTransacao = async () => {
-//   const response = await api.get("/TipoTransacao");
-//   return response.data;
-// };
+export const getTipoTransacao = async () => {
+  try {
+    const response = await api.get("/TipoTransacao");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
 // export const getTipoTransacaoById = async (id: string | number) => {
 //   const response = await api.get(`/TipoTransacao/${id}`);
 //   return response.data;

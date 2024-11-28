@@ -144,6 +144,7 @@ export function InvestmentGoalForm() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        setLoading(true);
         const banco = await fetchBancos();
         setBancos(banco);
         const recorrencia = await fetchRecorrencia();
@@ -154,6 +155,8 @@ export function InvestmentGoalForm() {
         setTipoObjetivo(tipoObj);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
