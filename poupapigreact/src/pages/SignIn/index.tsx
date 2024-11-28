@@ -32,6 +32,8 @@ import Input from "../../components/Input";
 import ImageUploader from "../../components/ImageUploader";
 import { Button } from "../../components/Button";
 import CustomSelect from "../../components/CustomSelect";
+import { useAuth } from "../../context/AuthContext";
+import { postUsuario } from "../../services/api";
 
 const schemaSignIn = yup.object().shape({
   nome_completo: yup
@@ -58,6 +60,7 @@ const schemaSignIn = yup.object().shape({
     .string()
     .oneOf([yup.ref("senha")], "As senhas devem ser iguais")
     .required("Campo obrigatório"),
+  foto_perfil: yup.mixed().nullable(),
 });
 
 const schemaQuestionsPartOne = yup.object().shape({
@@ -83,6 +86,7 @@ const schemaQuestionsPartTwo = yup.object().shape({
 
 export function SignIn() {
   const navigate = useNavigate();
+  const { addToast, setLoading } = useAuth();
   const [currentBody, setCurrentBody] = useState<
     "data" | "questions1" | "questions2"
   >("data");
@@ -137,8 +141,23 @@ export function SignIn() {
   };
 
   const onSubmitSignIn = (data: any) => {
-    console.log("Dados do formulário:", data);
-    setCurrentBody("questions1");
+    const dadosUsuario = {
+      nome_completo: data.nome_completo,
+      email: data.email,
+      senha: data.senha,
+      foto_perfil: data.foto_perfil,
+    };
+    try {
+      setLoading(true);
+      console.log("data", dadosUsuario);
+      postUsuario(data);
+      setCurrentBody("questions1");
+    } catch (error: any) {
+      addToast({ message: error.message, type: "error" });
+      console.error("Erro ao fazer sign-in:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSelect = (option: string) => {
@@ -198,7 +217,7 @@ export function SignIn() {
                 register={registerSignIn}
               />
             </InputDiv>
-            <ImageUploader />
+            <ImageUploader register={registerSignIn("foto_perfil")} />
           </BottomForm>
         </Form>
         <ButtonsDiv>

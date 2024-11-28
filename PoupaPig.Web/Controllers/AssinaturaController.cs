@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoupaPig.Dominio.Assinaturas;
 using PoupaPig.Dominio.Assinaturas.Servicos;
-using System.Collections.Generic;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -47,6 +46,13 @@ public class AssinaturaController : ControllerBase
     public IActionResult ObterTodas()
     {
         List<Assinatura> assinaturas = _servicoAssinatura.ObterTodas();
+        return Ok(assinaturas);
+    }
+    
+    [HttpGet("usuario/{usuarioId}")]
+    public IActionResult ObterAssinaturasPorUsuario(int usuarioId)
+    {
+        var assinaturas = _servicoAssinatura.ObterAssinaturasPorUsuario(usuarioId);
         return Ok(assinaturas);
     }
 }

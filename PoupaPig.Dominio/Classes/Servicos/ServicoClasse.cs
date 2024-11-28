@@ -42,5 +42,10 @@ namespace PoupaPig.Dominio.Classes.Servicos
         {
             return _repositorioClasse.ObterTodas();
         }
+
+        public List<Classe> ObterClassesPorUsuario(int usuarioId)
+        {
+            return _repositorioClasse.ObterClassesPorUsuario(usuarioId);
+        }
     }
 }

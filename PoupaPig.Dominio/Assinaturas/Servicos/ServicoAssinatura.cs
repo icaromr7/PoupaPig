@@ -1,7 +1,4 @@
-﻿using PoupaPig.Dominio.Assinaturas;
-using System.Collections.Generic;
-
-namespace PoupaPig.Dominio.Assinaturas.Servicos
+﻿namespace PoupaPig.Dominio.Assinaturas.Servicos
 {
     public class ServicoAssinatura
     {
@@ -41,6 +38,10 @@ namespace PoupaPig.Dominio.Assinaturas.Servicos
         public List<Assinatura> ObterTodas()
         {
             return _repositorioAssinatura.ObterTodas();
+        }
+        public List<Assinatura> ObterAssinaturasPorUsuario(int usuarioId)
+        {
+            return _repositorioAssinatura.ObterAssinaturasPorUsuario(usuarioId);
         }
     }
 }

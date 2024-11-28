@@ -131,6 +131,10 @@ export const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const BenefitContainer = styled.div`
@@ -188,6 +192,10 @@ export const NameBenefit = styled.div`
 
 export const Side = styled.div`
   width: 48%;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const Title = styled.div`
@@ -283,4 +291,12 @@ export const TotalCategory = styled.div`
   color: ${theme.colors.black171};
   font-size: 12px;
   font-weight: ${theme.fonts.fontWeightRegular};
+`;
+
+export const RowProfile = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
 `;

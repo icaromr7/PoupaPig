@@ -7,5 +7,6 @@
         void Criar(Cartao dados);
         void Atualizar(Cartao dados);
         void Excluir(int id);
+        List<Cartao> ObterCartoesPorUsuario(int usuarioId);
     }
 }

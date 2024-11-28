@@ -7,5 +7,6 @@
         void Criar(Banco dados);
         void Atualizar(Banco dados);
         void Excluir(int id);
+        List<Banco> ObterBancosPorUsuario(int usuarioId);
     }
 }

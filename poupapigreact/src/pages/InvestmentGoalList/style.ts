@@ -27,6 +27,10 @@ export const InfoColumn = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const Image = styled.img`

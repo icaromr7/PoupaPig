@@ -42,5 +42,9 @@ namespace PoupaPig.Dominio.Cartoes.Servicos
         {
             return _repositorioCartao.ObterTodas();
         }
+        public List<Cartao> ObterCartoesPorUsuario(int usuarioId)
+        {
+            return _repositorioCartao.ObterCartoesPorUsuario(usuarioId);
+        }
     }
 }

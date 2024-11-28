@@ -1,36 +1,42 @@
-﻿using System;
+﻿using PoupaPig.Dominio.Categorias;
+using PoupaPig.Dominio.Categorias.Servicos;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PoupaPig.Dominio.Categorias.Servicos
 {
-    public class ServicoNomeCategoriaPadrao : IServicoNomeCategoriaPadrao
+    public class ServicoNomeCategoriaPadrao
     {
-        public void Atualizar(NomeCategoriaPadrao dados)
+        private readonly IRepositorioNomeCategoriaPadrao _repositorio;
+
+        // Injetando o repositório através do construtor
+        public ServicoNomeCategoriaPadrao(IRepositorioNomeCategoriaPadrao repositorio)
         {
-            throw new NotImplementedException();
+            _repositorio = repositorio;
         }
 
         public void Criar(NomeCategoriaPadrao dados)
         {
-            throw new NotImplementedException();
+            _repositorio.Criar(dados);
+        }
+
+        public void Atualizar(NomeCategoriaPadrao dados)
+        {
+            _repositorio.Atualizar(dados);
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _repositorio.Excluir(id);
         }
 
         public NomeCategoriaPadrao ObterPorId(int id)
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterPorId(id);
         }
 
         public List<NomeCategoriaPadrao> ObterTodas()
         {
-            throw new NotImplementedException();
+            return _repositorio.ObterTodas();
         }
     }
 }

@@ -20,6 +20,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //importações internas
 import Input from "../../components/Input";
 import { Button } from "../../components/Button";
+import { useAuth } from "../../context/AuthContext";
+import { getLogin } from "../../services/api";
 
 const schema = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
@@ -65,6 +67,7 @@ const schemaPassword = yup.object().shape({
 
 export function Login() {
   const navigate = useNavigate();
+  const { addToast } = useAuth();
   const [currentBody, setCurrentBody] = useState<
     "login" | "emailPassword" | "codePassword" | "newPassword"
   >("login");
@@ -103,6 +106,7 @@ export function Login() {
 
   const onSubmitLogin = (data: any) => {
     console.log("Dados do formulário:", data);
+    // const user = getLogin(data)
     navigate("/home");
   };
 
@@ -133,8 +137,14 @@ export function Login() {
     }
   };
 
-  const handleSignIn = () => {
-    navigate("/sign-in");
+  const handleSignIn = async () => {
+    try {
+      // const user = await getLogin();
+      navigate("/sign-in");
+    } catch (error: any) {
+      addToast({ message: error.message, type: "error" });
+      console.error("Erro ao fazer login:", error);
+    }
   };
 
   const bodyLogin = (

@@ -2,10 +2,11 @@
 {
     public interface IRepositorioCategoriaPersonalizada
     {
-        List<CategoriaPersonalizada> ObterTodas();
+        List<CategoriaPersonalizada> ObterTodas(int usuarioId);
         CategoriaPersonalizada ObterPorId(int id);
         void Criar(CategoriaPersonalizada dados);
         void Atualizar(CategoriaPersonalizada dados);
         void Excluir(int id);
+        CategoriaPersonalizada ObterPorNome(string nome, int usuarioId);
     }
 }

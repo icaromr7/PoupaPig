@@ -9,16 +9,19 @@ namespace PoupaPig.Dominio.Categorias
         [Column(Name = "id")]
         public int id { get; set; }
 
-        [Column(Name = "nome")]
+        [Column(Name = "nome_id")]
         public int nome_id { get; set; }
 
         [Column(Name = "icone")]
         public string icone { get; set; }
 
         [Column(Name = "valor_minimo")]
-        public decimal valor_minimo { get; set; }
+        public decimal? valor_minimo { get; set; }
 
         [Column(Name = "valor_maximo")]
-        public decimal valor_maximo { get; set; }
+        public decimal? valor_maximo { get; set; }
+
+        [Column(Name = "padrao")]
+        public bool padrao {  get; set; }
     }
 }

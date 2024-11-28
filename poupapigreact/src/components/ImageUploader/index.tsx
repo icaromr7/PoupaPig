@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
-//style, assets e icons
+// Estilos e temas
 import {
   Container,
-  Label,
   HiddenInput,
   ImageInputContainer,
   ImagePreview,
 } from "./style";
 import theme from "../../styles/theme";
 
-const ImageUploader: React.FC = () => {
+type ImageUploaderProps = {
+  register: UseFormRegisterReturn; // Para integrar com React Hook Form
+};
+
+const ImageUploader: React.FC<ImageUploaderProps> = ({ register }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +31,12 @@ const ImageUploader: React.FC = () => {
         type="file"
         accept="image/*"
         id="file-upload"
-        onChange={handleImageChange}
+        onChange={(e) => {
+          handleImageChange(e); // Atualiza a pré-visualização
+          register.onChange(e); // Integra ao React Hook Form
+        }}
+        ref={register.ref} // Integra ao React Hook Form
+        name={register.name} // Integra ao React Hook Form
       />
       <ImageInputContainer>
         {imagePreview ? (
@@ -39,6 +48,7 @@ const ImageUploader: React.FC = () => {
               fontSize: 40,
               fontWeight: 700,
               color: theme.colors.blue038,
+              cursor: "pointer",
             }}
           >
             +

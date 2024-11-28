@@ -1,5 +1,4 @@
 ﻿using LinqToDB.Mapping;
-using System;
 
 namespace PoupaPig.Dominio.Usuarios
 {
@@ -19,10 +18,7 @@ namespace PoupaPig.Dominio.Usuarios
         [Column(Name = "senha")] // Nome da coluna no banco de dados
         public string senha { get; set; }
 
-        [Column(Name = "foto_erfil")] // Nome da coluna no banco de dados
-        public string foto_erfil { get; set; }
-
         [Column(Name = "data_criacao")] // Nome da coluna no banco de dados
-        public DateTime data_criacao { get; set; }
+        public DateTime data_criacao { get; set; } = DateTime.Now;
     }
 }

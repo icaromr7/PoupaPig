@@ -34,6 +34,7 @@ namespace PoupaPig.Dominio.Metas.Servicos
             decimal valorTotalInvestido = transacoes.Sum(t => t.valor);
 
             // Calcular o valor total considerando os rendimentos (caso seja um investimento com rendimento)
+
             decimal valorTotalComRendimento = (metaInvestimento.porcentagem_rendimento ?? 0) > 0
                 ? valorTotalInvestido + (valorTotalInvestido * (metaInvestimento.porcentagem_rendimento ?? 0) / 100)
                 : valorTotalInvestido;

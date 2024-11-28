@@ -13,6 +13,7 @@ export const LoadingOverlay = styled.div`
   z-index: 1000;
 `;
 
+
 export const PulsingSvg = styled.img`
   display: flex;
   justify-content: center;
@@ -38,6 +39,7 @@ export const PulsingSvg = styled.img`
     100% {
       transform: scale(1);
       opacity: 1;
+
     }
   }
 `;

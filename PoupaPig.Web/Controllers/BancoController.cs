@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoupaPig.Dominio.Bancos;
 using PoupaPig.Dominio.Bancos.Servicos;
+using PoupaPig.Infra.Bancos;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -46,6 +47,13 @@ public class BancoController : ControllerBase
     public IActionResult ObterTodas()
     {
         List<Banco> bancos = _servicoBanco.ObterTodas();
+        return Ok(bancos);
+    }
+
+    [HttpGet("usuario/{usuarioId}")]
+    public IActionResult ObterBancosPorUsuario(int usuarioId)
+    {
+        var bancos = _servicoBanco.ObterBancosPorUsuario(usuarioId);
         return Ok(bancos);
     }
 }
