@@ -1,11 +1,15 @@
 import React from "react";
 
-import { LoadingOverlay, LoadingSpinner } from "./style";
+
+import { LoadingOverlay, PulsingSvg } from "./style";
+import Ok from "../../assets/svg/ok.svg";
+
 
 export const Loading: React.FC = () => {
   return (
     <LoadingOverlay>
-      <LoadingSpinner />
+      <PulsingSvg src={Ok} alt="Loading" />
+
     </LoadingOverlay>
   );
 };
