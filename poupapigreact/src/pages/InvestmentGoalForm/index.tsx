@@ -28,10 +28,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { GenericData, InvestimentoMetaInt } from "../../interfaces";
 import ToolTipCustom from "../../components/TooltipCustom";
 import {
+  getBancoById,
   getBancos,
   getNomeTipoInvestimento,
+  getNomeTipoInvestimentoById,
   getNomeTipoObjetivo,
+  getNomeTipoObjetivoById,
   getRecorrencia,
+  getRecorrenciaById,
   postMetaInvestimento,
   putMetaInvestimento,
 } from "../../services/api";
@@ -67,14 +71,21 @@ export function InvestmentGoalForm() {
   const investmentGoalData: InvestimentoMetaInt =
     location.state?.investmentGoalData;
   const navigate = useNavigate();
-  const [investment, setInvestment] = useState<boolean>(false);
+  const [investment, setInvestment] = useState<boolean>(
+    false || investmentGoalData?.tipo_objetivo_id === 2 ? true : false
+  );
   const [recorrencias, setRecorrencias] = useState<GenericData[]>([]);
   const [bancos, setBancos] = useState<GenericData[]>([]);
   const [tiposInvestimentos, setTiposInvestimentos] = useState<GenericData[]>(
     []
   );
   const [tipoObjetivo, setTipoObjetivo] = useState<GenericData[]>([]);
-
+  const [bancoEdit, setBancoEdit] = useState<GenericData>();
+  const [recorrenciaEdit, setRecorrenciaEdit] = useState<GenericData>();
+  const [tipoInvestimentoEdit, setTipoInvestimentoEdit] =
+    useState<GenericData>();
+  const [tipoTaxasJurosEdit, setTipoTaxasJurosEdit] = useState<GenericData>();
+  const [tipoObjetivoEdit, setTipoObjetivoEdit] = useState<GenericData>();
   const {
     register,
     handleSubmit,
@@ -92,13 +103,12 @@ export function InvestmentGoalForm() {
       usuario_id: Number(userCode),
       ...(investmentGoalData && { id: investmentGoalData.id }),
     };
-    console.log("Dados combinados:", combinedData, isEditing);
 
     if (isEditing) {
-      console.log("entrei no put");
       try {
         setLoading(true);
         await putMetaInvestimento(combinedData);
+        navigate("/investment-goal-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
         addToast({ message: error.message, type: "error" });
@@ -106,7 +116,6 @@ export function InvestmentGoalForm() {
         setLoading(false);
       }
     } else {
-      console.log("entrei no post");
       try {
         setLoading(true);
         await postMetaInvestimento(combinedData);
@@ -122,6 +131,10 @@ export function InvestmentGoalForm() {
 
   const handleCancelForm = () => {
     navigate("/new-transaction");
+  };
+
+  const handleBackForm = () => {
+    navigate("/investment-goal-list");
   };
 
   const handleEditForm = () => {
@@ -147,9 +160,61 @@ export function InvestmentGoalForm() {
     fetchItems();
   }, []);
 
+  useEffect(() => {
+    const fecthEditItems = async () => {
+      if (investmentGoalData) {
+        try {
+          setLoading(true);
+          const banco = await fetchBancosById(investmentGoalData.banco_id);
+          setBancoEdit(banco);
+          const recorrencia = await fetchRecorrenciaById(
+            investmentGoalData.recorrencia_pretendida_id
+          );
+          setRecorrenciaEdit(recorrencia);
+          if (investmentGoalData.tipo_investimento_id) {
+            const tipoInvestimento = await fetchTipoInvestimentoById(
+              investmentGoalData.tipo_investimento_id
+            );
+            setTipoInvestimentoEdit(tipoInvestimento);
+          }
+          if (investmentGoalData.tipo_taxa_juros_id) {
+            const tipoTaxa = await fetchRecorrenciaById(
+              investmentGoalData.tipo_taxa_juros_id
+            );
+            setTipoTaxasJurosEdit(tipoTaxa);
+          }
+          const tipoObj = await fetchTipoObjetivoById(
+            investmentGoalData.tipo_objetivo_id
+          );
+          setTipoObjetivoEdit(tipoObj);
+        } catch (error) {
+          console.error("Erro ao completar dados:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fecthEditItems();
+  }, [investmentGoalData]);
+
   const fetchBancos = async () => {
     try {
       const data = await getBancos();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchBancosById = async (id: number) => {
+    try {
+      const data = await getBancoById(id);
       return data;
     } catch (error: any) {
       addToast({
@@ -175,9 +240,51 @@ export function InvestmentGoalForm() {
     }
   };
 
+  const fetchRecorrenciaById = async (id: number) => {
+    try {
+      const data = await getRecorrenciaById(id);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
   const fetchTipoInvestimento = async () => {
     try {
       const data = await getNomeTipoInvestimento();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchTipoInvestimentoById = async (id: number) => {
+    try {
+      const data = await getNomeTipoInvestimentoById(id);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchTipoObjetivoById = async (id: number) => {
+    try {
+      const data = await getNomeTipoObjetivoById(id);
       return data;
     } catch (error: any) {
       addToast({
@@ -218,9 +325,7 @@ export function InvestmentGoalForm() {
             error={errors.banco_id?.message}
             register={register}
             setValue={setValue}
-            fixedValue={
-              investmentGoalData && String(investmentGoalData.banco_id)
-            }
+            fixedValue={investmentGoalData && bancoEdit}
             isEditing={isEditing}
           />
           <CustomSelect
@@ -230,16 +335,15 @@ export function InvestmentGoalForm() {
             error={errors.recorrencia_pretendida_id?.message}
             register={register}
             setValue={setValue}
-            fixedValue={
-              investmentGoalData &&
-              String(investmentGoalData.recorrencia_pretendida_id)
-            }
+            fixedValue={investmentGoalData && recorrenciaEdit}
             isEditing={isEditing}
           />
           <Line style={{ alignSelf: "center", gap: 100 }}>
             <Checkbox
               name="tipo_objetivo_id"
               data={tipoObjetivo}
+              fixedValue={tipoObjetivoEdit}
+              isEditing={isEditing}
               setValue={setValue}
               setInvestment={setInvestment}
             />
@@ -271,10 +375,7 @@ export function InvestmentGoalForm() {
                 error={errors.tipo_investimento_id?.message}
                 register={register}
                 setValue={setValue}
-                fixedValue={
-                  investmentGoalData &&
-                  String(investmentGoalData.tipo_investimento_id)
-                }
+                fixedValue={investmentGoalData && tipoInvestimentoEdit}
                 isEditing={isEditing}
               />
               <CustomSelectDate
@@ -307,10 +408,7 @@ export function InvestmentGoalForm() {
                   error={errors.tipo_taxa_juros_id?.message}
                   register={register}
                   setValue={setValue}
-                  fixedValue={
-                    investmentGoalData &&
-                    String(investmentGoalData.tipo_taxa_juros_id)
-                  }
+                  fixedValue={investmentGoalData && tipoTaxasJurosEdit}
                   isEditing={isEditing}
                 />
               </Line>
@@ -331,7 +429,11 @@ export function InvestmentGoalForm() {
               title="Cancelar"
               backgroundColor={theme.colors.greyB8C}
               borderColor={theme.colors.grey6F7}
-              onClick={handleCancelForm}
+              onClick={
+                investmentGoalData && !isEditing
+                  ? handleBackForm
+                  : handleCancelForm
+              }
             />
             <Button
               title={investmentGoalData && !isEditing ? "Editar" : "Salvar"}

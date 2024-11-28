@@ -12,6 +12,7 @@ import theme from "../../styles/theme";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ToolTipCustom from "../TooltipCustom";
+import { GenericData } from "../../interfaces";
 
 interface SelectData {
   id: number;
@@ -25,7 +26,7 @@ interface CustomSelectProps {
   title?: string;
   error?: string;
   required?: boolean;
-  fixedValue?: string;
+  fixedValue?: GenericData;
   isEditing?: boolean;
   minus?: boolean;
   onSelect?: (option: string) => void;
@@ -49,7 +50,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   ...rest
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(
+  const [selectedOption, setSelectedOption] = useState<GenericData | null>(
     fixedValue || null
   );
   const selectRef = useRef<HTMLDivElement>(null);
@@ -59,7 +60,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   };
 
   const handleSelectOption = (option: SelectData) => {
-    setSelectedOption(option.nome);
+    setSelectedOption(option);
     setIsOpen(false);
     // onSelect && onSelect(option.id);
     if (minus) {
@@ -70,11 +71,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   };
 
   useEffect(() => {
-    if (fixedValue) {
+    if (!isEditing && fixedValue) {
       setSelectedOption(fixedValue);
-      setValue(name, fixedValue);
+      setValue(name, fixedValue.id, { shouldValidate: true });
     }
-  }, [fixedValue, name, setValue]);
+  }, [isEditing, fixedValue, name, setValue]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -103,7 +104,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         }
         $isFixed={fixedValue !== undefined && !isEditing}
       >
-        <Placeholder>{selectedOption || placeholder}</Placeholder>
+        <Placeholder>{selectedOption?.nome || placeholder}</Placeholder>
         <RightSide>
           {error && (
             <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>

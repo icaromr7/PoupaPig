@@ -27,10 +27,11 @@ export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
   width: 1px;
 `;
 
-export const StyledCheckbox = styled.div<{ checked: boolean }>`
+export const StyledCheckbox = styled.div<{ checked: boolean; $fixed: boolean }>`
   width: 16px;
   height: 16px;
-  background: ${theme.colors.blueE5F};
+  background: ${(props) =>
+    props.$fixed ? theme.colors.whiteF2F : theme.colors.blueE5F};
   border: 3px solid ${theme.colors.blue038};
   border-radius: 4px;
   display: flex;

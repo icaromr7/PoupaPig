@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 //style, icons e assets
 import {
@@ -23,6 +23,12 @@ import Input from "../../components/Input";
 import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { CustomModal } from "../../components/CustomModal";
+import { useAuth } from "../../context/AuthContext";
+import {
+  deleteMetaInvestimento,
+  getMetaInvestimento,
+} from "../../services/api";
+import { InvestimentoMetaInt } from "../../interfaces";
 
 const dataInvestment = [
   {
@@ -52,29 +58,78 @@ const dataInvestment = [
 ];
 
 export function InvestmentGoalList() {
+  const { addToast, setLoading, userCode } = useAuth();
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
+  const [metasInvestimentos, setMetasInvestimentos] = useState<
+    InvestimentoMetaInt[]
+  >([]);
+  const [selectedToDelete, setSelectedToDelete] =
+    useState<InvestimentoMetaInt>();
+  const flag = useRef<boolean>(true);
 
-  const handleEditData = () => {
-    navigate("/investment-goal-form");
+  const fetchUserData = async () => {
+    if (userCode) {
+      try {
+        setLoading(true);
+        const metaInvestimento = await getMetaInvestimento();
+        setMetasInvestimentos(metaInvestimento);
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias padrões", error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
-  const handleDeleteModal = () => {
-    setModalDelete(!modalDelete);
+  const handleEditData = (data: InvestimentoMetaInt) => {
+    navigate("/investment-goal-form?editing=true", {
+      state: { investmentGoalData: data },
+    });
   };
 
-  const handleDeleteData = () => {
-    console.log("deletei");
+  const handleOpenDeleteModal = (data: InvestimentoMetaInt) => {
+    setSelectedToDelete(data);
+    setModalDelete(true);
+  };
+
+  const handleCloseDeleteModal = () => {
     setModalDelete(false);
+  };
+
+  const handleDeleteData = async () => {
+    if (selectedToDelete) {
+      try {
+        setLoading(true);
+        await deleteMetaInvestimento(selectedToDelete.id);
+        await fetchUserData();
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao apagar dado", error);
+      } finally {
+        setLoading(false);
+        setModalDelete(false);
+      }
+    }
   };
 
   const handleInvestmentGoalForm = () => {
     navigate("/investment-goal-form");
   };
 
-  const itemInvestment = (data: any, key: any) => {
+  useEffect(() => {
+    if (flag.current) {
+      fetchUserData();
+      setTimeout(() => {
+        flag.current = false;
+      }, 1000);
+    }
+  }, [userCode]);
+
+  const itemInvestment = (data: InvestimentoMetaInt, key: any) => {
     return (
-      <ContainerItem>
+      <ContainerItem key={key}>
         <Symbol>
           <MonetizationOnIcon
             style={{ fontSize: 45, color: theme.colors.blue038 }}
@@ -85,13 +140,13 @@ export function InvestmentGoalList() {
           title="Editar"
           backgroundColor={theme.colors.yellowF9F}
           borderColor={theme.colors.yellowDAD}
-          onClick={handleEditData}
+          onClick={() => handleEditData(data)}
         />
         <Button
           title="Excluir"
           backgroundColor={theme.colors.redF3A}
           borderColor={theme.colors.redF63}
-          onClick={handleDeleteModal}
+          onClick={() => handleOpenDeleteModal(data)}
         />
       </ContainerItem>
     );
@@ -99,7 +154,7 @@ export function InvestmentGoalList() {
 
   const itemGoal = (data: any, key: any) => {
     return (
-      <ContainerItem>
+      <ContainerItem key={key}>
         <Symbol>
           <AccountBalanceWalletIcon
             style={{ fontSize: 45, color: theme.colors.orangeEE7 }}
@@ -110,11 +165,13 @@ export function InvestmentGoalList() {
           title="Editar"
           backgroundColor={theme.colors.yellowF9F}
           borderColor={theme.colors.yellowDAD}
+          onClick={() => handleEditData(data)}
         />
         <Button
           title="Excluir"
           backgroundColor={theme.colors.redF3A}
           borderColor={theme.colors.redF63}
+          onClick={() => handleOpenDeleteModal(data)}
         />
       </ContainerItem>
     );
@@ -138,17 +195,21 @@ export function InvestmentGoalList() {
           </Information>
         </InfoColumn>
         <Column>
-          {dataInvestment.map((investment, index) =>
-            itemInvestment(investment, index + "-" + investment)
-          )}
+          {metasInvestimentos
+            .filter((investment) => investment.tipo_objetivo_id === 2)
+            .map((investment) =>
+              itemInvestment(investment, `${investment.id}-${investment.nome}`)
+            )}
         </Column>
       </MainColumn>
       {/* AQUI VEM A COLUNA DE METAS */}
       <MainColumn>
         <Column>
-          {dataInvestment.map((goal, index) =>
-            itemGoal(goal, index + "-" + goal)
-          )}
+          {metasInvestimentos
+            .filter((investment) => investment.tipo_objetivo_id === 1)
+            .map((investment) =>
+              itemGoal(investment, `${investment.id}-${investment.nome}`)
+            )}
         </Column>
         <InfoColumn>
           <Image src={Landpage3} alt="PoupaPig" style={{ height: 205 }} />
@@ -175,7 +236,7 @@ export function InvestmentGoalList() {
       </MainColumn>
       {modalDelete && (
         <CustomModal
-          onClose={handleDeleteModal}
+          onClose={handleCloseDeleteModal}
           action={handleDeleteData}
           titleButtonCancel="Cancelar"
           titleButtonGo="Confirmar"

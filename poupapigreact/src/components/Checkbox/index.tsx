@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { UseFormSetValue } from "react-hook-form";
 import {
   Line,
   CheckboxContainer,
@@ -12,6 +12,8 @@ import { GenericData } from "../../interfaces";
 interface CheckboxSelectProps {
   name: string;
   data: GenericData[];
+  fixedValue?: GenericData;
+  isEditing?: boolean;
   setValue?: UseFormSetValue<any>;
   setInvestment: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -19,23 +21,29 @@ interface CheckboxSelectProps {
 const CheckboxSelect: React.FC<CheckboxSelectProps> = ({
   name,
   data,
+  fixedValue,
+  isEditing,
   setValue,
   setInvestment,
 }) => {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<GenericData | null>(null);
 
-  const handleCheckboxChange = (id: number) => {
-    const newValue = id === selectedId ? null : id;
-    setSelectedId(newValue);
+  useEffect(() => {
+    if (fixedValue) {
+      setSelectedItem(fixedValue);
+      if (setValue) {
+        setValue(name, fixedValue.id);
+      }
+    }
+  }, [fixedValue, setValue, name]);
 
+  const handleCheckboxChange = (item: GenericData) => {
+    const newValue = selectedItem?.id === item.id ? null : item;
+    setSelectedItem(newValue);
     if (setValue) {
-      setValue(name, newValue);
+      setValue(name, newValue?.id || null);
     }
-    if (id === 2) {
-      setInvestment(true);
-    } else {
-      setInvestment(false);
-    }
+    setInvestment(item.id === 2);
   };
 
   return (
@@ -44,14 +52,29 @@ const CheckboxSelect: React.FC<CheckboxSelectProps> = ({
         <CheckboxContainer key={item.id}>
           <HiddenCheckbox
             type="checkbox"
-            checked={selectedId === item.id}
-            onChange={() => handleCheckboxChange(item.id)}
+            checked={selectedItem?.id === item.id}
+            onChange={() =>
+              fixedValue !== undefined
+                ? isEditing && handleCheckboxChange(item)
+                : handleCheckboxChange(item)
+            }
           />
           <StyledCheckbox
-            checked={selectedId === item.id}
-            onClick={() => handleCheckboxChange(item.id)}
+            checked={selectedItem?.id === item.id}
+            onClick={() =>
+              fixedValue !== undefined
+                ? isEditing && handleCheckboxChange(item)
+                : handleCheckboxChange(item)
+            }
+            $fixed={fixedValue !== undefined && !isEditing}
           />
-          <Label onClick={() => handleCheckboxChange(item.id)}>
+          <Label
+            onClick={() =>
+              fixedValue !== undefined
+                ? isEditing && handleCheckboxChange(item)
+                : handleCheckboxChange(item)
+            }
+          >
             {item.nome}
           </Label>
         </CheckboxContainer>

@@ -10,8 +10,13 @@ const api = axios.create({
 
 //ASSINATURAS:
 export const getAssinaturas = async () => {
-  const response = await api.get("/Assinatura");
-  return response.data;
+  try {
+    const response = await api.get("/Assinatura");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar assinaturas:", error);
+    throw error;
+  }
 };
 // export const getAssinaturaById = async (id: string | number) => {
 //   const response = await api.get(`/Assinatura/${id}`);
@@ -20,13 +25,23 @@ export const getAssinaturas = async () => {
 
 //BANCOS:
 export const getBancos = async () => {
-  const response = await api.get("/Banco");
-  return response.data;
+  try {
+    const response = await api.get("/Banco");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar bancos:", error);
+    throw error;
+  }
 };
-// export const getBancoById = async (id: string | number) => {
-//   const response = await api.get(`/Banco/${id}`);
-//   return response.data;
-// };
+export const getBancoById = async (id: number) => {
+  try {
+    const response = await api.get(`/Banco/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar banco:", error);
+    throw error;
+  }
+};
 
 //CARTÕES:
 export const getCartoes = async () => {
@@ -139,18 +154,28 @@ export const putMetaInvestimento = async (dados: any) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Erro ao fazer postar investimento/meta", error);
+    console.error("Erro ao postar investimento/meta", error);
     throw error;
   }
 };
-// export const getMetaInvestimento = async () => {
-//   const response = await api.get("/MetaInvestimento");
-//   return response.data;
-// };
-// export const deleteMetaInvestimento = async (id: string | number) => {
-//   const response = await api.delete(`/MetaInvestimento/${id}`);
-//   return response.data;
-// };
+export const getMetaInvestimento = async () => {
+  try {
+    const response = await api.get("/MetaInvestimento");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar investimento/meta", error);
+    throw error;
+  }
+};
+export const deleteMetaInvestimento = async (id: number) => {
+  try {
+    const response = await api.delete(`/MetaInvestimento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao deletar investimento/meta", error);
+    throw error;
+  }
+};
 // export const getMetaInvestimentoById = async (id: string | number) => {
 //   const response = await api.get(`/MetaInvestimento/${id}`);
 //   return response.data;
@@ -168,23 +193,43 @@ export const getNomeCategoriaPadrao = async () => {
 
 //NOME TIPO INVESTIMENTO:
 export const getNomeTipoInvestimento = async () => {
-  const response = await api.get("/NomeTipoInvestimento");
-  return response.data;
+  try {
+    const response = await api.get("/NomeTipoInvestimento");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipos de investimentos", error);
+    throw error;
+  }
 };
-// export const getNomeTipoInvestimentoById = async (id: string | number) => {
-//   const response = await api.get(`/NomeTipoInvestimento/${id}`);
-//   return response.data;
-// };
+export const getNomeTipoInvestimentoById = async (id: number) => {
+  try {
+    const response = await api.get(`/NomeTipoInvestimento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipo de investimento", error);
+    throw error;
+  }
+};
 
 //NOME TIPO OBJETIVO:
 export const getNomeTipoObjetivo = async () => {
-  const response = await api.get("/NomeTipoObjetivo");
-  return response.data;
+  try {
+    const response = await api.get("/NomeTipoObjetivo");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipos de objetivos", error);
+    throw error;
+  }
 };
-// export const getNomeTipoObjetivoById = async (id: string | number) => {
-//   const response = await api.get(`/NomeTipoObjetivo/${id}`);
-//   return response.data;
-// };
+export const getNomeTipoObjetivoById = async (id: number) => {
+  try {
+    const response = await api.get(`/NomeTipoObjetivo/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipo de objetivo", error);
+    throw error;
+  }
+};
 
 //CLASSE:
 // export const getPeriodicidadeTransacao = async () => {
@@ -232,13 +277,23 @@ export const postQuestionario = async (dados: any) => {
 
 //RECORRENCIA:
 export const getRecorrencia = async () => {
-  const response = await api.get("/Recorrencia");
-  return response.data;
+  try {
+    const response = await api.get("/Recorrencia");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar recorrências:", error);
+    throw error;
+  }
 };
-// export const getRecorrenciaById = async (id: string | number) => {
-//   const response = await api.get(`/Recorrencia/${id}`);
-//   return response.data;
-// };
+export const getRecorrenciaById = async (id: number) => {
+  try {
+    const response = await api.get(`/Recorrencia/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar recorrência:", error);
+    throw error;
+  }
+};
 
 //SENTIMENTO TRANSACAO:
 // export const getSentimentoTransacao = async () => {
