@@ -5,22 +5,22 @@ using PoupaPig.Dominio.Categorias.Servicos;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CategoriaPersonalizadaController : ControllerBase
+public class CategoriaController : ControllerBase
 {
-    private readonly ServicoCategoriaPersonalizada _servicoCategoriaPersonalizada;
+    private readonly ServicoCategoria _servicoCategoria;
 
-    public CategoriaPersonalizadaController(ServicoCategoriaPersonalizada servicoCategoriaPersonalizada)
+    public CategoriaController(ServicoCategoria servicoCategoria)
     {
-        _servicoCategoriaPersonalizada = servicoCategoriaPersonalizada;
+        _servicoCategoria = servicoCategoria;
     }
 
     // Endpoint para criar uma nova categoria personalizada
     [HttpPost]
-    public IActionResult Criar([FromBody] CategoriaPersonalizada categoria)
+    public IActionResult Criar([FromBody] Categoria categoria)
     {
         try
         {
-            _servicoCategoriaPersonalizada.Criar(categoria);
+            _servicoCategoria.Criar(categoria);
             return Ok("Categoria personalizada criada com sucesso!");
         }
         catch (Exception ex)
@@ -31,11 +31,11 @@ public class CategoriaPersonalizadaController : ControllerBase
 
     // Endpoint para atualizar uma categoria personalizada existente
     [HttpPut]
-    public IActionResult Atualizar([FromBody] CategoriaPersonalizada categoria)
+    public IActionResult Atualizar([FromBody] Categoria categoria)
     {
         try
         {
-            _servicoCategoriaPersonalizada.Atualizar(categoria);
+            _servicoCategoria.Atualizar(categoria);
             return Ok("Categoria personalizada atualizada com sucesso!");
         }
         catch (Exception ex)
@@ -50,7 +50,7 @@ public class CategoriaPersonalizadaController : ControllerBase
     {
         try
         {
-            _servicoCategoriaPersonalizada.Excluir(id);
+            _servicoCategoria.Excluir(id);
             return Ok("Categoria personalizada excluída com sucesso!");
         }
         catch (Exception ex)
@@ -63,7 +63,7 @@ public class CategoriaPersonalizadaController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult ObterPorId(int id)
     {
-        var categoria = _servicoCategoriaPersonalizada.ObterPorId(id);
+        var categoria = _servicoCategoria.ObterPorId(id);
         if (categoria == null)
         {
             return NotFound("Categoria personalizada não encontrada.");
@@ -76,7 +76,7 @@ public class CategoriaPersonalizadaController : ControllerBase
     [HttpGet("usuario/{usuarioId}")]
     public IActionResult ObterTodas(int usuarioId)
     {
-        var categorias = _servicoCategoriaPersonalizada.ObterTodas(usuarioId);
+        var categorias = _servicoCategoria.ObterTodas(usuarioId);
         return Ok(categorias);
     }
 }

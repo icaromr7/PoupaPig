@@ -108,7 +108,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         {
             var transacoes = _repositorioTransacao.ObterTodas()
                 .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.situacao_id == 1)
-                .GroupBy(t => t.data_transacao.DayOfWeek)
+                .GroupBy(t => t.data_transacao?.DayOfWeek)
                 .ToDictionary(
                     g => g.Key.ToString(),
                     g => g.Sum(t => t.valor)
@@ -140,21 +140,21 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
 
             if (ano.HasValue)
             {
-                transacoes = transacoes.Where(t => t.data_transacao.Year == ano.Value);
+                transacoes = transacoes.Where(t => t.data_transacao?.Year == ano.Value);
             }
 
             if (mesInicio.HasValue)
             {
-                transacoes = transacoes.Where(t => t.data_transacao.Month >= mesInicio.Value);
+                transacoes = transacoes.Where(t => t.data_transacao?.Month >= mesInicio.Value);
             }
 
             if (mesFim.HasValue)
             {
-                transacoes = transacoes.Where(t => t.data_transacao.Month <= mesFim.Value);
+                transacoes = transacoes.Where(t => t.data_transacao?.Month <= mesFim.Value);
             }
 
             var gastosPorMes = transacoes
-                .GroupBy(t => t.data_transacao.ToString("MMMM yyyy"))
+                .GroupBy(t => t.data_transacao?.ToString("MMMM yyyy"))
                 .ToDictionary(g => g.Key, g => g.Sum(t => t.valor));
 
             return gastosPorMes;
@@ -167,17 +167,17 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
 
             if (ano.HasValue)
             {
-                transacoes = transacoes.Where(t => t.data_transacao.Year == ano.Value);
+                transacoes = transacoes.Where(t => t.data_transacao?.Year == ano.Value);
             }
 
             if (mesInicio.HasValue)
             {
-                transacoes = transacoes.Where(t => t.data_transacao.Month >= mesInicio.Value);
+                transacoes = transacoes.Where(t => t.data_transacao?.Month >= mesInicio.Value);
             }
 
             if (mesFim.HasValue)
             {
-                transacoes = transacoes.Where(t => t.data_transacao.Month <= mesFim.Value);
+                transacoes = transacoes.Where(t => t.data_transacao?.Month <= mesFim.Value);
             }
 
             var saldoAcumulado = new Dictionary<string, decimal>();
@@ -188,7 +188,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
             foreach (var transacao in transacoesOrdenadas)
             {
                 saldo += transacao.valor;
-                var mesAno = transacao.data_transacao.ToString("MMMM yyyy");
+                var mesAno = transacao.data_transacao?.ToString("MMMM yyyy");
                 if (!saldoAcumulado.ContainsKey(mesAno))
                 {
                     saldoAcumulado[mesAno] = saldo;
@@ -205,16 +205,16 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
 
             if (anoInicio.HasValue)
             {
-                metasInvestimentos = metasInvestimentos.Where(t => t.data_transacao.Year >= anoInicio.Value);
+                metasInvestimentos = metasInvestimentos.Where(t => t.data_transacao?.Year >= anoInicio.Value);
             }
 
             if (anoFim.HasValue)
             {
-                metasInvestimentos = metasInvestimentos.Where(t => t.data_transacao.Year <= anoFim.Value);
+                metasInvestimentos = metasInvestimentos.Where(t => t.data_transacao?.Year <= anoFim.Value);
             }
 
             var evolucaoMetas = metasInvestimentos
-                .GroupBy(t => t.data_transacao.ToString("MMMM yyyy"))
+                .GroupBy(t => t.data_transacao?.ToString("MMMM yyyy"))
                 .ToDictionary(g => g.Key, g => g.Sum(t => t.valor));
 
             return evolucaoMetas;
@@ -223,8 +223,8 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public Dictionary<string, decimal> ComparacaoGastosMensaisAnuais(int usuarioId, int anoInicio, int anoFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.data_transacao.Year >= anoInicio && t.data_transacao.Year <= anoFim && t.situacao_id == 1)
-                .GroupBy(t => new { t.data_transacao.Year, t.data_transacao.Month })
+                .Where(t => t.usuario_id == usuarioId && t.valor > 0 && t.data_transacao?.Year >= anoInicio && t.data_transacao?.Year <= anoFim && t.situacao_id == 1)
+                .GroupBy(t => new { t.data_transacao?.Year, t.data_transacao?.Month })
                 .Select(g => new
                 {
                     Ano = g.Key.Year,
@@ -302,13 +302,13 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
             return mediaMensalGastos * mesesProjecao;
         }
 
-        public Dictionary<int, decimal> ComparacaoAnual(int usuarioId, int anoInicio, int anoFim)
+        public Dictionary<int?, decimal> ComparacaoAnual(int usuarioId, int anoInicio, int anoFim)
         {
             var transacoes = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.data_transacao.Year >= anoInicio && t.data_transacao.Year <= anoFim && t.situacao_id == 1);
+                .Where(t => t.usuario_id == usuarioId && t.data_transacao?.Year >= anoInicio && t.data_transacao?.Year <= anoFim && t.situacao_id == 1);
 
             var comparacaoAnual = transacoes
-                .GroupBy(t => t.data_transacao.Year)
+                .GroupBy(t => t.data_transacao?.Year)
                 .ToDictionary(g => g.Key, g => g.Sum(t => t.valor));
 
             return comparacaoAnual;
@@ -364,7 +364,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                     tipo = transacao.tipo_id,
                     valor = transacao.valor,
                     nome = transacao.nome,
-                    data = transacao.data_transacao
+                    data = (DateTime)transacao.data_transacao
                 };
                 lancamentos.Add(lancamento);
             }
@@ -386,7 +386,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                 {
                     valor = transacao.valor,
                     nome = transacao.nome,
-                    data = transacao.data_transacao
+                    data = (DateTime)transacao.data_transacao
                 };
                 orcamentos.Add(orcamento);
             }
@@ -409,7 +409,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                 {
                     valor = transacao.valor,
                     nome = transacao.nome,
-                    data = transacao.data_transacao
+                    data = (DateTime)transacao.data_transacao
                 };
                 investimentos.Add(investimento);
             }

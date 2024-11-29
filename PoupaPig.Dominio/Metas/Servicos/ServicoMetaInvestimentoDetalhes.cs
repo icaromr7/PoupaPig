@@ -45,7 +45,7 @@ namespace PoupaPig.Dominio.Metas.Servicos
             var extrato = transacoes.Select(t => new TransacaoDetalhes
             {
                 Valor = t.valor,
-                DataTransacao = t.data_transacao,
+                DataTransacao = (DateTime)t.data_transacao,
                 PercentualAtingido = (valorTotalInvestido / metaInvestimento.valor_desejado) * 100
             }).ToList();
 
