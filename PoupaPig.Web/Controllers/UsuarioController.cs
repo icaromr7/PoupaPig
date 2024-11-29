@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PoupaPig.Dominio.Categorias.Servicos;
 using PoupaPig.Dominio.Usuarios;
 using PoupaPig.Dominio.Usuarios.Servicos;
 
@@ -7,22 +8,30 @@ using PoupaPig.Dominio.Usuarios.Servicos;
 public class UsuarioController : ControllerBase
 {
     private readonly ServicoUsuario _servicoUsuario;
+    private readonly ServicoCategoria _servicoCategoria;
 
-    public UsuarioController(ServicoUsuario servicoUsuario)
+    public UsuarioController(ServicoUsuario servicoUsuario, ServicoCategoria servicoCategoria)
     {
         _servicoUsuario = servicoUsuario;
+        _servicoCategoria = servicoCategoria;
     }
 
     // Endpoint para criar um novo usuário
     [HttpPost]
     public IActionResult CriarUsuario([FromBody] Usuario dados)
-    {
-        if (dados == null)
+    {     
+        try
         {
-            return BadRequest("Dados do usuário são inválidos.");
+            _servicoUsuario.Criar(dados);
+            dados = _servicoUsuario.ObterTodas().Last();
+            _servicoCategoria.PreencherCategoriasNovosUsuarios(dados.id);
         }
-
-        _servicoUsuario.Criar(dados);
+        catch (Exception ex)
+        {
+            return BadRequest($"Erro na execucação. {ex.Message}");
+        }
+        
+        
         return Ok("Usuário criado com sucesso!");
     }
 
