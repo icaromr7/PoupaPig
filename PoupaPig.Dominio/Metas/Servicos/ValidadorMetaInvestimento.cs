@@ -17,7 +17,10 @@ namespace PoupaPig.Dominio.Metas.Servicos
 
             // Validação da data permitida de retirada
             RuleFor(meta => meta.data_resgate)
-                .GreaterThan(DateTime.Now).WithMessage("A data permitida de retirada deve ser uma data futura válida.");
+                .GreaterThan(DateTime.Now)
+                .When(meta => meta.data_resgate.HasValue) // Verifica se data_resgate não é nula
+                .WithMessage("A data permitida de retirada deve ser uma data futura válida.");
+
         }
 
     }

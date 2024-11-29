@@ -19,13 +19,13 @@ namespace PoupaPig.Dominio.Metas
         public DateTime data_criacao { get; set; } = DateTime.Now;
 
         [Column(Name = "data_resgate")]
-        public DateTime data_resgate { get; set; }
+        public DateTime? data_resgate { get; set; }
 
         [Column(Name = "tipo_objetivo_id")]
         public int tipo_objetivo_id { get; set; }
 
         [Column(Name = "tipo_investimento_id")]
-        public int tipo_investimento_id { get; set; }
+        public int? tipo_investimento_id { get; set; }
 
         [Column(Name = "banco_id")]
         public int banco_id { get; set; }
@@ -34,13 +34,13 @@ namespace PoupaPig.Dominio.Metas
         public int recorrencia_pretendida_id { get; set; }
 
         [Column(Name = "porcentagem_rendimento")]
-        public decimal porcentagem_rendimento { get; set; }
+        public decimal? porcentagem_rendimento { get; set; }
 
         [Column(Name = "tipo_taxa_juros_id")]
-        public int tipo_taxa_juros_id { get; set; }
+        public int? tipo_taxa_juros_id { get; set; }
 
         [Column(Name = "observacao")]
-        public string observacao { get; set; }
+        public string? observacao { get; set; }
 
         [Column(Name = "usuario_id")]
         public int usuario_id { get; set; }
