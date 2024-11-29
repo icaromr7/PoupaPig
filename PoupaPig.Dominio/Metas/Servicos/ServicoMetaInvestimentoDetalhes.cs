@@ -35,9 +35,9 @@ namespace PoupaPig.Dominio.Metas.Servicos
 
             // Calcular o valor total considerando os rendimentos (caso seja um investimento com rendimento)
 
-            decimal valorTotalComRendimento = (metaInvestimento.porcentagem_rendimento ?? 0) > 0
-                ? valorTotalInvestido + (valorTotalInvestido * (metaInvestimento.porcentagem_rendimento ?? 0) / 100)
-                : valorTotalInvestido;
+            decimal valorTotalComRendimento = (decimal)(metaInvestimento.porcentagem_rendimento > 0
+                ? valorTotalInvestido + (valorTotalInvestido * metaInvestimento.porcentagem_rendimento / 100)
+                : valorTotalInvestido);
 
             // Calcular o percentual da meta atingida
             decimal percentualMetaAtingida = (valorTotalInvestido / metaInvestimento.valor_desejado) * 100;
@@ -46,7 +46,7 @@ namespace PoupaPig.Dominio.Metas.Servicos
             var extrato = transacoes.Select(t => new TransacaoDetalhes
             {
                 Valor = t.valor,
-                DataTransacao = t.data_transacao,
+                DataTransacao = (DateTime)t.data_transacao,
                 PercentualAtingido = (valorTotalInvestido / metaInvestimento.valor_desejado) * 100
             }).ToList();
 

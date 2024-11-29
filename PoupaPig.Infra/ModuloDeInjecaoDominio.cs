@@ -36,9 +36,7 @@ namespace PoupaPig.Dominio
             services.AddScoped<ServicoUsuarioBanco>();
             services.AddScoped<ServicoCartao>();
             services.AddScoped<ServicoUsuarioCartao>();
-            services.AddScoped<ServicoCategoriaPadrao>();
-            services.AddScoped<ServicoCategoriaPersonalizada>();
-            services.AddScoped<ServicoNomeCategoriaPadrao>();
+            services.AddScoped<ServicoCategoria>();
             services.AddScoped<ServicoClasse>();
             services.AddScoped<ServicoUsuarioClasse>();
             services.AddScoped<ServicoMetaInvestimento>();
@@ -61,15 +59,13 @@ namespace PoupaPig.Dominio
             services.AddScoped<IRepositorioQuestionario, RepositorioQuestionario>();
             services.AddScoped<IRepositorioMetaInvestimento, RepositorioMetaInvestimento>();
             services.AddScoped<IRepositorioClasse, RepositorioClasse>();
-            services.AddScoped<IRepositorioCategoriaPadrao, RepositorioCategoriaPadrao>();
-            services.AddScoped<IRepositorioCategoriaPersonalizada, RepositorioCategoriaPersonalizada>();
+            services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
             services.AddScoped<IRepositorioCartao, RepositorioCartao>();
             services.AddScoped<IRepositorioBanco, RepositorioBanco>();
             services.AddScoped<IRepositorioAssinatura, RepositorioAssinatura>();
             services.AddScoped<IRepositorioUsuarioAssinatura, RepositorioUsuarioAssinatura>();
             services.AddScoped<IRepositorioUsuarioBanco, RepositorioUsuarioBanco>();
             services.AddScoped<IRepositorioUsuarioCartao, RepositorioUsuarioCartao>();
-            services.AddScoped<IRepositorioNomeCategoriaPadrao, RepositorioNomeCategoriaPadrao>();
             services.AddScoped<IRepositorioUsuarioClasse, RepositorioUsuarioClasse>();
             services.AddScoped<IRepositorioNomeTipoInvestimento, RepositorioNomeTipoInvestimento>();
             services.AddScoped<IRepositorioNomeTipoObjetivo, RepositorioNomeTipoObjetivo>();
@@ -80,7 +76,7 @@ namespace PoupaPig.Dominio
             services.AddScoped<IRepositorioTipoPagamento, RepositorioTipoPagamento>();
             services.AddScoped<IRepositorioTipoTransacao, RepositorioTipoTransacao>();
             services.AddScoped<IRepositorioTransacaoMetaInvestimento, RepositorioTransacaoMetaInvestimento>();
-            services.AddTransient<IValidator<CategoriaPersonalizada>, ValidadorCategoriaPersonalizada>();
+            services.AddTransient<IValidator<Categoria>, ValidadorCategoria>();
             services.AddTransient<IValidator<MetaInvestimento>, ValidadorMetaInvestimento>();
             services.AddTransient<IValidator<Transacao>, ValidadorTransacao>();
             services.AddTransient<IValidator<Usuario>, ValidadorUsuario>();
