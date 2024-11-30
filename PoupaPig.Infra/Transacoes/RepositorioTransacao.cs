@@ -51,14 +51,14 @@ namespace PoupaPig.Infra.Transacoes
         public decimal ObterSaldoPorUsuario(int usuario_id)
         {
             var entradas = _dataConnection.GetTable<Transacao>()
-                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 1) // Tipo 1 = Entrada
+                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 1 && t.situacao_id == 1) // Tipo 1 = Entrada
                 .Sum(t => (decimal?)t.valor) ?? 0;
 
             var saidas = _dataConnection.GetTable<Transacao>()
-                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2) // Tipo 2 = Saída
+                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2 && t.situacao_id == 1) // Tipo 2 = Saída
                 .Sum(t => (decimal?)t.valor) ?? 0;
-
-            return entradas - saidas;
+            var total = entradas - saidas;
+            return total >= 0 ? 0 : Math.Abs(total);
         }
 
         public List<Transacao> ObterTransacoesPorMetaInvestimento(int idMetaInvestimento)
