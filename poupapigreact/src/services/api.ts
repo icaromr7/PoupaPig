@@ -53,71 +53,61 @@ export const getCartoes = async () => {
 //   return response.data;
 // };
 
-//CATEGORIA PADRÃO:
-export const getCategoriaPadrao = async () => {
+//CATEGORIA:
+export const postCategoria = async (dados: any) => {
   try {
-    const response = await api.get("/CategoriaPadrao");
+    const response = await api.post("/Categoria", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar categorias:", error);
+    console.error("Erro ao postar categoria:", error);
     throw error;
   }
 };
-export const getCategoriaPadraoById = async (id: number) => {
+export const putCategoria = async (dados: any) => {
+  console.log("dados", dados);
   try {
-    const response = await api.get(`/CategoriaPadrao/${id}`);
+    const response = await api.put("/Categoria", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao editar categoria:", error);
+    throw error;
+  }
+};
+export const deleteCategoria = async (id: number) => {
+  try {
+    const response = await api.delete(`/Categoria/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao excluir categoria:", error);
+    throw error;
+  }
+};
+export const getCategoriaById = async (id: number) => {
+  try {
+    const response = await api.get(`/Categoria/${id}`);
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar categoria:", error);
     throw error;
   }
 };
-
-//CATEGORIA PERSONALIZADA:
-export const postCategoriaPersonalizada = async (dados: any) => {
+export const getCategoriasUsuario = async (id: number) => {
   try {
-    const response = await api.post("/CategoriaPersonalizada", dados, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.get(`/Categoria/usuario/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao postar categoria personalizada:", error);
+    console.error("Erro ao buscar categorias:", error);
     throw error;
   }
 };
-export const putCategoriaPersonalizada = async (dados: any) => {
-  console.log("dados", dados);
-  try {
-    const response = await api.put("/CategoriaPersonalizada", dados, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao editar categoria personalizada:", error);
-    throw error;
-  }
-};
-export const getCategoriaPersonalizada = async (id: number) => {
-  try {
-    const response = await api.get(`/CategoriaPersonalizada/usuario/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao fazer obter categorias", error);
-    throw error;
-  }
-};
-// export const deleteCategoriaPersonalizada = async (id: string | number) => {
-//   const response = await api.delete(`/CategoriaPersonalizada/${id}`);
-//   return response.data;
-// };
-// export const getCategoriaPersonalizadaById = async (id: string | number) => {
-//   const response = await api.get(`/CategoriaPersonalizada/${id}`);
-//   return response.data;
-// };
 
 //CLASSE:
 // export const getClasse = async () => {
@@ -186,20 +176,24 @@ export const deleteMetaInvestimento = async (id: number) => {
     throw error;
   }
 };
-// export const getMetaInvestimentoById = async (id: string | number) => {
-//   const response = await api.get(`/MetaInvestimento/${id}`);
-//   return response.data;
-// };
-
-//NOME CATEGORIA PADRÃO:
-export const getNomeCategoriaPadrao = async () => {
-  const response = await api.get("/NomeCategoriaPadrao");
-  return response.data;
+export const getMetaInvestimentoById = async (id: number) => {
+  try {
+    const response = await api.get(`/MetaInvestimento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar investimento/meta", error);
+    throw error;
+  }
 };
-// export const getNomeCategoriaPadraoById = async (id: string | number) => {
-//   const response = await api.get(`/NomeCategoriaPadrao/${id}`);
-//   return response.data;
-// };
+export const getMetaInvestimentoDetalhes = async (id: number) => {
+  try {
+    const response = await api.get(`/MetaInvestimento/detalhes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar investimento/meta", error);
+    throw error;
+  }
+};
 
 //NOME TIPO INVESTIMENTO:
 export const getNomeTipoInvestimento = async () => {
@@ -241,15 +235,25 @@ export const getNomeTipoObjetivoById = async (id: number) => {
   }
 };
 
-//CLASSE:
-// export const getPeriodicidadeTransacao = async () => {
-//   const response = await api.get("/PeriodicidadeTransacao");
-//   return response.data;
-// };
-// export const getPeriodicidadeTransacaoById = async (id: string | number) => {
-//   const response = await api.get(`/PeriodicidadeTransacao/${id}`);
-//   return response.data;
-// };
+//PERIDIOCIDADE TRANSACAO
+export const getPeriodicidadeTransacao = async () => {
+  try {
+    const response = await api.get("/PeriodicidadeTransacao");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipos de objetivos", error);
+    throw error;
+  }
+};
+export const getPeriodicidadeTransacaoById = async (id: number) => {
+  try {
+    const response = await api.get(`/PeriodicidadeTransacao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipo de objetivo", error);
+    throw error;
+  }
+};
 
 //QUESTIONARIO
 export const postQuestionario = async (dados: any) => {
@@ -365,12 +369,16 @@ export const getTipoTransacao = async () => {
 //   const response = await api.post("/Transacao");
 //   return response.data;
 // };
-// export const putTransacao = async () => {
-//   const response = await api.put("/Transacao");
-//   return response.data;
-// };
 // export const getTransacao = async () => {
 //   const response = await api.get("/Transacao");
+//   return response.data;
+// };
+// export const getTransacaoById = async (id: number) => {
+//   const response = await api.get(`/Transacao/${id}`);
+//   return response.data;
+// };
+// export const putTransacao = async (id: number) => {
+//   const response = await api.put(`/Transacao/${id}`);
 //   return response.data;
 // };
 // export const deleteTransacao = async (id: string | number) => {
@@ -382,8 +390,13 @@ export const getTipoTransacao = async () => {
 //   return response.data;
 // };
 export const getSaldo = async (id: number) => {
-  const response = await api.get(`/Transacao/saldo/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/saldo/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 // export const getGastosPorCategoria = async (id: number) => {
 //   const response = await api.get(`/Transacao/gastos-por-categorias/${id}`);
@@ -443,6 +456,30 @@ export const getGanhosVsGastos = async (id: number) => {
 //   );
 //   return response.data;
 // };
+// export const getRetornosInvestimentos = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/retornos-investimentos/${id}`
+//   );
+//   return response.data;
+// };
+// export const getHistoricoTransacoes = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/historico-transacoes/${id}`
+//   );
+//   return response.data;
+// };
+// export const getPrevisoesGastos = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/previsoes-gastos/${id}`
+//   );
+//   return response.data;
+// };
+// export const getComparacaoAnual = async (id: number) => {
+//   const response = await api.get(
+//     `/Transacao/comparacao-anual/${id}`
+//   );
+//   return response.data;
+// };
 export const getValorOrcado = async (id: number) => {
   const response = await api.get(`/Transacao/valor-orcado/${id}`);
   return response.data;
@@ -463,18 +500,6 @@ export const getRetornoInvestimentos = async (id: number) => {
   const response = await api.get(`/Transacao/retornos-investimentos/${id}`);
   return response.data;
 };
-// export const getHistoricoTransacoes = async (id: number) => {
-//   const response = await api.get(`/Transacao/historico-transacoes/${id}`);
-//   return response.data;
-// };
-// export const getPrevisoesGastos = async (id: number) => {
-//   const response = await api.get(`/Transacao/previsoes-gastos/${id}`);
-//   return response.data;
-// };
-// export const getComparacaoAnual = async (id: number) => {
-//   const response = await api.get(`/Transacao/comparacao-anual/${id}`);
-//   return response.data;
-// };
 
 //TRANSACAO META INVESTIMENTO
 // export const postTransacaoMetaInvestimento = async () => {

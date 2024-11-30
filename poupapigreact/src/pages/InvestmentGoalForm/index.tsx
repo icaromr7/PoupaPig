@@ -161,7 +161,7 @@ export function InvestmentGoalForm() {
     };
 
     fetchItems();
-  }, []);
+  }, [userCode]);
 
   useEffect(() => {
     const fecthEditItems = async () => {

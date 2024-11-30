@@ -20,17 +20,14 @@ import { Button } from "../../components/Button";
 import { IconPicker } from "../../utils/bibli";
 import { CategoriaInt } from "../../interfaces";
 import { useAuth } from "../../context/AuthContext";
-import {
-  postCategoriaPersonalizada,
-  putCategoriaPersonalizada,
-} from "../../services/api";
+import { postCategoria, putCategoria } from "../../services/api";
 
 const schema = yup.object().shape({
   nome: yup
     .string()
     .required("Campo obrigatório")
     .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
-  valor_minimo: yup
+  valor_min: yup
     .number()
     .nullable()
     .transform((value, originalValue) =>
@@ -38,7 +35,7 @@ const schema = yup.object().shape({
     )
     .default(0) // Retorna 0 se o valor for vazio ou nulo
     .notRequired(),
-  valor_maximo: yup
+  valor_max: yup
     .number()
     .nullable()
     .transform((value, originalValue) =>
@@ -103,7 +100,7 @@ export function CategoryForm() {
       console.log("entrei no put");
       try {
         setLoading(true);
-        await putCategoriaPersonalizada(combinedData);
+        await putCategoria(combinedData);
         navigate("/category-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
@@ -115,7 +112,7 @@ export function CategoryForm() {
       console.log("entrei no post");
       try {
         setLoading(true);
-        await postCategoriaPersonalizada(combinedData);
+        await postCategoria(combinedData);
         navigate("/category-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
@@ -140,21 +137,21 @@ export function CategoryForm() {
             isEditing={isEditing}
           />
           <Input
-            name="valor_minimo"
+            name="valor_min"
             placeholder="Valor minimo"
-            error={errors.valor_minimo?.message}
+            error={errors.valor_min?.message}
             register={register}
             number={true}
-            fixedValue={categoryData && (categoryData.valor_minimo ?? " ")}
+            fixedValue={categoryData && (categoryData.valor_min ?? " ")}
             isEditing={isEditing}
           />
           <Input
-            name="valor_maximo"
+            name="valor_max"
             placeholder="Valor máximo"
-            error={errors.valor_maximo?.message}
+            error={errors.valor_max?.message}
             register={register}
             number={true}
-            fixedValue={categoryData && (categoryData.valor_maximo ?? " ")}
+            fixedValue={categoryData && (categoryData.valor_max ?? " ")}
             isEditing={isEditing}
           />
         </InputDiv>

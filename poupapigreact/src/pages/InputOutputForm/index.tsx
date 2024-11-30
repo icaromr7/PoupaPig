@@ -50,13 +50,16 @@ import {
 } from "../../interfaces";
 import { useAuth } from "../../context/AuthContext";
 import {
+  getBancoById,
   getBancos,
-  getCategoriaPadrao,
-  getCategoriaPersonalizada,
+  getCategoriaById,
+  getCategoriasUsuario,
   getMetaInvestimento,
-  getNomeCategoriaPadrao,
+  getMetaInvestimentoById,
   getRecorrencia,
+  getRecorrenciaById,
   getTipoPagamento,
+  getTipoPagamentoById,
 } from "../../services/api";
 
 const schema = yup.object().shape({
@@ -90,7 +93,7 @@ export function InputOutputForm() {
   const { addToast, setLoading, userCode } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const location = useLocation();
-  const transactionData: TransacaoInt = location.state?.transactionData || {};
+  const transactionData: TransacaoInt = location.state?.transactionData;
   const navigate = useNavigate();
   const [payment, setPayment] = useState<string>("");
   const [type, setType] = useState<"in" | "out" | undefined>(undefined);
@@ -103,7 +106,9 @@ export function InputOutputForm() {
   const [sentiment, setSentiment] = useState<
     "happy" | "anxious" | "sad" | undefined
   >(undefined);
+  const [isCartaoCredito, setIsCartaoCredito] = useState(false);
 
+  // para formulário de post - pega dados do bd
   const [categorias, setCategorias] = useState<GenericData[]>([]);
   const [bancos, setBancos] = useState<GenericData[]>([]);
   const [tiposPagamentos, setTiposPagamentos] = useState<GenericData[]>([]);
@@ -111,6 +116,12 @@ export function InputOutputForm() {
   const [metasInvestimentos, setMetasInvestimentos] = useState<GenericData[]>(
     []
   );
+  //para formulário de put - pega dados conforme o salvo no bd
+  const [categoriasEdit, setCategoriasEdit] = useState<GenericData>();
+  const [bancoEdit, setBancoEdit] = useState<GenericData>();
+  const [tipoPagamentoEdit, setTipoPagamentoEdit] = useState<GenericData>();
+  const [recorrenciaEdit, setRecorrenciaEdit] = useState<GenericData>();
+  const [investimentoEdit, setInvestimentoEdit] = useState<GenericData>();
 
   const {
     register,
@@ -120,20 +131,6 @@ export function InputOutputForm() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const tipo_pagamento = [
-    "Dinheiro",
-    "Cartão de Crédito",
-    "Cartão de Débito",
-    "Transferência Bancária",
-    "Boleto",
-    "Pix",
-    "Cheque",
-    "Vale-alimentação",
-    "Vale-refeição",
-    "Vale-transporte",
-    "Outro",
-  ];
 
   const handleCancelForm = () => {
     navigate("/new-transaction");
@@ -177,16 +174,22 @@ export function InputOutputForm() {
     setIsEditing(true);
   };
 
+  const handleTipoPagamentoChange = (option: GenericData) => {
+    console.log("option", option);
+    setIsCartaoCredito(option.id === 2);
+  };
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
         setLoading(true);
         const categoria = await fetchCategorias();
-        setCategorias(categoria || []);
+        setCategorias(categoria);
         const banco = await fetchBancos();
         setBancos(banco);
         const tipoPag = await fetchTipoPagamento();
         setTiposPagamentos(tipoPag);
+        console.log("tipo pag", tipoPag);
         const recorrencia = await fetchRecorrencia();
         setRecorrencias(recorrencia);
         const investimento = await fetchInvestimentos();
@@ -201,52 +204,74 @@ export function InputOutputForm() {
     fetchItems();
   }, [userCode]);
 
-  const fetchCategorias = async () => {
-    if (!userCode) {
-      return [];
-    }
+  useEffect(() => {
+    const fetchEditItems = async () => {
+      if (transactionData) {
+        try {
+          setLoading(true);
+          const categoria = await fetchCategoriasById(
+            transactionData.categoria_id
+          );
+          setCategoriasEdit(categoria);
+          if (transactionData.banco_id) {
+            const banco = await fetchBancosById(transactionData.banco_id);
+            setBancoEdit(banco);
+          }
+          const tipoPag = await fetchTipoPagamentoById(
+            transactionData.tipo_pagamento_id
+          );
+          setTipoPagamentoEdit(tipoPag);
+          if (transactionData.recorrencia_id) {
+            const recorrencia = await fetchRecorrenciaById(
+              transactionData.recorrencia_id
+            );
+            setRecorrenciaEdit(recorrencia);
+          }
+          if (transactionData.meta_investimento_id) {
+            const investimento = await fetchInvestimentosById(
+              transactionData.meta_investimento_id
+            );
+            setInvestimentoEdit(investimento);
+          }
+        } catch (error) {
+          console.error("Erro ao completar dados:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+  }, [transactionData]);
 
+  const fetchCategorias = async () => {
     if (userCode) {
       try {
         setLoading(true);
-
-        // Obtemos as categorias padrão e os nomes
-        const categorias = await getCategoriaPadrao();
-        console.log("categorias", categorias);
-        const nomesCat = await getNomeCategoriaPadrao();
-        const nomePorId = new Map(
-          nomesCat.map((nomeCat: any) => [
-            nomeCat.id,
-            nomeCat.nome,
-            nomeCat.padrao,
-          ])
-        );
-
-        // Transformamos as categorias padrão para conter apenas id e nome
-        const categoriasComNomes = categorias.map((categoria: any) => ({
-          id: categoria.id,
-          nome: nomePorId.get(categoria.nome_id),
-          padrao: categoria.padrao,
+        const categorias = await getCategoriasUsuario(Number(userCode));
+        return categorias.map(({ id, nome }: CategoriaInt) => ({
+          id,
+          nome,
         }));
-
-        // Obtemos as categorias personalizadas e transformamos também
-        const categoriasPersonalizadas = await getCategoriaPersonalizada(
-          Number(userCode)
-        );
-        const categoriasPersonalizadasSimplificadas =
-          categoriasPersonalizadas.map((categoria: any) => ({
-            id: categoria.id,
-            nome: categoria.nome,
-          }));
-
-        // Retornamos o array combinado, contendo apenas id e nome
-        return [
-          ...categoriasComNomes,
-          ...categoriasPersonalizadasSimplificadas,
-        ];
       } catch (error: any) {
         addToast({ message: error.message, type: "error" });
-        console.error("Erro ao obter as categorias padrões", error);
+        console.error("Erro ao obter as categorias", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const fetchCategoriasById = async (id: number) => {
+    if (userCode) {
+      try {
+        setLoading(true);
+        const categoria = await getCategoriaById(id);
+        return categoria.map(({ id, nome }: CategoriaInt) => ({
+          id,
+          nome,
+        }));
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
       }
@@ -267,9 +292,39 @@ export function InputOutputForm() {
     }
   };
 
+  const fetchBancosById = async (id: number) => {
+    if (userCode) {
+      try {
+        const data = await getBancoById(id);
+        return data;
+      } catch (error: any) {
+        addToast({
+          message: error.message,
+          title: "Erro ao buscar itens",
+          type: "error",
+        });
+        console.error("Erro ao buscar itens:", error);
+      }
+    }
+  };
+
   const fetchTipoPagamento = async () => {
     try {
       const data = await getTipoPagamento();
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchTipoPagamentoById = async (id: number) => {
+    try {
+      const data = await getTipoPagamentoById(id);
       return data;
     } catch (error: any) {
       addToast({
@@ -295,11 +350,43 @@ export function InputOutputForm() {
     }
   };
 
+  const fetchRecorrenciaById = async (id: number) => {
+    try {
+      const data = await getRecorrenciaById(id);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
   const fetchInvestimentos = async () => {
     if (userCode) {
       try {
         setLoading(true);
         const metaInvestimento = await getMetaInvestimento();
+        return metaInvestimento.map(({ id, nome }: InvestimentoMetaInt) => ({
+          id,
+          nome,
+        }));
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias padrões", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const fetchInvestimentosById = async (id: number) => {
+    if (userCode) {
+      try {
+        setLoading(true);
+        const metaInvestimento = await getMetaInvestimentoById(id);
         return metaInvestimento.map(({ id, nome }: InvestimentoMetaInt) => ({
           id,
           nome,
@@ -344,9 +431,7 @@ export function InputOutputForm() {
               error={errors.categoria_id?.message}
               register={register}
               setValue={setValue}
-              fixedValue={
-                transactionData && String(transactionData.categoria_id)
-              }
+              fixedValue={transactionData && categoriasEdit}
               isEditing={isEditing}
             />
             <CustomSelect
@@ -357,24 +442,22 @@ export function InputOutputForm() {
               error={errors.banco_id?.message}
               register={register}
               setValue={setValue}
-              fixedValue={transactionData && String(transactionData.banco_id)}
+              fixedValue={transactionData && bancoEdit}
               isEditing={isEditing}
             />
             <CustomSelect
               name="tipo_pagamento_id"
               placeholder="Forma de pagamento"
               data={tiposPagamentos}
-              onSelect={handleSelectPayment}
               error={errors.tipo_pagamento_id?.message}
               register={register}
               setValue={setValue}
-              fixedValue={
-                transactionData && String(transactionData.tipo_pagamento_id)
-              }
+              fixedValue={transactionData && tipoPagamentoEdit}
               isEditing={isEditing}
+              onSelect={handleTipoPagamentoChange}
             />
-            {(payment === "Cartão de Crédito" ||
-              transactionData.quantidade_parcela !== undefined) && (
+            {(isCartaoCredito ||
+              transactionData?.quantidade_parcela !== undefined) && (
               <Input
                 name="quantidade_parcela"
                 placeholder="Quantidade de parcelas"
@@ -382,13 +465,13 @@ export function InputOutputForm() {
                 register={register}
                 number={true}
                 fixedValue={
-                  transactionData && String(transactionData.quantidade_parcela)
+                  transactionData && String(transactionData?.quantidade_parcela)
                 }
                 isEditing={isEditing}
               />
             )}
             {(repeat === "repeat" ||
-              transactionData.recorrencia_id !== undefined) && (
+              transactionData?.recorrencia_id !== undefined) && (
               <CustomSelect
                 name="recorrencia_id"
                 placeholder="Recorrência"
@@ -397,9 +480,7 @@ export function InputOutputForm() {
                 error={errors.recorrencia_id?.message}
                 register={register}
                 setValue={setValue}
-                fixedValue={
-                  transactionData && String(transactionData.recorrencia_id)
-                }
+                fixedValue={transactionData && recorrenciaEdit}
                 isEditing={isEditing}
               />
             )}
@@ -412,11 +493,11 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.redFFD,
                 }}
                 onClick={() => {
-                  if (transactionData.tipo_id === undefined && !isEditing) {
+                  if (transactionData?.tipo_id === undefined && !isEditing) {
                     handleTypeSelected("out");
                   }
                 }}
-                $selected={type === "out" || transactionData.tipo_id === 1}
+                $selected={type === "out" || transactionData?.tipo_id === 1}
                 $blocked={!isEditing}
               >
                 <RoundIcon>
@@ -435,11 +516,11 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.greenDCF,
                 }}
                 onClick={() => {
-                  if (transactionData.tipo_id === undefined && !isEditing) {
+                  if (transactionData?.tipo_id === undefined && !isEditing) {
                     handleTypeSelected("in");
                   }
                 }}
-                $selected={type === "in" || transactionData.tipo_id === 2}
+                $selected={type === "in" || transactionData?.tipo_id === 2}
                 $blocked={!isEditing}
               >
                 <RoundIcon>
@@ -479,12 +560,15 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
                 onClick={() => {
-                  if (transactionData.situacao_id === undefined && !isEditing) {
+                  if (
+                    transactionData?.situacao_id === undefined &&
+                    !isEditing
+                  ) {
                     handleSituationSelected("certain");
                   }
                 }}
                 $selected={
-                  situation === "certain" || transactionData.situacao_id === 1
+                  situation === "certain" || transactionData?.situacao_id === 1
                 }
                 $blocked={!isEditing}
               >
@@ -508,13 +592,16 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
                 onClick={() => {
-                  if (transactionData.situacao_id === undefined && !isEditing) {
+                  if (
+                    transactionData?.situacao_id === undefined &&
+                    !isEditing
+                  ) {
                     handleSituationSelected("possibility");
                   }
                 }}
                 $selected={
                   situation === "possibility" ||
-                  transactionData.situacao_id === 2
+                  transactionData?.situacao_id === 2
                 }
                 $blocked={!isEditing}
               >
@@ -554,14 +641,14 @@ export function InputOutputForm() {
                 }}
                 onClick={() => {
                   if (
-                    transactionData.periodicidade_id === undefined &&
+                    transactionData?.periodicidade_id === undefined &&
                     !isEditing
                   ) {
                     handleRecurrencySelected("repeat");
                   }
                 }}
                 $selected={
-                  repeat === "repeat" || transactionData.periodicidade_id === 1
+                  repeat === "repeat" || transactionData?.periodicidade_id === 1
                 }
                 $blocked={!isEditing}
               >
@@ -588,7 +675,7 @@ export function InputOutputForm() {
                 }}
                 onClick={() => {
                   if (
-                    transactionData.periodicidade_id === undefined &&
+                    transactionData?.periodicidade_id === undefined &&
                     !isEditing
                   ) {
                     handleRecurrencySelected("noRepeat");
@@ -596,7 +683,7 @@ export function InputOutputForm() {
                 }}
                 $selected={
                   repeat === "noRepeat" ||
-                  transactionData.periodicidade_id === 2
+                  transactionData?.periodicidade_id === 2
                 }
                 $blocked={!isEditing}
               >
@@ -637,7 +724,7 @@ export function InputOutputForm() {
                 error={errors.data_transacao?.message}
                 setValue={setValue}
                 // fixedValue={
-                //   transactionData && String(transactionData.data_transacao)
+                //   transactionData && String(transactionData?.data_transacao)
                 // }
                 isEditing={isEditing}
               />
@@ -649,10 +736,7 @@ export function InputOutputForm() {
                 error={errors.meta_investimento_id?.message}
                 register={register}
                 setValue={setValue}
-                fixedValue={
-                  transactionData &&
-                  String(transactionData.meta_investimento_id)
-                }
+                fixedValue={transactionData && investimentoEdit}
                 isEditing={isEditing}
               />
             </Row>
@@ -664,7 +748,7 @@ export function InputOutputForm() {
             placeholder="Observações ou anotações extras"
             error={errors.observacao?.message}
             register={register}
-            fixedValue={transactionData && transactionData.observacao}
+            fixedValue={transactionData && transactionData?.observacao}
             isEditing={isEditing}
           />
         </Row>
@@ -675,12 +759,12 @@ export function InputOutputForm() {
           <ButtonSentiment
             style={{ color: theme.colors.green0FB }}
             onClick={() => {
-              if (transactionData.sentimento_id === undefined && !isEditing) {
+              if (transactionData?.sentimento_id === undefined && !isEditing) {
                 handleSentimentSelected("happy");
               }
             }}
             $selected={
-              sentiment === "happy" || transactionData.sentimento_id === 1
+              sentiment === "happy" || transactionData?.sentimento_id === 1
             }
             $blocked={!isEditing}
           >
@@ -690,12 +774,12 @@ export function InputOutputForm() {
           <ButtonSentiment
             style={{ color: theme.colors.yellowDAD }}
             onClick={() => {
-              if (transactionData.sentimento_id === undefined && !isEditing) {
+              if (transactionData?.sentimento_id === undefined && !isEditing) {
                 handleSentimentSelected("anxious");
               }
             }}
             $selected={
-              sentiment === "anxious" || transactionData.sentimento_id === 2
+              sentiment === "anxious" || transactionData?.sentimento_id === 2
             }
             $blocked={!isEditing}
           >
@@ -705,12 +789,12 @@ export function InputOutputForm() {
           <ButtonSentiment
             style={{ color: theme.colors.redF63 }}
             onClick={() => {
-              if (transactionData.sentimento_id === undefined && !isEditing) {
+              if (transactionData?.sentimento_id === undefined && !isEditing) {
                 handleSentimentSelected("sad");
               }
             }}
             $selected={
-              sentiment === "sad" || transactionData.sentimento_id === 3
+              sentiment === "sad" || transactionData?.sentimento_id === 3
             }
             $blocked={!isEditing}
           >

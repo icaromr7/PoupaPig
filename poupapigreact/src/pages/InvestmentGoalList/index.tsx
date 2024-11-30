@@ -30,33 +30,6 @@ import {
 } from "../../services/api";
 import { InvestimentoMetaInt } from "../../interfaces";
 
-const dataInvestment = [
-  {
-    nome: "Casa",
-  },
-  {
-    nome: "Carro",
-  },
-  {
-    nome: "Fundo monetário",
-  },
-  {
-    nome: "Imóvel 2",
-  },
-  {
-    nome: "Casa",
-  },
-  {
-    nome: "Carro",
-  },
-  {
-    nome: "Fundo monetário",
-  },
-  {
-    nome: "Imóvel 2",
-  },
-];
-
 export function InvestmentGoalList() {
   const { addToast, setLoading, userCode } = useAuth();
   const navigate = useNavigate();
@@ -195,21 +168,44 @@ export function InvestmentGoalList() {
           </Information>
         </InfoColumn>
         <Column>
-          {metasInvestimentos
-            .filter((investment) => investment.tipo_objetivo_id === 2)
-            .map((investment) =>
-              itemInvestment(investment, `${investment.id}-${investment.nome}`)
-            )}
+          {metasInvestimentos.filter(
+            (investment) => investment.tipo_objetivo_id === 2
+          ).length === 0 ? (
+            <TitleInformation
+              style={{ fontSize: 15, color: theme.colors.grey6F7 }}
+            >
+              Usuário não tem investimentos cadastrados.
+            </TitleInformation>
+          ) : (
+            metasInvestimentos
+              .filter((investment) => investment.tipo_objetivo_id === 2)
+              .map((investment) =>
+                itemInvestment(
+                  investment,
+                  `${investment.id}-${investment.nome}`
+                )
+              )
+          )}
         </Column>
       </MainColumn>
       {/* AQUI VEM A COLUNA DE METAS */}
       <MainColumn>
         <Column>
-          {metasInvestimentos
-            .filter((investment) => investment.tipo_objetivo_id === 1)
-            .map((investment) =>
-              itemGoal(investment, `${investment.id}-${investment.nome}`)
-            )}
+          {metasInvestimentos.filter(
+            (investment) => investment.tipo_objetivo_id === 1
+          ).length === 0 ? (
+            <TitleInformation
+              style={{ fontSize: 15, color: theme.colors.grey6F7 }}
+            >
+              Usuário não tem metas cadastradas.
+            </TitleInformation>
+          ) : (
+            metasInvestimentos
+              .filter((investment) => investment.tipo_objetivo_id === 1)
+              .map((investment) =>
+                itemGoal(investment, `${investment.id}-${investment.nome}`)
+              )
+          )}
         </Column>
         <InfoColumn>
           <Image src={Landpage3} alt="PoupaPig" style={{ height: 205 }} />

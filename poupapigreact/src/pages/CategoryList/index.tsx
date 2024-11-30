@@ -25,11 +25,7 @@ import { Button } from "../../components/Button";
 import { CustomModal } from "../../components/CustomModal";
 import { CategoriaInt } from "../../interfaces";
 import { showIconPicked } from "../../utils/bibli";
-import {
-  getCategoriaPadrao,
-  getCategoriaPersonalizada,
-  getNomeCategoriaPadrao,
-} from "../../services/api";
+import { deleteCategoria, getCategoriasUsuario } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 export function CategoryList() {
@@ -38,18 +34,50 @@ export function CategoryList() {
   const [modalDelete, setModalDelete] = useState<boolean>(false);
   const [categorias, setCategorias] = useState<CategoriaInt[]>([]);
   const flag = useRef<boolean>(true);
+  const [selectedToDelete, setSelectedToDelete] = useState<CategoriaInt>();
 
   const handleEditData = (data: CategoriaInt) => {
     navigate("/category-form?editing=true", { state: { categoryData: data } });
   };
 
-  const handleDeleteModal = () => {
-    setModalDelete(!modalDelete);
+  const fetchUserData = async () => {
+    if (userCode) {
+      try {
+        setLoading(true);
+        const categorias = await getCategoriasUsuario(Number(userCode));
+        setCategorias(categorias);
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias", error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
-  const handleDeleteData = () => {
-    console.log("deletei");
+  const handleOpenDeleteModal = (data: CategoriaInt) => {
+    setSelectedToDelete(data);
+    setModalDelete(true);
+  };
+
+  const handleCloseDeleteModal = () => {
     setModalDelete(false);
+  };
+
+  const handleDeleteData = async () => {
+    if (selectedToDelete) {
+      try {
+        setLoading(true);
+        await deleteCategoria(selectedToDelete.id);
+        await fetchUserData();
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao apagar dado", error);
+      } finally {
+        setLoading(false);
+        setModalDelete(false);
+      }
+    }
   };
 
   const handleCategoryForm = () => {
@@ -57,43 +85,6 @@ export function CategoryList() {
   };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (userCode) {
-        try {
-          setLoading(true);
-          const categorias = await getCategoriaPadrao();
-          const nomesCat = await getNomeCategoriaPadrao();
-          const nomePorId = new Map(
-            nomesCat.map((nomeCat: any) => [nomeCat.id, nomeCat.nome])
-          );
-
-          const categoriasComNomes = categorias.map((categoria: any) => {
-            const nome = nomePorId.get(categoria.nome_id);
-            return {
-              id: categoria.id,
-              nome,
-              icone: categoria.icone,
-              valor_minimo: categoria.valor_minimo,
-              valor_maximo: categoria.valor_maximo,
-            };
-          });
-
-          setCategorias(categoriasComNomes);
-
-          const categoriasPersonalizadas = await getCategoriaPersonalizada(
-            Number(userCode)
-          );
-          console.log("categorias personalizadas", categoriasPersonalizadas);
-
-          setCategorias((prev) => [...prev, ...categoriasPersonalizadas]);
-        } catch (error: any) {
-          addToast({ message: error.message, type: "error" });
-          console.error("Erro ao obter as categorias padrões", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
     if (flag.current) {
       fetchUserData();
       console.log("passei");
@@ -129,7 +120,7 @@ export function CategoryList() {
           title="Excluir"
           backgroundColor={theme.colors.redF3A}
           borderColor={theme.colors.redF63}
-          onClick={handleDeleteModal}
+          onClick={() => handleOpenDeleteModal(data)}
         />
       </ContainerItem>
     );
@@ -153,8 +144,16 @@ export function CategoryList() {
       </MainColumn>
       <MainColumn>
         <Column>
-          {categorias.map((category: CategoriaInt, key) =>
-            itemCategory(category)
+          {categorias.length ? (
+            categorias.map((category: CategoriaInt, key) =>
+              itemCategory(category)
+            )
+          ) : (
+            <TitleInformation
+              style={{ fontSize: 15, color: theme.colors.grey6F7 }}
+            >
+              Usuário ainda não tem categorias cadastradas.
+            </TitleInformation>
           )}
         </Column>
         <ButtonsDiv>
@@ -167,7 +166,7 @@ export function CategoryList() {
       </MainColumn>
       {modalDelete && (
         <CustomModal
-          onClose={handleDeleteModal}
+          onClose={handleCloseDeleteModal}
           action={handleDeleteData}
           titleButtonCancel="Cancelar"
           titleButtonGo="Confirmar"

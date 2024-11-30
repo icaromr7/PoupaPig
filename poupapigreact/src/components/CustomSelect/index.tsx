@@ -29,7 +29,7 @@ interface CustomSelectProps {
   fixedValue?: GenericData;
   isEditing?: boolean;
   minus?: boolean;
-  onSelect?: (option: string) => void;
+  onSelect?: (option: any) => void;
   register?: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
 }
@@ -44,7 +44,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   fixedValue,
   isEditing,
   minus = false,
-  // onSelect,
+  onSelect,
   register,
   setValue,
   ...rest
@@ -62,11 +62,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const handleSelectOption = (option: SelectData) => {
     setSelectedOption(option);
     setIsOpen(false);
-    // onSelect && onSelect(option.id);
-    if (minus) {
-      setValue(name, option.id - 1, { shouldValidate: true });
-    } else {
-      setValue(name, option.id, { shouldValidate: true });
+    setValue(name, minus ? option.id - 1 : option.id, { shouldValidate: true });
+
+    if (onSelect) {
+      console.log("entrei");
+      onSelect(option);
     }
   };
 

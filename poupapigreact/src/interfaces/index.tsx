@@ -23,8 +23,8 @@ export interface CategoriaInt {
   id: number;
   nome: string;
   icone?: string;
-  valor_minimo?: number;
-  valor_maximo?: number;
+  valor_min?: number;
+  valor_max?: number;
   usuario_id?: number;
   padrao?: boolean;
 }
