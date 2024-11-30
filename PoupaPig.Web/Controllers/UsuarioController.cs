@@ -81,4 +81,12 @@ public class UsuarioController : ControllerBase
         var usuarios = _servicoUsuario.ObterTodas();
         return Ok(usuarios);
     }
+
+    // Endpoint para obter nome usuário
+    [HttpGet("nome-usuario")]
+    public IActionResult ObterNomeUsuario(int id)
+    {
+        var usuarios = _servicoUsuario.ObterNomeUsuario(id);
+        return Ok(usuarios);
+    }
 }
