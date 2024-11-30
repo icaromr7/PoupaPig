@@ -22,7 +22,7 @@ namespace PoupaPig.Dominio.Categorias.Servicos
         // Método para verificar se o nome da categoria já existe em qualquer categoria (padrão ou personalizada)
         private bool NomeNaoExistente(Categoria categoriaPersonalizada, string nome)
         {
-            var categoriaExistente = _repositorioCategoria.ObterPorNome(nome, categoriaPersonalizada.usuario_id);
+            var categoriaExistente = _repositorioCategoria.ObterPorNome(nome, categoriaPersonalizada.id == 0 ? 0 : categoriaPersonalizada.usuario_id );
 
             return  categoriaExistente == null;
         }
