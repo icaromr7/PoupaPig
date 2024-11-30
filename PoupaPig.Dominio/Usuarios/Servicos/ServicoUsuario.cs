@@ -60,5 +60,10 @@ namespace PoupaPig.Dominio.Usuarios.Servicos
         {
             return _repositorioUsuario.ObterTodas();
         }
+        public string ObterNomeUsuario (int id)
+        {
+            var usuario = _repositorioUsuario.ObterPorId (id);
+            return usuario.nome_completo;
+        }
     }
 }
