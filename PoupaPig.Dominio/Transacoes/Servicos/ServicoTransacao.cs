@@ -92,11 +92,11 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                 .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1);
 
             decimal fixas = transacoes
-                .Where(t => t.periodicidade_id == 1) // 1 representa despesas fixas (transações fixas)
+                .Where(t => t.periodicidade_id == 2) // 2 representa despesas fixas (transações fixas)
                 .Sum(t => t.valor);
 
             decimal variaveis = transacoes
-                .Where(t => t.periodicidade_id == 2) // 2 representa despesas variáveis (transações recorrentes)
+                .Where(t => t.periodicidade_id == 1) // 1 representa despesas variáveis (transações variaveis)
                 .Sum(t => t.valor);
 
             return (fixas, variaveis);
@@ -316,14 +316,11 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
 
         public decimal ObterValorOrcadoTotal(int usuarioId)
         {
-            var entradas = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.tipo_id == 1 && t.situacao_id == 2) // Tipo 1 = Entrada
-                .Sum(t => (decimal?)t.valor) ?? 0;
             var saidas = _repositorioTransacao.ObterTodas()
                 .Where(t => t.usuario_id == usuarioId && t.tipo_id == 2 && t.situacao_id == 2) // Tipo 2 = Saída
                 .Sum(t => (decimal?)t.valor) ?? 0;
 
-            return entradas - saidas;
+            return saidas;
         }
         public List<Transacao> ObterOrcamentos(int usuarioId)
         {
@@ -343,7 +340,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public List<Transacao> ObterInvestimentos(int usuarioId)
         {
             var Investimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.meta_investimento_id != 0).ToList();
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.meta_investimento_id != null).ToList();
 
             return Investimentos;
         }
@@ -364,7 +361,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                     tipo = transacao.tipo_id,
                     valor = transacao.valor,
                     nome = transacao.nome,
-                    data = (DateTime)transacao.data_transacao
+                    data = transacao.data_transacao
                 };
                 lancamentos.Add(lancamento);
             }
@@ -386,7 +383,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                 {
                     valor = transacao.valor,
                     nome = transacao.nome,
-                    data = (DateTime)transacao.data_transacao
+                    data = transacao.data_transacao
                 };
                 orcamentos.Add(orcamento);
             }
@@ -396,7 +393,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public List<Investimento> ObterInvestimento(int usuarioId)
         {
             var Investimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.meta_investimento_id != 0).ToList();
+                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1 && t.meta_investimento_id != null).ToList();
             return ConverterTransacaoEmInvestimento(Investimentos);
         }
 
@@ -409,7 +406,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                 {
                     valor = transacao.valor,
                     nome = transacao.nome,
-                    data = (DateTime)transacao.data_transacao
+                    data = transacao.data_transacao
                 };
                 investimentos.Add(investimento);
             }
@@ -423,20 +420,20 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         public int tipo { get; set; }
         public decimal valor { get; set; }
         public string nome { get; set; }
-        public DateTime data { get; set; }
+        public DateTime? data { get; set; }
     }
 
     public class Orcamento
     {
         public decimal valor { get; set; }
         public string nome { get; set; }
-        public DateTime data { get; set; }
+        public DateTime? data { get; set; }
     }
 
     public class Investimento
     {
         public decimal valor { get; set; }
         public string nome { get; set; }
-        public DateTime data { get; set; }
+        public DateTime? data { get; set; }
     }
 }
