@@ -1,7 +1,4 @@
-﻿using PoupaPig.Dominio.Classes;
-using System.Collections.Generic;
-
-namespace PoupaPig.Dominio.Classes.Servicos
+﻿namespace PoupaPig.Dominio.Classes.Servicos
 {
     public class ServicoClasse
     {
@@ -46,6 +43,6 @@ namespace PoupaPig.Dominio.Classes.Servicos
         public List<Classe> ObterClassesPorUsuario(int usuarioId)
         {
             return _repositorioClasse.ObterClassesPorUsuario(usuarioId);
-        }
+        }        
     }
 }

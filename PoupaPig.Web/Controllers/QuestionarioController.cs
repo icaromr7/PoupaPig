@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PoupaPig.Dominio.Classes.Servicos;
 using PoupaPig.Dominio.Questionarios;
 using PoupaPig.Dominio.Questionarios.Servicos;
 using System;
@@ -10,11 +11,14 @@ namespace PoupaPig.API.Controllers
     public class QuestionarioController : ControllerBase
     {
         private readonly ServicoQuestionario _servicoQuestionario;
+        private readonly ServicoUsuarioClasse _servico;
+
 
         // Injeção de dependência do serviço
-        public QuestionarioController(ServicoQuestionario servicoQuestionario)
+        public QuestionarioController(ServicoQuestionario servicoQuestionario, ServicoUsuarioClasse servico)
         {
             _servicoQuestionario = servicoQuestionario;
+            _servico = servico;
         }
 
         // Endpoint para criar um questionário
@@ -30,6 +34,7 @@ namespace PoupaPig.API.Controllers
             {
                 // Chama o serviço para criar o questionário
                 _servicoQuestionario.Criar(dados);
+                _servico.DefinirClasseSocial(dados);
                 return Ok("Questionário criado com sucesso!");
             }
             catch (Exception ex)
