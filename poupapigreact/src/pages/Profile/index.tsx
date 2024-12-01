@@ -42,116 +42,58 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import IcecreamIcon from "@mui/icons-material/Icecream";
 import Ok from "../../assets/svg/ok.svg";
 
-import { FinancialControlProfile } from "../../components/FinancialControlProfile";
 import { Button } from "../../components/Button";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
-import { getAssinaturas, getBancos, getCartoes } from "../../services/api";
-import { GenericData } from "../../interfaces";
-import { useAuth } from "../../context/AuthContext";
-import { CustomModal } from "../../components/CustomModal";
-import CustomSelect from "../../components/CustomSelect";
 import { DataBenefits } from "../../components/DataBenefits";
+import { useAuth } from "../../context/AuthContext";
+import { getLancamentosCompletos } from "../../services/api";
+import { TransacaoInt } from "../../interfaces";
+import { formatDate, numberToCurrency } from "../../utils/bibli";
 
 export function Profile() {
-  const { addToast } = useAuth();
+  const { addToast, setLoading, userCode } = useAuth();
   const totalRows = 11;
+  const [lancamentos, setLancamentos] = useState<TransacaoInt[]>([]);
+
+  useEffect(() => {
+    if (userCode) {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          const lancamentos = await getLancamentosCompletos(Number(userCode));
+          setLancamentos(lancamentos);
+          console.log("lancamentos", lancamentos);
+        } catch (error: any) {
+          addToast({ message: error.message, type: "error" });
+          console.error("Erro ao obter lancamentos", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [userCode]);
   // const filledRows = data.length;
   // const emptyRows = totalRows - filledRows;
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const assinaturas = await getAssinaturas();
-        const bancos = await getBancos();
-        const cartoes = await getCartoes();
-        console.log("data:", assinaturas, bancos, cartoes);
-      } catch (error) {
-        console.error("Erro ao buscar itens:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchItems = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const assinaturas = await getAssinaturas();
+  //       const bancos = await getBancos();
+  //       const cartoes = await getCartoes();
+  //       console.log("data:", assinaturas, bancos, cartoes);
+  //     } catch (error) {
+  //       console.error("Erro ao buscar itens:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchItems();
-  }, []);
-
-  const fetchCartoes = async () => {
-    console.log("oi");
-    try {
-      const data = await getCartoes();
-      return data;
-    } catch (error: any) {
-      console.log("erro");
-      addToast({
-        message: error.message,
-        title: "Erro ao buscar itens",
-        type: "error",
-      });
-      console.error("Erro ao buscar itens:", error);
-    }
-  };
-
-  const fetchAssinaturas = async () => {
-    console.log("oi");
-    try {
-      const data = await getCartoes();
-      return data;
-    } catch (error: any) {
-      console.log("erro");
-      addToast({
-        message: error.message,
-        title: "Erro ao buscar itens",
-        type: "error",
-      });
-      console.error("Erro ao buscar itens:", error);
-    }
-  };
-
-  const fetchBancos = async () => {
-    console.log("oi");
-    try {
-      const data = await getCartoes();
-      return data;
-    } catch (error: any) {
-      console.log("erro");
-      addToast({
-        message: error.message,
-        title: "Erro ao buscar itens",
-        type: "error",
-      });
-      console.error("Erro ao buscar itens:", error);
-    }
-  };
-
-  // const dataBenefits = (
-  //   title: string,
-  //   data: string[],
-  //   titleButton: string,
-  //   onClick: () => void,
-  //   id: string
-  // ) => {
-
-  //   return (
-  //     <ContainerBenefits onClick={onClick}>
-  //       <TitleBenefit>{title}</TitleBenefit>
-  //       {chunkedData.map((group, index) => (
-  //         <div key={index} style={{ display: "flex", alignItems: "center" }}>
-  //           {group.map((x, idx) => (
-  //             <React.Fragment key={idx}>
-  //               <NameBenefit>{x}</NameBenefit>
-  //               {/* Adiciona "|" entre os itens, mas não após o último */}
-  //               {idx < group.length - 1 && (
-  //                 <span style={{ margin: "0 8px" }}>|</span>
-  //               )}
-  //             </React.Fragment>
-  //           ))}
-  //         </div>
-  //       ))}
-  //       <ButtonDiv>
-  //         <Button title={titleButton} minWidth="100%" />
-  //       </ButtonDiv>
-  //       <CustomModal />
-  //     </ContainerBenefits>
-  //   );
-  // };
+  //   fetchItems();
+  // }, []);
 
   const CategorySpending = (
     <ContainerCategory>
@@ -167,7 +109,6 @@ export function Profile() {
     <Container>
       <CardFinancialControl>
         <RowProfile>
-          <ProfileImage></ProfileImage>
           <UserTitle>
             <WelcomeTitle>Olá, Fulano de tal!</WelcomeTitle>
             <Subtitle>Acompanhe aqui a situação da sua conta</Subtitle>
@@ -195,19 +136,19 @@ export function Profile() {
             title="Suas bandeiras de cartão"
             id="cartao-id-escolha"
             titleButton="Adicionar cartão"
-            onClick={fetchCartoes}
+            type="cartao"
           />
           <DataBenefits
             title="Suas contas bancárias"
             id="banco-id-escolha"
             titleButton="Adicionar banco"
-            onClick={fetchBancos}
+            type="banco"
           />
           <DataBenefits
             title="Suas assinaturas"
             id="assinatura-id-escolha"
             titleButton="Adicionar assinatura"
-            onClick={fetchAssinaturas}
+            type="assinatura"
           />
           <BenefitContainer>
             <TextBenefit>
@@ -234,20 +175,22 @@ export function Profile() {
                   </TableRow>
                 </TableHeader>
                 <tbody>
-                  {/* {data.map((row, index) => (
+                  {lancamentos.map((row, index) => (
                     <TableRow key={index} even={index % 2 === 0}>
-                      <TableCell>{row.date}</TableCell>
-                      <TableCell>{row.value}</TableCell>
-                      <TableCell>{row.name}</TableCell>
+                      <TableCell>
+                        {formatDate(row.data_transacao || "")}
+                      </TableCell>
+                      <TableCell>{numberToCurrency(row.valor)}</TableCell>
+                      <TableCell>{row.nome}</TableCell>
                       <IconCell>
-                        {row.arrow === "up" ? (
+                        {row.tipo_id === 2 ? (
                           <ArrowUpwardIcon style={{ color: "#F63A3A" }} />
                         ) : (
                           <ArrowDownwardIcon style={{ color: "#0FB920" }} />
                         )}
                       </IconCell>
                     </TableRow>
-                  ))} */}
+                  ))}
                   {/* {Array.from({ length: emptyRows }).map((_, index) => (
                     <TableRow
                       key={`empty-${index}`}

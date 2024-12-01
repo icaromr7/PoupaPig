@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 //style, assets e icons
 import {
@@ -24,104 +24,84 @@ import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { CustomModal } from "../../components/CustomModal";
 import { TransacaoInt } from "../../interfaces";
-
-const dataInputOutput: TransacaoInt[] = [
-  {
-    id: 1,
-    nome: "Compra 1",
-    valor: 123,
-    categoria_id: 1,
-    banco_id: 1,
-    meta_investimento_id: 1,
-    tipo_pagamento_id: 1,
-    recorrencia_id: 1,
-    data_transacao: "09/11/2024",
-    quantidade_parcela: 12,
-    tipo_id: 1,
-    situacao_id: 1,
-    periodicidade_id: 1,
-    sentimento_id: 1,
-    observacao: "observação",
-  },
-  {
-    id: 2,
-    nome: "Compra 2",
-    valor: 123,
-    categoria_id: 1,
-    banco_id: 1,
-    meta_investimento_id: 1,
-    tipo_pagamento_id: 1,
-    recorrencia_id: 1,
-    data_transacao: "09/11/2024",
-    quantidade_parcela: 12,
-    tipo_id: 2,
-    situacao_id: 1,
-    periodicidade_id: 1,
-    sentimento_id: 1,
-    observacao: "observação",
-  },
-  {
-    id: 3,
-    nome: "Compra 3",
-    valor: 123,
-    categoria_id: 1,
-    banco_id: 1,
-    meta_investimento_id: 1,
-    tipo_pagamento_id: 1,
-    recorrencia_id: 1,
-    data_transacao: "09/11/2024",
-    quantidade_parcela: 12,
-    tipo_id: 1,
-    situacao_id: 2,
-    periodicidade_id: 1,
-    sentimento_id: 1,
-    observacao: "observação",
-  },
-  {
-    id: 4,
-    nome: "Compra 4",
-    valor: 123,
-    categoria_id: 1,
-    banco_id: 1,
-    meta_investimento_id: 1,
-    tipo_pagamento_id: 1,
-    recorrencia_id: 1,
-    data_transacao: "09/11/2024",
-    quantidade_parcela: 12,
-    tipo_id: 1,
-    situacao_id: 1,
-    periodicidade_id: 1,
-    sentimento_id: 1,
-    observacao: "observação",
-  },
-];
+import { useAuth } from "../../context/AuthContext";
+import {
+  deleteTransacao,
+  getLancamentos,
+  getLancamentosCompletos,
+} from "../../services/api";
 
 export function InputOutputList() {
+  const { addToast, setLoading, userCode } = useAuth();
   const navigate = useNavigate();
   const [modalDelete, setModalDelete] = useState<boolean>(false);
+  const [transacoes, setTransacoes] = useState<TransacaoInt[]>([]);
+  const flag = useRef<boolean>(true);
+  const [selectedToDelete, setSelectedToDelete] = useState<TransacaoInt>();
 
   const handleEditData = (data: TransacaoInt) => {
     navigate("/input-output-form", { state: { transactionData: data } });
   };
 
-  const handleDeleteModal = () => {
-    setModalDelete(!modalDelete);
+  const handleOpenDeleteModal = (data: TransacaoInt) => {
+    setSelectedToDelete(data);
+    setModalDelete(true);
   };
 
-  const handleDeleteData = () => {
-    console.log("deletei");
+  const handleCloseDeleteModal = () => {
     setModalDelete(false);
+  };
+
+  const handleDeleteData = async () => {
+    if (selectedToDelete) {
+      try {
+        setLoading(true);
+        await deleteTransacao(selectedToDelete.id);
+        await fetchUserData();
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao apagar dado", error);
+      } finally {
+        setLoading(false);
+        setModalDelete(false);
+      }
+    }
   };
 
   const handleTransactionForm = () => {
     navigate("/input-output-form");
   };
 
-  const itemInputOutput = (data: TransacaoInt) => {
+  const fetchUserData = async () => {
+    if (userCode) {
+      try {
+        setLoading(true);
+        const transacao = await getLancamentosCompletos(Number(userCode));
+        console.log("transação", transacao);
+        setTransacoes(transacao);
+      } catch (error: any) {
+        addToast({ message: error.message, type: "error" });
+        console.error("Erro ao obter as categorias padrões", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (flag.current) {
+      fetchUserData();
+      setTimeout(() => {
+        flag.current = false;
+      }, 1000);
+    }
+  }, [userCode]);
+
+  const itemInputOutput = (data: TransacaoInt, key: number) => {
     return (
-      <ContainerItem>
+      <ContainerItem key={key}>
         <Symbol $type={data.tipo_id}>
-          {data.tipo_id === 2 ? (
+          {data.tipo_id === 1 ? (
             <ArrowDownwardIcon
               style={{ fontSize: 30, color: theme.colors.green0FB }}
             />
@@ -146,7 +126,7 @@ export function InputOutputList() {
           title="Excluir"
           backgroundColor={theme.colors.redF3A}
           borderColor={theme.colors.redF63}
-          onClick={handleDeleteModal}
+          onClick={() => handleOpenDeleteModal(data)}
         />
       </ContainerItem>
     );
@@ -169,17 +149,37 @@ export function InputOutputList() {
           </Information>
         </InfoColumn>
         <Column>
-          {dataInputOutput
-            .filter((investment: TransacaoInt) => investment.situacao_id === 1)
-            .map((investment) => itemInputOutput(investment))}
+          {transacoes.filter(
+            (transacao: TransacaoInt) => transacao.situacao_id === 2
+          ).length === 0 ? (
+            <TitleInformation
+              style={{ fontSize: 15, color: theme.colors.grey6F7 }}
+            >
+              Usuário não tem dados fixos cadastrados.
+            </TitleInformation>
+          ) : (
+            transacoes
+              .filter((transacao: TransacaoInt) => transacao.situacao_id === 2)
+              .map((transacao) => itemInputOutput(transacao, transacao.id))
+          )}
         </Column>
       </MainColumn>
       {/* AQUI VEM A COLUNA DE METAS */}
       <MainColumn>
         <Column>
-          {dataInputOutput
-            .filter((investment: TransacaoInt) => investment.situacao_id === 2)
-            .map((investment) => itemInputOutput(investment))}
+          {transacoes.filter(
+            (transacao: TransacaoInt) => transacao.situacao_id === 1
+          ).length === 0 ? (
+            <TitleInformation
+              style={{ fontSize: 15, color: theme.colors.grey6F7 }}
+            >
+              Usuário não tem dados flutuantes cadastrados.
+            </TitleInformation>
+          ) : (
+            transacoes
+              .filter((transacao: TransacaoInt) => transacao.situacao_id === 1)
+              .map((transacao) => itemInputOutput(transacao, transacao.id))
+          )}
         </Column>
         <InfoColumn>
           <Image src={InputOutput2} alt="PoupaPig" style={{ height: 205 }} />
@@ -205,7 +205,7 @@ export function InputOutputList() {
       </MainColumn>
       {modalDelete && (
         <CustomModal
-          onClose={handleDeleteModal}
+          onClose={handleCloseDeleteModal}
           action={handleDeleteData}
           titleButtonCancel="Cancelar"
           titleButtonGo="Confirmar"

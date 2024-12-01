@@ -9,55 +9,227 @@ import {
   TitleBenefit,
   NameBenefit,
   ButtonDiv,
+  Container,
+  Overlay,
+  Header,
+  Title,
+  Close,
+  Body,
+  Footer,
 } from "./style";
+import theme from "../../styles/theme";
 
 //importações internas
-import { GenericData } from "../../interfaces";
 import CustomSelect from "../CustomSelect";
 import { Button } from "../Button";
-import { CustomModal } from "../CustomModal";
+import {
+  getAssinaturas,
+  getBancos,
+  getCartoes,
+  postUsuarioAssinatura,
+  postUsuarioBanco,
+  postUsuarioCartao,
+} from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
-const schema = yup.object().shape({
-  nome: yup.string().required("Campo obrigatório"),
+const schemaCartao = yup.object().shape({
+  cartao_id: yup.number().required("Campo obrigatório"),
+});
+
+const schemaBanco = yup.object().shape({
+  banco_id: yup.number().required("Campo obrigatório"),
+});
+
+const schemaAssinatura = yup.object().shape({
+  assinatura_id: yup.number().required("Campo obrigatório"),
 });
 
 interface DataBenefitsProps {
   title: string;
   titleButton: string;
-  onClick: () => void;
+  type: "cartao" | "banco" | "assinatura";
   id: string;
 }
 
 export function DataBenefits({
   title,
   titleButton,
-  onClick,
+  type,
   id,
 }: DataBenefitsProps) {
+  const { addToast, setLoading, userCode } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState<any>(null);
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
+    register: registerCartao,
+    handleSubmit: handleSubmitCartao,
+    formState: { errors: errorsCartao },
+    setValue: setValueCartao,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaCartao),
   });
 
-  const handleButtonClick = async () => {
+  const {
+    register: registerBanco,
+    handleSubmit: handleSubmitBanco,
+    formState: { errors: errorsBanco },
+    setValue: setValueBanco,
+  } = useForm({
+    resolver: yupResolver(schemaBanco),
+  });
+
+  const {
+    register: registerAssinatura,
+    handleSubmit: handleSubmitAssinatura,
+    formState: { errors: errorsAssinatura },
+    setValue: setValueAssinatura,
+  } = useForm({
+    resolver: yupResolver(schemaAssinatura),
+  });
+
+  const handleCloseModal = () => {
+    console.log("fechei");
+    setModalOpen(false);
+  };
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+    handleButtonClick();
+  };
+
+  const fetchCartoes = async () => {
     try {
-      setModalOpen(true);
-      const fetchedData = await onClick();
-      setModalData(fetchedData);
-    } catch (error) {
-      console.error("Erro ao buscar dados para o modal", error);
+      setLoading(true);
+      const data = await getCartoes();
+      return data;
+    } catch (error: any) {
+      console.log("erro");
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSubmitDataBenefits = (data: any) => {
-    console.log("data", data);
+  const fetchAssinaturas = async () => {
+    try {
+      setLoading(true);
+      const data = await getAssinaturas();
+      return data;
+    } catch (error: any) {
+      console.log("erro");
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBancos = async () => {
+    try {
+      setLoading(true);
+      const data = await getBancos();
+      return data;
+    } catch (error: any) {
+      console.log("erro");
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleButtonClick = async () => {
+    try {
+      setLoading(true);
+      let fetchedData;
+      if (type === "assinatura") {
+        fetchedData = await fetchAssinaturas();
+      }
+      if (type === "banco") {
+        fetchedData = await fetchBancos();
+      }
+      if (type === "cartao") {
+        fetchedData = await fetchCartoes();
+      }
+      setModalData(fetchedData);
+    } catch (error) {
+      console.error("Erro ao buscar dados para o modal", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitDataBenefits = async (data: any) => {
+    const combinedData = {
+      ...data,
+      usuario_id: Number(userCode),
+    };
+    console.log("data", combinedData);
+    if (type === "assinatura") {
+      try {
+        setLoading(true);
+        const data = await postUsuarioAssinatura(combinedData);
+        return data;
+      } catch (error: any) {
+        console.log("erro");
+        addToast({
+          message: error.message,
+          title: "Erro ao buscar itens",
+          type: "error",
+        });
+        console.error("Erro ao buscar itens:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (type === "banco") {
+      try {
+        setLoading(true);
+        const data = await postUsuarioBanco(combinedData);
+        return data;
+      } catch (error: any) {
+        console.log("erro");
+        addToast({
+          message: error.message,
+          title: "Erro ao buscar itens",
+          type: "error",
+        });
+        console.error("Erro ao buscar itens:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (type === "cartao") {
+      try {
+        setLoading(true);
+        const data = await postUsuarioCartao(combinedData);
+        return data;
+      } catch (error: any) {
+        console.log("erro");
+        addToast({
+          message: error.message,
+          title: "Erro ao buscar itens",
+          type: "error",
+        });
+        console.error("Erro ao buscar itens:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const chunkedData = [];
@@ -69,7 +241,7 @@ export function DataBenefits({
   //   }
 
   return (
-    <ContainerBenefits onClick={onClick}>
+    <ContainerBenefits onClick={handleButtonClick}>
       <TitleBenefit>{title}</TitleBenefit>
       {/* {chunkedData.map((group, index) => (
         <div key={index} style={{ display: "flex", alignItems: "center" }}>
@@ -84,30 +256,66 @@ export function DataBenefits({
         </div>
       ))} */}
       <ButtonDiv>
-        <Button
-          title={titleButton}
-          minWidth="100%"
-          onClick={handleButtonClick}
-        />
+        <Button title={titleButton} minWidth="100%" onClick={handleModalOpen} />
       </ButtonDiv>
       {isModalOpen && (
-        <CustomModal
-          message={
-            <CustomSelect
-              name={id}
-              placeholder={titleButton}
-              data={modalData}
-              error={errors.nome?.message}
-              register={register}
-              setValue={setValue}
-            />
-          }
-          title={title}
-          titleButtonCancel="Cancelar"
-          titleButtonGo="Confirmar"
-          action={handleSubmit(handleSubmitDataBenefits)}
-          onClose={() => setModalOpen(false)}
-        />
+        <Overlay>
+          <Container>
+            <Header>
+              <Title>{title}</Title>
+              <Close onClick={handleCloseModal} />
+            </Header>
+            <Body>
+              {" "}
+              <CustomSelect
+                name={id}
+                placeholder={titleButton}
+                data={modalData}
+                error={
+                  type === "assinatura"
+                    ? errorsAssinatura.assinatura_id?.message
+                    : type === "banco"
+                    ? errorsBanco.banco_id?.message
+                    : errorsCartao.cartao_id?.message
+                }
+                register={
+                  type === "assinatura"
+                    ? registerAssinatura
+                    : type === "banco"
+                    ? registerBanco
+                    : registerCartao
+                }
+                setValue={
+                  type === "assinatura"
+                    ? setValueAssinatura
+                    : type === "banco"
+                    ? setValueBanco
+                    : setValueCartao
+                }
+              />
+            </Body>
+            <Footer>
+              <Button
+                title="Cancelar"
+                backgroundColor={theme.colors.greyB8C}
+                borderColor={theme.colors.grey6F7}
+                onClick={handleCloseModal}
+              />
+              <Button
+                title="Confirmar"
+                onClick={() => {
+                  if (type === "assinatura") {
+                    handleSubmitAssinatura(handleSubmitDataBenefits)();
+                  } else if (type === "banco") {
+                    handleSubmitBanco(handleSubmitDataBenefits)();
+                  } else {
+                    handleSubmitCartao(handleSubmitDataBenefits)();
+                  }
+                }}
+              />
+            </Footer>
+          </Container>
+        </Overlay>
       )}
     </ContainerBenefits>
   );

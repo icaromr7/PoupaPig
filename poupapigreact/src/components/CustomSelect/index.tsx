@@ -26,7 +26,7 @@ interface CustomSelectProps {
   title?: string;
   error?: string;
   required?: boolean;
-  fixedValue?: GenericData;
+  fixedValue?: GenericData | undefined;
   isEditing?: boolean;
   minus?: boolean;
   onSelect?: (option: any) => void;
@@ -60,6 +60,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   };
 
   const handleSelectOption = (option: SelectData) => {
+    console.log("option", option);
     setSelectedOption(option);
     setIsOpen(false);
     setValue(name, minus ? option.id - 1 : option.id, { shouldValidate: true });
@@ -70,12 +71,18 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     }
   };
 
+  const setValueRef = useRef(setValue);
+
   useEffect(() => {
-    if (!isEditing && fixedValue) {
+    if (
+      !isEditing &&
+      fixedValue &&
+      (!selectedOption || selectedOption.id !== fixedValue.id)
+    ) {
       setSelectedOption(fixedValue);
-      setValue(name, fixedValue.id, { shouldValidate: true });
+      setValueRef.current(name, fixedValue.id, { shouldValidate: true });
     }
-  }, [isEditing, fixedValue, name, setValue]);
+  }, [isEditing, fixedValue, name, selectedOption]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

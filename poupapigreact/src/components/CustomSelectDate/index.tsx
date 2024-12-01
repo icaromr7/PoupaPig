@@ -15,8 +15,9 @@ interface CustomSelectDateProps {
   name: string;
   setValue: UseFormSetValue<any>;
   error?: string;
-  fixedValue?: string;
+  fixedValue?: string | undefined;
   isEditing?: boolean;
+  data?: any;
 }
 
 const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
@@ -25,7 +26,8 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
   setValue,
   error,
   fixedValue,
-  isEditing,
+  isEditing = false,
+  data,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -70,11 +72,15 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
   return (
     <Container ref={selectRef}>
       <SelectBox
-        onClick={() =>
-          fixedValue !== undefined
-            ? isEditing && toggleCalendar()
-            : toggleCalendar()
-        }
+        onClick={() => {
+          if (fixedValue !== undefined) {
+            if (isEditing) {
+              toggleCalendar();
+            }
+          } else {
+            toggleCalendar();
+          }
+        }}
         $isFixed={fixedValue !== undefined && !isEditing}
       >
         <span>

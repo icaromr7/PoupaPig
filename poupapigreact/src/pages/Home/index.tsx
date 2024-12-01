@@ -33,7 +33,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import Home1 from "../../assets/svg/home1.svg";
 
 //importações internas
-import { numberToCurrency } from "../../utils/bibli";
+import { formatDate, numberToCurrency } from "../../utils/bibli";
 import { TransactionData } from "../../interfaces";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
 import { FinancialControlProfile } from "../../components/FinancialControlProfile";
@@ -47,6 +47,13 @@ import {
   getRetornoInvestimentos,
   getSaldo,
 } from "../../services/api";
+
+interface DataResumo {
+  nome: string;
+  valor: number;
+  data: string;
+  tipo_id?: number;
+}
 
 const dataExemplo: TransactionData[] = [
   {
@@ -131,7 +138,13 @@ const dataExemplo: TransactionData[] = [
   },
 ];
 
-const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
+const ScrollMenu = ({
+  data,
+  type,
+}: {
+  data: DataResumo[];
+  type: "lancamento" | "orcamento" | "investimento";
+}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showArrows, setShowArrows] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -193,21 +206,25 @@ const ScrollMenu = ({ data }: { data: TransactionData[] }) => {
       )}
       <ScrollContent ref={scrollRef}>
         {data.map((item, index) => (
-          <ContainerElement key={index} $type={item.type}>
+          <ContainerElement key={index} $type={type}>
             <Icon>
-              {item.type === "in" && <ArrowDownwardIcon />}
-              {item.type === "out" && <ArrowUpwardIcon />}
-              {item.type === "budget" && <AccountBalanceWalletIcon />}
-              {item.type === "investment" && <MonetizationOnIcon />}
+              {type === "lancamento" && item.tipo_id === 1 && (
+                <ArrowDownwardIcon />
+              )}
+              {type === "lancamento" && item.tipo_id === 2 && (
+                <ArrowUpwardIcon />
+              )}
+              {type === "orcamento" && <AccountBalanceWalletIcon />}
+              {type === "investimento" && <MonetizationOnIcon />}
             </Icon>
             <MainData>
               <Value>
                 <DollarSign>R$</DollarSign>
-                <ValueNumber>{numberToCurrency(item.value)}</ValueNumber>
+                <ValueNumber>{numberToCurrency(item.valor)}</ValueNumber>
               </Value>
-              <Title>{item.name}</Title>
+              <Title>{item.nome}</Title>
             </MainData>
-            <Date>{item.date}</Date>
+            <Date>{formatDate(item.data)}</Date>
           </ContainerElement>
         ))}
       </ScrollContent>
@@ -228,15 +245,18 @@ export function Home() {
   const [budget, setBudget] = useState<TransactionData[]>([]);
   const [investment, setInvestment] = useState<TransactionData[]>([]);
   const [showModalTips, setShowModalTips] = useState<boolean>(false);
-  const [todosLancamentos, setTodosLancamentos] = useState<number>(0);
-  const [todosOrcamentos, setTodosOrcamentos] = useState<number>(0);
-  const [todosInvestimentos, setTodosInvestimentos] = useState<number>(0);
+  const [todosLancamentos, setTodosLancamentos] = useState<DataResumo[]>([]);
+  const [todosOrcamentos, setTodosOrcamentos] = useState<DataResumo[]>([]);
+  const [todosInvestimentos, setTodosInvestimentos] = useState<DataResumo[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchUserData = async () => {
       console.log("oii fetchUserData", userCode);
       if (userCode) {
         try {
+          setLoading(true);
           //valores listados
           const total_lancamentos = await getLancamentos(Number(userCode));
           setTodosLancamentos(total_lancamentos);
@@ -244,15 +264,12 @@ export function Home() {
           setTodosOrcamentos(total_orcamentos);
           const total_investimentos = await getInvestimentos(Number(userCode));
           setTodosInvestimentos(total_investimentos);
-          console.log(
-            "total:",
-            total_lancamentos,
-            total_orcamentos,
-            total_investimentos
-          );
+          console.log("total:", total_lancamentos);
         } catch (error: any) {
           addToast({ message: error.message, type: "error" });
           console.error("Erro ao obter dados financeiros do usuário", error);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -282,15 +299,15 @@ export function Home() {
       <ClientData>
         <Row>
           <TitleContainer>Lançamentos</TitleContainer>
-          <ScrollMenu data={inOut} />
+          <ScrollMenu data={todosLancamentos} type="lancamento" />
         </Row>
         <Row>
           <TitleContainer>Orçamentos</TitleContainer>
-          <ScrollMenu data={budget} />
+          <ScrollMenu data={todosOrcamentos} type="orcamento" />
         </Row>
         <Row>
           <TitleContainer>Investimentos</TitleContainer>
-          <ScrollMenu data={investment} />
+          <ScrollMenu data={todosInvestimentos} type="investimento" />
         </Row>
         <Row>
           <MoneyTipsContainer onClick={() => setShowModalTips(true)}>

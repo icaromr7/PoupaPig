@@ -161,21 +161,6 @@ const iconMapping: Record<
 
 //importação de icons:
 
-export const numberToCurrency = (value?: number) => {
-  const numberFormat = (value || 0.0).toFixed(2).replace(".", ",");
-
-  if (numberFormat) {
-    const [valuePart, decimalPart] = numberFormat.split(",");
-
-    const stringFormated = `${parseFloat(valuePart || "0").toLocaleString(
-      "pt-BR"
-    )},${decimalPart || "00"}`;
-
-    return stringFormated;
-  }
-  return "0,00";
-};
-
 export const IconPicker = ({
   onSelect,
 }: {
@@ -605,3 +590,30 @@ export const showIconPicked = (iconName: string) => {
 
   return <StyledIcon IconComponent={IconComponent} />;
 };
+
+export const numberToCurrency = (value?: number) => {
+  const numberFormat = (value || 0.0).toFixed(2).replace(".", ",");
+
+  if (numberFormat) {
+    const [valuePart, decimalPart] = numberFormat.split(",");
+
+    const stringFormated = `${parseFloat(valuePart || "0").toLocaleString(
+      "pt-BR"
+    )},${decimalPart || "00"}`;
+
+    return stringFormated;
+  }
+  return "0,00";
+};
+
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+const formattedDate = formatDate("2024-11-29T00:00:00");
+console.log(formattedDate);

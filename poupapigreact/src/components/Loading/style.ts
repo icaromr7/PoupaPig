@@ -10,7 +10,7 @@ export const LoadingOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 3000;
 `;
 
 export const PulsingSvg = styled.img`

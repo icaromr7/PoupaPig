@@ -387,9 +387,12 @@ export function InvestmentGoalForm() {
                 error={errors.data_resgate?.message}
                 setValue={setValue}
                 fixedValue={
-                  investmentGoalData && String(investmentGoalData.data_resgate)
+                  investmentGoalData?.data_resgate
+                    ? String(investmentGoalData.data_resgate)
+                    : undefined
                 }
                 isEditing={isEditing}
+                data={investmentGoalData}
               />
               <Line>
                 <Input

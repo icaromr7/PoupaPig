@@ -65,7 +65,6 @@ export function FinancialControlProfile() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log("oii fetchUserData", userCode);
       if (userCode) {
         try {
           //valores de resumo
@@ -77,6 +76,7 @@ export function FinancialControlProfile() {
           const orcados = await getValorOrcado(Number(userCode));
           setOrcado(orcados);
           const investimento = await getRetornoInvestimentos(Number(userCode));
+          console.log("dados:", lancamentos.ganhos, orcados);
           setLivreSemOrcado(lancamentos.ganhos - orcados);
           setInvestido(investimento);
         } catch (error: any) {
@@ -94,6 +94,7 @@ export function FinancialControlProfile() {
 
   useEffect(() => {
     const calculo = livreSemOrcado - devendo;
+    console.log("calculo", calculo);
 
     if (calculo > 0) {
       setSituation("ok");
@@ -121,7 +122,7 @@ export function FinancialControlProfile() {
       setIconSituation(Emergency);
       return;
     }
-  }, [investido]);
+  }, [livreSemOrcado, devendo]);
 
   const hexToRgb = (hex: string) => {
     const bigint = parseInt(hex.replace("#", ""), 16);

@@ -72,7 +72,7 @@ export const Symbol = styled.div<InputOutputListStyleProps>`
   min-width: 40px;
   height: 40px;
   border: ${(props) =>
-    props.$type === 2
+    props.$type === 1
       ? `3px solid ${theme.colors.green0FB}`
       : `3px solid ${theme.colors.redF63}`};
   border-radius: 20px;

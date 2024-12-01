@@ -258,14 +258,11 @@ export const getPeriodicidadeTransacaoById = async (id: number) => {
 //QUESTIONARIO
 export const postQuestionario = async (dados: any) => {
   try {
-    console.log("entrei", dados);
-
     const response = await api.post("/Questionario", dados, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    console.log("sucesso?");
     return response.data;
   } catch (error) {
     console.error("Erro ao postar o questionário:", error);
@@ -310,24 +307,44 @@ export const getRecorrenciaById = async (id: number) => {
 };
 
 //SENTIMENTO TRANSACAO:
-// export const getSentimentoTransacao = async () => {
-//   const response = await api.get("/SentimentoTransacao");
-//   return response.data;
-// };
-// export const getSentimentoTransacaoById = async (id: string | number) => {
-//   const response = await api.get(`/SentimentoTransacao/${id}`);
-//   return response.data;
-// };
+export const getSentimentoTransacao = async () => {
+  try {
+    const response = await api.get("/SentimentoTransacao");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
+export const getSentimentoTransacaoById = async (id: number) => {
+  try {
+    const response = await api.get(`/SentimentoTransacao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dado:", error);
+    throw error;
+  }
+};
 
 //SITUACAO TRANSACAO:
-// export const getSituacaoTransacao = async () => {
-//   const response = await api.get("/SituacaoTransacao");
-//   return response.data;
-// };
-// export const getSituacaoTransacaoById = async (id: string | number) => {
-//   const response = await api.get(`/SituacaoTransacao/${id}`);
-//   return response.data;
-// };
+export const getSituacaoTransacao = async () => {
+  try {
+    const response = await api.get("/SituacaoTransacao");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
+export const getSituacaoTransacaoById = async (id: number) => {
+  try {
+    const response = await api.get(`/SituacaoTransacao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dado:", error);
+    throw error;
+  }
+};
 
 //TIPO PAGAMENTO:
 export const getTipoPagamento = async () => {
@@ -359,16 +376,30 @@ export const getTipoTransacao = async () => {
     throw error;
   }
 };
-// export const getTipoTransacaoById = async (id: string | number) => {
-//   const response = await api.get(`/TipoTransacao/${id}`);
-//   return response.data;
-// };
+export const getTipoTransacaoById = async (id: number) => {
+  try {
+    const response = await api.get(`/TipoTransacao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
 
 //TRANSACAO
-// export const postTransacao = async () => {
-//   const response = await api.post("/Transacao");
-//   return response.data;
-// };
+export const postTransacao = async (dados: any) => {
+  try {
+    const response = await api.post("/Transacao", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao postar dados:", error);
+    throw error;
+  }
+};
 // export const getTransacao = async () => {
 //   const response = await api.get("/Transacao");
 //   return response.data;
@@ -377,14 +408,24 @@ export const getTipoTransacao = async () => {
 //   const response = await api.get(`/Transacao/${id}`);
 //   return response.data;
 // };
-// export const putTransacao = async (id: number) => {
-//   const response = await api.put(`/Transacao/${id}`);
-//   return response.data;
-// };
-// export const deleteTransacao = async (id: string | number) => {
-//   const response = await api.delete(`/Transacao/${id}`);
-//   return response.data;
-// };
+export const putTransacao = async (id: number) => {
+  try {
+    const response = await api.put(`/Transacao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao editar dados:", error);
+    throw error;
+  }
+};
+export const deleteTransacao = async (id: number) => {
+  try {
+    const response = await api.delete(`/Transacao/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao excluir dados:", error);
+    throw error;
+  }
+};
 // export const getTransacaoById = async (id: string | number) => {
 //   const response = await api.get(`/Transacao/${id}`);
 //   return response.data;
@@ -403,8 +444,13 @@ export const getSaldo = async (id: number) => {
 //   return response.data;
 // };
 export const getGanhosVsGastos = async (id: number) => {
-  const response = await api.get(`/Transacao/ganhos-vs-gastos/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/ganhos-vs-gastos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 // export const getDespesasFixasVsVariaveis = async (id: number) => {
 //   const response = await api.get(
@@ -481,24 +527,58 @@ export const getGanhosVsGastos = async (id: number) => {
 //   return response.data;
 // };
 export const getValorOrcado = async (id: number) => {
-  const response = await api.get(`/Transacao/valor-orcado/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/valor-orcado/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 export const getOrcamentos = async (id: number) => {
-  const response = await api.get(`/Transacao/orcamentos/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/orcamento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 export const getLancamentos = async (id: number) => {
-  const response = await api.get(`/Transacao/lancamentos/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/lancamento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
+export const getLancamentosCompletos = async (id: number) => {
+  try {
+    const response = await api.get(`/Transacao/lancamentos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 export const getInvestimentos = async (id: number) => {
-  const response = await api.get(`/Transacao/investimentos/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/investimento/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 export const getRetornoInvestimentos = async (id: number) => {
-  const response = await api.get(`/Transacao/retornos-investimentos/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/Transacao/retornos-investimentos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
 };
 
 //TRANSACAO META INVESTIMENTO
@@ -557,10 +637,19 @@ export const postUsuario = async (dados: {
 // };
 
 //USUARIO ASSINATURA
-// export const postUsuarioAssinatura = async () => {
-//   const response = await api.post("/UsuarioAssinatura");
-//   return response.data;
-// };
+export const postUsuarioAssinatura = async (dados: any) => {
+  try {
+    const response = await api.post("/UsuarioAssinatura", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao salvar assinatura:", error);
+    throw error;
+  }
+};
 // export const putUsuarioAssinatura = async () => {
 //   const response = await api.put("/UsuarioAssinatura");
 //   return response.data;
@@ -579,10 +668,19 @@ export const postUsuario = async (dados: {
 // };
 
 //USUARIO BANCO
-// export const postUsuarioBanco = async () => {
-//   const response = await api.post("/UsuarioBanco");
-//   return response.data;
-// };
+export const postUsuarioBanco = async (dados: any) => {
+  try {
+    const response = await api.post("/UsuarioBanco", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao salvar cartão:", error);
+    throw error;
+  }
+};
 // export const putUsuarioBanco = async () => {
 //   const response = await api.put("/UsuarioBanco");
 //   return response.data;
@@ -601,10 +699,19 @@ export const postUsuario = async (dados: {
 // };
 
 //USUARIO CARTAO
-// export const postUsuarioCartao = async () => {
-//   const response = await api.post("/UsuarioCartao");
-//   return response.data;
-// };
+export const postUsuarioCartao = async (dados: any) => {
+  try {
+    const response = await api.post("/UsuarioCartao", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao salvar cartão:", error);
+    throw error;
+  }
+};
 // export const putUsuarioCartao = async () => {
 //   const response = await api.put("/UsuarioCartao");
 //   return response.data;

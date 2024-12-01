@@ -44,7 +44,12 @@ export function CustomModal({
             borderColor={theme.colors.grey6F7}
             onClick={onClose}
           />
-          <Button title={titleButtonGo} onClick={action} />
+          <Button
+            title={titleButtonGo}
+            onClick={() => {
+              action();
+            }}
+          />
         </Footer>
       </Container>
     </Overlay>

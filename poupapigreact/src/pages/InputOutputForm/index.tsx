@@ -56,10 +56,20 @@ import {
   getCategoriasUsuario,
   getMetaInvestimento,
   getMetaInvestimentoById,
+  getPeriodicidadeTransacao,
+  getPeriodicidadeTransacaoById,
   getRecorrencia,
   getRecorrenciaById,
+  getSentimentoTransacao,
+  getSentimentoTransacaoById,
+  getSituacaoTransacao,
+  getSituacaoTransacaoById,
   getTipoPagamento,
   getTipoPagamentoById,
+  getTipoTransacao,
+  getTipoTransacaoById,
+  postTransacao,
+  putTransacao,
 } from "../../services/api";
 
 const schema = yup.object().shape({
@@ -67,25 +77,18 @@ const schema = yup.object().shape({
     .string()
     .required("Campo obrigatório")
     .matches(/^[a-zA-ZÀ-ÿ\u00C0-\u00FF\s]+$/, "Apenas letras são permitidas"),
-  valor: yup
-    .string()
-    .required("Campo obrigatório")
-    .matches(/^[0-9]*$/, "Apenas números são permitidos"),
-  categoria_id: yup.string().required("Campo obrigatório"),
-  banco_id: yup.string().nullable().notRequired(),
-  meta_investimento_id: yup.string().nullable().notRequired(),
-  tipo_pagamento_id: yup.string().required("Campo obrigatório"),
-  recorrencia_id: yup.string().nullable().notRequired(),
+  valor: yup.number().required("Campo obrigatório"),
+  categoria_id: yup.number().required("Campo obrigatório"),
+  banco_id: yup.number().nullable().notRequired(),
+  meta_investimento_id: yup.number().nullable().notRequired(),
+  tipo_pagamento_id: yup.number().required("Campo obrigatório"),
+  recorrencia_id: yup.number().nullable().notRequired(),
   data_transacao: yup.string().nullable().notRequired(),
-  quantidade_parcela: yup
-    .string()
-    .matches(/^[0-9]*$/, "Apenas números são permitidos")
-    .nullable()
-    .notRequired(),
-  tipo_id: yup.string().required("Escolha uma das opções"),
-  situacao_id: yup.string().required("Escolha uma das opções"),
-  periodicidade_id: yup.string().required("Escolha uma das opções"),
-  sentimento_id: yup.string().nullable().notRequired(),
+  quantidade_parcela: yup.number().nullable().notRequired(),
+  tipo_id: yup.number().required("Escolha uma das opções"),
+  situacao_id: yup.number().required("Escolha uma das opções"),
+  periodicidade_id: yup.number().required("Escolha uma das opções"),
+  sentimento_id: yup.number().nullable().notRequired(),
   observacao: yup.string().nullable().notRequired(),
 });
 
@@ -136,9 +139,39 @@ export function InputOutputForm() {
     navigate("/new-transaction");
   };
 
-  const handleInputOutputList = (data: any) => {
+  const handleInputOutputList = async (data: any) => {
     console.log("data", data);
-    navigate("/input-output-list");
+    const params = new URLSearchParams(location.search);
+    const isEditing = params.get("editing") === "true";
+    const combinedData = {
+      ...data,
+      usuario_id: Number(userCode),
+      ...(transactionData && { id: transactionData.id }),
+    };
+
+    if (isEditing) {
+      try {
+        setLoading(true);
+        await putTransacao(combinedData);
+        navigate("/input-output-list");
+      } catch (error: any) {
+        console.error("Erro da API:", error.response.data);
+        addToast({ message: error.message, type: "error" });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      try {
+        setLoading(true);
+        await postTransacao(combinedData);
+        navigate("/input-output-list");
+      } catch (error: any) {
+        console.error("Erro da API:", error.response.data);
+        addToast({ message: error.message, type: "error" });
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleSelect = (option: string) => {
@@ -152,22 +185,25 @@ export function InputOutputForm() {
 
   const handleTypeSelected = (type: "in" | "out") => {
     setType(type);
-    setValue("tipo_id", type);
+    setValue("tipo_id", type === "in" ? 1 : 2);
   };
 
   const handleSituationSelected = (type: "certain" | "possibility") => {
     setSituation(type);
-    setValue("situacao_id", type);
+    setValue("situacao_id", type === "certain" ? 1 : 2);
   };
 
   const handleRecurrencySelected = (type: "repeat" | "noRepeat") => {
     setRepeat(type);
-    setValue("periodicidade_id", type);
+    setValue("periodicidade_id", type === "repeat" ? 2 : 1);
   };
 
   const handleSentimentSelected = (sentiment: "happy" | "anxious" | "sad") => {
     setSentiment(sentiment);
-    setValue("sentimento_id", sentiment);
+    setValue(
+      "sentimento_id",
+      sentiment === "happy" ? 1 : sentiment === "anxious" ? 2 : 3
+    );
   };
 
   const handleEditForm = () => {
@@ -189,11 +225,12 @@ export function InputOutputForm() {
         setBancos(banco);
         const tipoPag = await fetchTipoPagamento();
         setTiposPagamentos(tipoPag);
-        console.log("tipo pag", tipoPag);
         const recorrencia = await fetchRecorrencia();
         setRecorrencias(recorrencia);
         const investimento = await fetchInvestimentos();
         setMetasInvestimentos(investimento);
+        const dataaaaa = await getPeriodicidadeTransacao();
+        console.log("dataaaaa", dataaaaa);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
       } finally {
@@ -205,6 +242,7 @@ export function InputOutputForm() {
   }, [userCode]);
 
   useEffect(() => {
+    console.log("transactionData", transactionData);
     const fetchEditItems = async () => {
       if (transactionData) {
         try {
@@ -233,6 +271,20 @@ export function InputOutputForm() {
             );
             setInvestimentoEdit(investimento);
           }
+          const tipoEdit = await fetchTipoTransacaoById(
+            transactionData.tipo_id
+          );
+          const situacaoEdit = await fetchsituacaoTransacaoById(
+            transactionData.situacao_id
+          );
+          const periodicidadeEdit = await fetchperiodicidadeTransacaoById(
+            transactionData.periodicidade_id
+          );
+          if (transactionData.sentimento_id) {
+            const sentimentoEdit = await fetchSentimentoTransacaoById(
+              transactionData.sentimento_id
+            );
+          }
         } catch (error) {
           console.error("Erro ao completar dados:", error);
         } finally {
@@ -240,6 +292,8 @@ export function InputOutputForm() {
         }
       }
     };
+
+    fetchEditItems();
   }, [transactionData]);
 
   const fetchCategorias = async () => {
@@ -265,10 +319,10 @@ export function InputOutputForm() {
       try {
         setLoading(true);
         const categoria = await getCategoriaById(id);
-        return categoria.map(({ id, nome }: CategoriaInt) => ({
-          id,
-          nome,
-        }));
+        return {
+          id: categoria.id,
+          nome: categoria.nome,
+        };
       } catch (error: any) {
         addToast({ message: error.message, type: "error" });
         console.error("Erro ao obter as categorias", error);
@@ -387,16 +441,73 @@ export function InputOutputForm() {
       try {
         setLoading(true);
         const metaInvestimento = await getMetaInvestimentoById(id);
-        return metaInvestimento.map(({ id, nome }: InvestimentoMetaInt) => ({
-          id,
-          nome,
-        }));
+        return {
+          id: metaInvestimento.id,
+          nome: metaInvestimento.nome,
+        };
       } catch (error: any) {
         addToast({ message: error.message, type: "error" });
         console.error("Erro ao obter as categorias padrões", error);
       } finally {
         setLoading(false);
       }
+    }
+  };
+
+  const fetchTipoTransacaoById = async (id: number) => {
+    try {
+      const data = await getTipoTransacaoById(id);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchsituacaoTransacaoById = async (id: number) => {
+    try {
+      const data = await getSituacaoTransacaoById(id);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchperiodicidadeTransacaoById = async (id: number) => {
+    try {
+      const data = await getPeriodicidadeTransacaoById(id);
+      console.log("data", data);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    }
+  };
+
+  const fetchSentimentoTransacaoById = async (id: number) => {
+    try {
+      const data = await getSentimentoTransacaoById(id);
+      return data;
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar itens",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
     }
   };
 
@@ -456,34 +567,41 @@ export function InputOutputForm() {
               isEditing={isEditing}
               onSelect={handleTipoPagamentoChange}
             />
-            {(isCartaoCredito ||
-              transactionData?.quantidade_parcela !== undefined) && (
-              <Input
-                name="quantidade_parcela"
-                placeholder="Quantidade de parcelas"
-                error={errors.quantidade_parcela?.message}
-                register={register}
-                number={true}
-                fixedValue={
-                  transactionData && String(transactionData?.quantidade_parcela)
-                }
-                isEditing={isEditing}
-              />
-            )}
-            {(repeat === "repeat" ||
-              transactionData?.recorrencia_id !== undefined) && (
-              <CustomSelect
-                name="recorrencia_id"
-                placeholder="Recorrência"
-                data={recorrencias}
-                onSelect={handleSelect}
-                error={errors.recorrencia_id?.message}
-                register={register}
-                setValue={setValue}
-                fixedValue={transactionData && recorrenciaEdit}
-                isEditing={isEditing}
-              />
-            )}
+            {isCartaoCredito &&
+              (transactionData?.quantidade_parcela !== null ||
+                transactionData?.quantidade_parcela !== undefined) && (
+                <Input
+                  name="quantidade_parcela"
+                  placeholder="Quantidade de parcelas"
+                  error={errors.quantidade_parcela?.message}
+                  register={register}
+                  number={true}
+                  fixedValue={
+                    transactionData &&
+                    String(transactionData?.quantidade_parcela)
+                  }
+                  isEditing={isEditing}
+                />
+              )}
+            {repeat === "repeat" &&
+              (transactionData?.recorrencia_id !== null ||
+                transactionData?.recorrencia_id !== undefined) && (
+                <CustomSelect
+                  name="recorrencia_id"
+                  placeholder="Recorrência"
+                  data={recorrencias}
+                  onSelect={handleSelect}
+                  error={errors.recorrencia_id?.message}
+                  register={register}
+                  setValue={setValue}
+                  fixedValue={
+                    transactionData
+                      ? recorrenciaEdit || { id: 0, nome: "Recorrência" }
+                      : undefined
+                  }
+                  isEditing={isEditing}
+                />
+              )}
           </FirstColumn>
           <Column>
             <Row>
@@ -648,7 +766,7 @@ export function InputOutputForm() {
                   }
                 }}
                 $selected={
-                  repeat === "repeat" || transactionData?.periodicidade_id === 1
+                  repeat === "repeat" || transactionData?.periodicidade_id === 2
                 }
                 $blocked={!isEditing}
               >
@@ -683,7 +801,7 @@ export function InputOutputForm() {
                 }}
                 $selected={
                   repeat === "noRepeat" ||
-                  transactionData?.periodicidade_id === 2
+                  transactionData?.periodicidade_id === 1
                 }
                 $blocked={!isEditing}
               >
@@ -723,9 +841,12 @@ export function InputOutputForm() {
                 placeholder="Data da transação"
                 error={errors.data_transacao?.message}
                 setValue={setValue}
-                // fixedValue={
-                //   transactionData && String(transactionData?.data_transacao)
-                // }
+                fixedValue={
+                  transactionData
+                    ? String(transactionData?.data_transacao) ||
+                      "Data da transação"
+                    : undefined
+                }
                 isEditing={isEditing}
               />
               <CustomSelect
@@ -736,7 +857,14 @@ export function InputOutputForm() {
                 error={errors.meta_investimento_id?.message}
                 register={register}
                 setValue={setValue}
-                fixedValue={transactionData && investimentoEdit}
+                fixedValue={
+                  transactionData
+                    ? investimentoEdit || {
+                        id: 0,
+                        nome: "Relacionar com investimento/meta:",
+                      }
+                    : undefined
+                }
                 isEditing={isEditing}
               />
             </Row>

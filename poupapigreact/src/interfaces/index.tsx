@@ -8,7 +8,6 @@ export interface TransactionData {
 export interface GenericData {
   id: number;
   nome: string;
-  padrao?: boolean;
 }
 
 export interface UserInt {
