@@ -55,7 +55,7 @@ namespace PoupaPig.Infra.Transacoes
                 .Sum(t => (decimal?)t.valor) ?? 0;
 
             var saidas = _dataConnection.GetTable<Transacao>()
-                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2 && t.situacao_id == 1) // Tipo 2 = Saída
+                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2 && t.situacao_id == 1 && t.data_transacao > DateTime.Now) // Tipo 2 = Saída
                 .Sum(t => (decimal?)t.valor) ?? 0;
             var total = entradas - saidas;
             return total >= 0 ? 0 : Math.Abs(total);
