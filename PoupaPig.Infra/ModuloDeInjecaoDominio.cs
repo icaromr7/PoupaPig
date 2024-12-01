@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PoupaPig.Dominio.Assinaturas.Servicos;
 using PoupaPig.Dominio.Bancos.Servicos;
+using PoupaPig.Dominio.Beneficios.Servicos;
 using PoupaPig.Dominio.Cartoes.Servicos;
 using PoupaPig.Dominio.Categorias;
 using PoupaPig.Dominio.Categorias.Servicos;
@@ -54,6 +55,7 @@ namespace PoupaPig.Dominio
             services.AddScoped<ServicoUsuario>();
             services.AddScoped<ServicoLogin>();
             services.AddScoped<ServicoMetaInvestimentoDetalhes>();
+            services.AddScoped<ServicoBeneficio>();
             services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
             services.AddScoped<IRepositorioTransacao, RepositorioTransacao>();
             services.AddScoped<IRepositorioQuestionario, RepositorioQuestionario>();
