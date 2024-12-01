@@ -1,8 +1,6 @@
 ﻿using LinqToDB;
 using PoupaPig.Dominio.Transacoes;
 using PoupaPig.Dominio.Transacoes.Servicos;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PoupaPig.Infra.Transacoes
 {
@@ -49,16 +47,12 @@ namespace PoupaPig.Infra.Transacoes
 
         // Novo método para obter o saldo por usuario_id
         public decimal ObterSaldoPorUsuario(int usuario_id)
-        {
-            var entradas = _dataConnection.GetTable<Transacao>()
-                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 1 && t.situacao_id == 1) // Tipo 1 = Entrada
-                .Sum(t => (decimal?)t.valor) ?? 0;
-
+        {         
             var saidas = _dataConnection.GetTable<Transacao>()
                 .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2 && t.situacao_id == 1 && t.data_transacao > DateTime.Now) // Tipo 2 = Saída
                 .Sum(t => (decimal?)t.valor) ?? 0;
-            var total = entradas - saidas;
-            return total >= 0 ? 0 : Math.Abs(total);
+
+            return saidas;
         }
 
         public List<Transacao> ObterTransacoesPorMetaInvestimento(int idMetaInvestimento)

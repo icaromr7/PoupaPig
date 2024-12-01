@@ -331,10 +331,10 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
         }
         public List<Transacao> ObterLancamentos(int usuarioId)
         {
-            var valoresOrcamento = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.situacao_id == 1).ToList();
+            var valoresLancamento = _repositorioTransacao.ObterTodas()
+                .Where(t => t.usuario_id == usuarioId).ToList();
 
-            return valoresOrcamento;
+            return valoresLancamento;
         }
 
         public List<Transacao> ObterInvestimentos(int usuarioId)
