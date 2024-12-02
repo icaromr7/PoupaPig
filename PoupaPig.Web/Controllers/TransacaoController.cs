@@ -213,10 +213,10 @@ namespace PoupaPig.API.Controllers
         }
 
         // 8. Retornos sobre Investimentos
-        [HttpGet("retornos-investimentos/{usuarioId}")]
-        public ActionResult<decimal> RetornosSobreInvestimentos([FromRoute] int usuarioId)
+        [HttpGet("valor-investido/{usuarioId}")]
+        public ActionResult<decimal> ObterValorInvestido([FromRoute] int usuarioId)
         {
-            var retornos = _servicoTransacao.RetornosSobreInvestimentos(usuarioId);
+            var retornos = _servicoTransacao.ObterValorInvestido(usuarioId);
             return Ok(retornos);
         }
 

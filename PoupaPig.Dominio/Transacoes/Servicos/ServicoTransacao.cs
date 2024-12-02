@@ -82,7 +82,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
                 .Where(t => t.tipo_id == 2) 
                 .Sum(t => t.valor);
 
-            return (ganhos, gastos);
+            return ((ganhos - gastos), gastos);
         }
 
         // 3. Despesas Fixas vs Despesas Variáveis
@@ -264,10 +264,10 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
             return metasFinanceiras.Sum(t => t.valor);
         }
 
-        public decimal RetornosSobreInvestimentos(int usuarioId)
+        public decimal ObterValorInvestido(int usuarioId)
         {
             var investimentos = _repositorioTransacao.ObterTodas()
-                .Where(t => t.usuario_id == usuarioId && t.meta_investimento_id != 0 && t.tipo_id == 1);
+                .Where(t => t.usuario_id == usuarioId && t.meta_investimento_id != null && t.tipo_id == 1);
 
             return investimentos.Sum(t => t.valor);
         }

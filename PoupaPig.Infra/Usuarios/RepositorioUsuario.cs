@@ -51,13 +51,13 @@ namespace PoupaPig.Infra.Usuarios
                                   .FirstOrDefault(u => u.email == email);
         }
         // Método para verificar se o e-mail já está registrado
-        public bool EmailDuplicado(string email)
+        public bool EmailDuplicado(string email, int id)
         {
-            // Verifica se existe algum usuário com o e-mail fornecido
-            var usuario = _dataConnection.GetTable<Usuario>()
-                                         .FirstOrDefault(u => u.email == email);
+            // Supondo que exista um método para buscar o usuário pelo e-mail
+            var usuarioExistente = _dataConnection.GetTable<Usuario>().FirstOrDefault(u => u.email == email);
 
-            return usuario != null; // Retorna verdadeiro se o e-mail estiver duplicado
+            // Verifica se o usuário encontrado é diferente do usuário atual
+            return usuarioExistente != null && usuarioExistente.id != id;
         }
     }
 }

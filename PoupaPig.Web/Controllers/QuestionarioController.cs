@@ -51,7 +51,7 @@ namespace PoupaPig.API.Controllers
             {
                 var questionario = _servicoQuestionario.ObterPorId(id);
                 if (questionario == null)
-                    return NotFound("Questionário não encontrado.");
+                    return Ok(new Questionario());
 
                 return Ok(questionario);
             }
@@ -92,6 +92,7 @@ namespace PoupaPig.API.Controllers
                     return NotFound("Questionário não encontrado para atualização.");
 
                 _servicoQuestionario.Atualizar(dados);
+                _servico.DefinirClasseSocial(dados);
                 return Ok("Questionário atualizado com sucesso!");
             }
             catch (Exception ex)
@@ -118,5 +119,23 @@ namespace PoupaPig.API.Controllers
                 return StatusCode(500, $"Erro ao excluir o questionário: {ex.Message}");
             }
         }
+
+        [HttpGet("usuario/{id}")]
+        public IActionResult ObterPorUsuarioId(int id)
+        {
+            try
+            {
+                var questionario = _servicoQuestionario.ObterPorUsuarioId(id);
+                if (questionario == null)
+                    return Ok(new Questionario());
+
+                return Ok(questionario);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao buscar o questionário: {ex.Message}");
+            }
+        }
+
     }
 }
