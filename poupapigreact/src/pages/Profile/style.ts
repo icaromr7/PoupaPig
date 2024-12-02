@@ -1,6 +1,16 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
+interface RgbStyleProps {
+  r?: number;
+  g?: number;
+  b?: number;
+}
+
+interface HexStyleProps {
+  $hex: RgbStyleProps;
+}
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
@@ -13,9 +23,10 @@ export const Container = styled.div`
   }
 `;
 
-export const CardFinancialControl = styled.div`
+export const CardFinancialControl = styled.div<HexStyleProps>`
   min-width: 300px;
-  border: 5px solid ${theme.colors.green0FB};
+  border: 5px solid
+    ${(props) => `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b})`};
   border-radius: 20px;
   padding: 10px;
 
@@ -51,10 +62,11 @@ export const Subtitle = styled.div`
   color: ${theme.colors.black171};
 `;
 
-export const FinancialControlResume = styled.div`
+export const FinancialControlResume = styled.div<HexStyleProps>`
   width: 100%;
   height: fit-content;
-  background-color: ${theme.colors.greenBFF};
+  background-color: ${(props) =>
+    `rgba(${props.$hex.r}, ${props.$hex.g},${props.$hex.b}, 0.8)`};
   border-radius: 20px;
   padding: 10px;
 
@@ -178,6 +190,29 @@ export const TableContainer = styled.div`
   overflow-y: auto;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${theme.colors.blueE5F};
+    border-radius: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${theme.colors.blue93C};
+    border-radius: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${theme.colors.blue038};
+  }
+
+  /* Para Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: ${theme.colors.blue93C} ${theme.colors.blueE5F};
 `;
 
 export const Table = styled.table`
@@ -190,6 +225,11 @@ export const TableHeader = styled.thead`
   top: 0;
   background-color: ${theme.colors.greenAEC};
   z-index: 1;
+`;
+
+export const Tabela = styled.tbody`
+  max-height: 300px;
+  overflow-y: auto;
 `;
 
 export const TableRow = styled.tr<{ even: boolean }>`
@@ -216,48 +256,6 @@ export const HeaderCell = styled.th`
 
 export const IconCell = styled.td`
   text-align: center;
-`;
-
-export const ContainerCategory = styled.div`
-  background-color: ${theme.colors.greenBFF};
-  width: 100%;
-  height: 40px;
-  padding: 10px;
-  border-radius: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-`;
-
-export const Icon = styled.img`
-  height: 20px;
-`;
-
-export const ValueSpentLine = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  width: 80%;
-`;
-
-export const ValueSpent = styled.div`
-  font-family: ${theme.fonts.fontOpenSans};
-  color: ${theme.colors.green0FB};
-  font-size: 12px;
-  font-weight: ${theme.fonts.fontWeightMedium};
-`;
-
-export const LoadingBar = styled.div`
-  width: 100%;
-  border: 3px solid #d9d9d9;
-`;
-
-export const TotalCategory = styled.div`
-  font-family: ${theme.fonts.fontOpenSans};
-  color: ${theme.colors.black171};
-  font-size: 12px;
-  font-weight: ${theme.fonts.fontWeightRegular};
 `;
 
 export const RowProfile = styled.div`

@@ -3,6 +3,7 @@ import theme from "../../styles/theme";
 
 interface HomeStyleProps {
   $type: string;
+  $tipoTran: number;
 }
 
 export const Container = styled.div`
@@ -84,28 +85,28 @@ export const ContainerElement = styled.div<HomeStyleProps>`
   max-width: 145px;
   height: 145px;
   background-color: ${(props) =>
-    props.$type === "in"
+    props.$type === "lancamento" && props.$tipoTran === 1
       ? theme.colors.greenF9F
-      : props.$type === "out"
+      : props.$type === "lancamento"
       ? theme.colors.redFFF
-      : props.$type === "budget"
+      : props.$type === "orcamento"
       ? theme.colors.orangeFFF
       : theme.colors.blueEEF};
   border: 3px solid;
   border-color: ${(props) =>
-    props.$type === "in"
+    props.$type === "lancamento" && props.$tipoTran === 1
       ? theme.colors.green0FB
-      : props.$type === "out"
+      : props.$type === "lancamento"
       ? theme.colors.redF63
-      : props.$type === "budget"
+      : props.$type === "orcamento"
       ? theme.colors.orangeEE7
       : theme.colors.blue038};
   color: ${(props) =>
-    props.$type === "in"
+    props.$type === "lancamento" && props.$tipoTran === 1
       ? theme.colors.green0FB
-      : props.$type === "out"
+      : props.$type === "lancamento"
       ? theme.colors.redF63
-      : props.$type === "budget"
+      : props.$type === "orcamento"
       ? theme.colors.orangeEE7
       : theme.colors.blue038};
   border-radius: 20px;
@@ -249,4 +250,11 @@ export const TitleTips = styled.div`
   color: ${theme.colors.blue002};
   max-width: 600px;
   text-align: center;
+`;
+
+export const NoDataMessage = styled.div`
+  font-family: ${theme.fonts.fontMontserrat};
+  font-size: 15px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.grey6F7};
 `;

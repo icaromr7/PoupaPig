@@ -150,7 +150,7 @@ export function InputOutputList() {
         </InfoColumn>
         <Column>
           {transacoes.filter(
-            (transacao: TransacaoInt) => transacao.situacao_id === 2
+            (transacao: TransacaoInt) => transacao.periodicidade_id === 2
           ).length === 0 ? (
             <TitleInformation
               style={{ fontSize: 15, color: theme.colors.grey6F7 }}
@@ -159,7 +159,9 @@ export function InputOutputList() {
             </TitleInformation>
           ) : (
             transacoes
-              .filter((transacao: TransacaoInt) => transacao.situacao_id === 2)
+              .filter(
+                (transacao: TransacaoInt) => transacao.periodicidade_id === 2
+              )
               .map((transacao) => itemInputOutput(transacao, transacao.id))
           )}
         </Column>
@@ -168,7 +170,7 @@ export function InputOutputList() {
       <MainColumn>
         <Column>
           {transacoes.filter(
-            (transacao: TransacaoInt) => transacao.situacao_id === 1
+            (transacao: TransacaoInt) => transacao.periodicidade_id === 1
           ).length === 0 ? (
             <TitleInformation
               style={{ fontSize: 15, color: theme.colors.grey6F7 }}
@@ -177,7 +179,9 @@ export function InputOutputList() {
             </TitleInformation>
           ) : (
             transacoes
-              .filter((transacao: TransacaoInt) => transacao.situacao_id === 1)
+              .filter(
+                (transacao: TransacaoInt) => transacao.periodicidade_id === 1
+              )
               .map((transacao) => itemInputOutput(transacao, transacao.id))
           )}
         </Column>

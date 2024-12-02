@@ -25,7 +25,6 @@ export interface CategoriaInt {
   valor_min?: number;
   valor_max?: number;
   usuario_id?: number;
-  padrao?: boolean;
 }
 
 export interface TransacaoInt {

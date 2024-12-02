@@ -269,10 +269,19 @@ export const postQuestionario = async (dados: any) => {
     throw error;
   }
 };
-// export const putQuestionario = async () => {
-//   const response = await api.put("/Questionario");
-//   return response.data;
-// };
+export const putQuestionario = async (dados: any) => {
+  try {
+    const response = await api.put("/Questionario", dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao postar o questionário:", error);
+    throw error;
+  }
+};
 // export const getQuestionario = async () => {
 //   const response = await api.get("/Questionario");
 //   return response.data;
@@ -281,10 +290,15 @@ export const postQuestionario = async (dados: any) => {
 //   const response = await api.delete(`/Questionario/${id}`);
 //   return response.data;
 // };
-// export const getQuestionarioById = async (id: string | number) => {
-//   const response = await api.get(`/Questionario/${id}`);
-//   return response.data;
-// };
+export const getQuestionarioById = async (id: number) => {
+  try {
+    const response = await api.get(`/Questionario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
 
 //RECORRENCIA:
 export const getRecorrencia = async () => {
@@ -619,10 +633,19 @@ export const postUsuario = async (dados: {
     throw error;
   }
 };
-// export const putUsuario = async () => {
-//   const response = await api.put("/Usuario");
-//   return response.data;
-// };
+export const putUsuario = async (dados: any, id: number) => {
+  try {
+    const response = await api.put(`/Usuario/${id}`, dados, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao editar dados de usuário:", error);
+    throw error;
+  }
+};
 // export const getUsuario = async () => {
 //   const response = await api.get("/Usuario");
 //   return response.data;
@@ -631,10 +654,15 @@ export const postUsuario = async (dados: {
 //   const response = await api.delete(`/Usuario/${id}`);
 //   return response.data;
 // };
-// export const getUsuarioById = async (id: string | number) => {
-//   const response = await api.get(`/Usuario/${id}`);
-//   return response.data;
-// };
+export const getUsuarioById = async (id: number) => {
+  try {
+    const response = await api.get(`/Usuario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados do usuário:", error);
+    throw error;
+  }
+};
 
 //USUARIO ASSINATURA
 export const postUsuarioAssinatura = async (dados: any) => {
@@ -730,10 +758,15 @@ export const postUsuarioCartao = async (dados: any) => {
 // };
 
 //USUÁRIO CLASSE
-// export const getUsuarioClasse = async () => {
-//   const response = await api.get("/UsuarioClasse");
-//   return response.data;
-// };
+export const getUsuarioClasse = async (id: number) => {
+  try {
+    const response = await api.get(`/UsuarioClasse/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error;
+  }
+};
 // export const getUsuarioClasseById = async (id: string | number) => {
 //   const response = await api.get(`/UsuarioClasse/${id}`);
 //   return response.data;

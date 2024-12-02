@@ -34,10 +34,16 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (fixedValue) {
-      const defaultDate = new Date(fixedValue);
-      setSelectedDate(defaultDate);
-      setValue(name, defaultDate.toISOString()); // Converter para ISO 8601
+    const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,3})?Z$/;
+
+    if (fixedValue !== null && fixedValue !== undefined) {
+      if (iso8601Regex.test(fixedValue)) {
+        const defaultDate = new Date(fixedValue);
+        setSelectedDate(defaultDate);
+        setValue(name, defaultDate.toISOString());
+      } else {
+        console.warn(`Invalid ISO 8601 format for fixedValue: ${fixedValue}`);
+      }
     }
   }, [fixedValue, name, setValue]);
 
@@ -45,7 +51,7 @@ const CustomSelectDate: React.FC<CustomSelectDateProps> = ({
     setSelectedDate(date);
     setIsOpen(false);
     if (date) {
-      setValue(name, date.toISOString()); // Converter para ISO 8601
+      setValue(name, date.toISOString());
     }
   };
 

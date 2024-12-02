@@ -140,7 +140,6 @@ export function InputOutputForm() {
   };
 
   const handleInputOutputList = async (data: any) => {
-    console.log("data", data);
     const params = new URLSearchParams(location.search);
     const isEditing = params.get("editing") === "true";
     const combinedData = {
@@ -174,12 +173,9 @@ export function InputOutputForm() {
     }
   };
 
-  const handleSelect = (option: string) => {
-    console.log("option", option);
-  };
+  const handleSelect = (option: string) => {};
 
   const handleSelectPayment = (option: string) => {
-    console.log("option", option);
     setPayment(option);
   };
 
@@ -211,7 +207,6 @@ export function InputOutputForm() {
   };
 
   const handleTipoPagamentoChange = (option: GenericData) => {
-    console.log("option", option);
     setIsCartaoCredito(option.id === 2);
   };
 
@@ -230,7 +225,11 @@ export function InputOutputForm() {
         const investimento = await fetchInvestimentos();
         setMetasInvestimentos(investimento);
         const dataaaaa = await getPeriodicidadeTransacao();
-        console.log("dataaaaa", dataaaaa);
+        console.log("dataaa", dataaaaa);
+        const tipo = await getTipoTransacao();
+        const situ = await getSituacaoTransacao();
+
+        console.log("situ", situ);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
       } finally {
@@ -242,7 +241,6 @@ export function InputOutputForm() {
   }, [userCode]);
 
   useEffect(() => {
-    console.log("transactionData", transactionData);
     const fetchEditItems = async () => {
       if (transactionData) {
         try {
@@ -485,7 +483,6 @@ export function InputOutputForm() {
   const fetchperiodicidadeTransacaoById = async (id: number) => {
     try {
       const data = await getPeriodicidadeTransacaoById(id);
-      console.log("data", data);
       return data;
     } catch (error: any) {
       addToast({
@@ -611,11 +608,16 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.redFFD,
                 }}
                 onClick={() => {
-                  if (transactionData?.tipo_id === undefined && !isEditing) {
+                  if (isEditing) {
+                    handleTypeSelected("out"); // Atualiza o estado ao clicar
+                  } else if (transactionData?.tipo_id === undefined) {
                     handleTypeSelected("out");
                   }
                 }}
-                $selected={type === "out" || transactionData?.tipo_id === 1}
+                $selected={
+                  type === "out" ||
+                  (transactionData?.tipo_id === 2 && !isEditing)
+                }
                 $blocked={!isEditing}
               >
                 <RoundIcon>
@@ -634,11 +636,16 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.greenDCF,
                 }}
                 onClick={() => {
-                  if (transactionData?.tipo_id === undefined && !isEditing) {
+                  if (isEditing) {
+                    handleTypeSelected("in"); // Atualiza o estado ao clicar
+                  } else if (transactionData?.tipo_id === undefined) {
                     handleTypeSelected("in");
                   }
                 }}
-                $selected={type === "in" || transactionData?.tipo_id === 2}
+                $selected={
+                  type === "in" ||
+                  (transactionData?.tipo_id === 21 && !isEditing)
+                }
                 $blocked={!isEditing}
               >
                 <RoundIcon>
@@ -678,15 +685,15 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
                 onClick={() => {
-                  if (
-                    transactionData?.situacao_id === undefined &&
-                    !isEditing
-                  ) {
+                  if (isEditing) {
+                    handleSituationSelected("certain");
+                  } else if (transactionData?.situacao_id === undefined) {
                     handleSituationSelected("certain");
                   }
                 }}
                 $selected={
-                  situation === "certain" || transactionData?.situacao_id === 1
+                  situation === "certain" ||
+                  (transactionData?.situacao_id === 1 && !isEditing)
                 }
                 $blocked={!isEditing}
               >
@@ -710,16 +717,15 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
                 onClick={() => {
-                  if (
-                    transactionData?.situacao_id === undefined &&
-                    !isEditing
-                  ) {
+                  if (isEditing) {
+                    handleSituationSelected("possibility");
+                  } else if (transactionData?.situacao_id === undefined) {
                     handleSituationSelected("possibility");
                   }
                 }}
                 $selected={
                   situation === "possibility" ||
-                  transactionData?.situacao_id === 2
+                  (transactionData?.situacao_id === 2 && !isEditing)
                 }
                 $blocked={!isEditing}
               >
@@ -758,15 +764,15 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
                 onClick={() => {
-                  if (
-                    transactionData?.periodicidade_id === undefined &&
-                    !isEditing
-                  ) {
+                  if (isEditing) {
+                    handleRecurrencySelected("repeat");
+                  } else if (transactionData?.periodicidade_id === undefined) {
                     handleRecurrencySelected("repeat");
                   }
                 }}
                 $selected={
-                  repeat === "repeat" || transactionData?.periodicidade_id === 2
+                  repeat === "repeat" ||
+                  (transactionData?.periodicidade_id === 2 && !isEditing)
                 }
                 $blocked={!isEditing}
               >
@@ -792,16 +798,15 @@ export function InputOutputForm() {
                   backgroundColor: theme.colors.whiteF2F,
                 }}
                 onClick={() => {
-                  if (
-                    transactionData?.periodicidade_id === undefined &&
-                    !isEditing
-                  ) {
+                  if (isEditing) {
+                    handleRecurrencySelected("noRepeat");
+                  } else if (transactionData?.periodicidade_id === undefined) {
                     handleRecurrencySelected("noRepeat");
                   }
                 }}
                 $selected={
                   repeat === "noRepeat" ||
-                  transactionData?.periodicidade_id === 1
+                  (transactionData?.periodicidade_id === 1 && !isEditing)
                 }
                 $blocked={!isEditing}
               >

@@ -26,6 +26,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fixedValue?: string | number | undefined;
   number?: boolean;
   isEditing?: boolean;
+  isUser?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -36,8 +37,10 @@ const Input: React.FC<InputProps> = ({
   required,
   customType,
   fixedValue,
+
   number = false,
   isEditing,
+  isUser,
   ...rest
 }: InputProps) => {
   const isPasswordType = customType === "password";
@@ -75,15 +78,19 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <Container>
-      <InputWrapper $isFixed={fixedValue !== undefined && !isEditing}>
+      <InputWrapper
+        $isFixed={fixedValue !== undefined && (!isEditing || !isUser)}
+      >
         {/* {iconApply(customType)} */}
         <InputField
           type={isPasswordType && !showPassword ? "password" : "text"}
           placeholder={placeholder}
-          readOnly={fixedValue !== undefined && !isEditing}
+          readOnly={fixedValue !== undefined && (!isEditing || !isUser)}
           onKeyDown={handleKeyDown}
           defaultValue={
-            fixedValue && !isEditing ? fixedValue.toString() : undefined
+            fixedValue && (!isEditing || isUser)
+              ? fixedValue.toString()
+              : undefined
           }
           onChange={handleChange}
           {...(register && register(name, { required }))}

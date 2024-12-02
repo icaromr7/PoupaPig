@@ -25,47 +25,69 @@ import {
   TableContainer,
   Table,
   TableHeader,
+  Tabela,
   TableRow,
   HeaderCell,
   IconCell,
   TableCell,
-  ContainerCategory,
-  // Icon,
-  ValueSpentLine,
-  ValueSpent,
-  LoadingBar,
-  TotalCategory,
   RowProfile,
 } from "./style";
+import theme from "../../styles/theme";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import IcecreamIcon from "@mui/icons-material/Icecream";
 import Ok from "../../assets/svg/ok.svg";
+import Attention from "../../assets/svg/atencao.svg";
+import Emergency from "../../assets/svg/emergencia.svg";
 
 import { Button } from "../../components/Button";
 import { FloatingAddButton } from "../../components/FloatingAddButton";
 import { DataBenefits } from "../../components/DataBenefits";
 import { useAuth } from "../../context/AuthContext";
-import { getLancamentosCompletos } from "../../services/api";
+import {
+  getGanhosVsGastos,
+  getLancamentosCompletos,
+  getSaldo,
+  getUsuarioClasse,
+  getValorOrcado,
+} from "../../services/api";
 import { TransacaoInt } from "../../interfaces";
 import { formatDate, numberToCurrency } from "../../utils/bibli";
+import { CategorySpending } from "../../components/CategorySpending";
 
 export function Profile() {
   const { addToast, setLoading, userCode } = useAuth();
   const totalRows = 11;
   const [lancamentos, setLancamentos] = useState<TransacaoInt[]>([]);
+  const [devendo, setDevendo] = useState<number>(0);
+  const [livreSemOrcado, setLivreSemOrcado] = useState<number>(0);
+
+  const [messageSituation, setMessageSituation] = useState<string>("");
+  const [iconSituation, setIconSituation] = useState<string>("");
+  const [situation, setSituation] = useState<
+    "ok" | "attention" | "emergency"
+  >();
+  const [hex, setHex] = useState<string>("");
+  const [hexBackground, setHexBackground] = useState<string>("");
 
   useEffect(() => {
     if (userCode) {
       const fetchData = async () => {
         try {
           setLoading(true);
+          //resumo de lançamentos
           const lancamentos = await getLancamentosCompletos(Number(userCode));
           setLancamentos(lancamentos);
-          console.log("lancamentos", lancamentos);
+          // classe do usuário
+          // const classe = await getUsuarioClasse(Number(userCode));
+          //status financeiro do usuário
+          const devedor = await getSaldo(Number(userCode));
+          setDevendo(devedor.saldo);
+          const orcados = await getValorOrcado(Number(userCode));
+          const lancamentosValores = await getGanhosVsGastos(Number(userCode));
+          setLivreSemOrcado(lancamentosValores.ganhos - orcados);
         } catch (error: any) {
           addToast({ message: error.message, type: "error" });
-          console.error("Erro ao obter lancamentos", error);
+          console.error("Erro ao obter dados financeiros", error);
         } finally {
           setLoading(false);
         }
@@ -74,51 +96,65 @@ export function Profile() {
       fetchData();
     }
   }, [userCode]);
-  // const filledRows = data.length;
-  // const emptyRows = totalRows - filledRows;
 
-  // useEffect(() => {
-  //   const fetchItems = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const assinaturas = await getAssinaturas();
-  //       const bancos = await getBancos();
-  //       const cartoes = await getCartoes();
-  //       console.log("data:", assinaturas, bancos, cartoes);
-  //     } catch (error) {
-  //       console.error("Erro ao buscar itens:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  //valores do resumo
 
-  //   fetchItems();
-  // }, []);
+  useEffect(() => {
+    const calculo = livreSemOrcado - devendo;
+    console.log("calculo", calculo);
 
-  const CategorySpending = (
-    <ContainerCategory>
-      <IcecreamIcon style={{ height: 20 }} />
-      <ValueSpentLine>
-        <ValueSpent>R$000,00</ValueSpent>
-        <LoadingBar></LoadingBar>
-      </ValueSpentLine>
-      <TotalCategory>R$0.000,00</TotalCategory>
-    </ContainerCategory>
-  );
+    if (calculo > 0) {
+      setSituation("ok");
+      setHex(theme.colors.green0FB);
+      setHexBackground(theme.colors.greenBFF);
+      setMessageSituation("Parabéns! Suas finanças estão sob controle.");
+      setIconSituation(Ok);
+      return;
+    }
+    if (calculo === 0) {
+      setSituation("attention");
+      setHex(theme.colors.yellowDAD);
+      setHexBackground(theme.colors.yellowF9F);
+      setMessageSituation("Opa! Precisa tomar cuidado com os gastos.");
+      setIconSituation(Attention);
+      return;
+    }
+    if (calculo < 0) {
+      setSituation("emergency");
+      setHex(theme.colors.redF63);
+      setHexBackground(theme.colors.redF3A);
+      setMessageSituation(
+        "Socorro! Pare de gastar, você vai ficar com saldo negativo."
+      );
+      setIconSituation(Emergency);
+      return;
+    }
+  }, [livreSemOrcado, devendo]);
+
+  const filledRows = lancamentos.length;
+  const emptyRows = totalRows - filledRows;
+
+  const hexToRgb = (hex: string) => {
+    const bigint = parseInt(hex.replace("#", ""), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return { r, g, b };
+  };
+
   return (
     <Container>
-      <CardFinancialControl>
+      <CardFinancialControl $hex={hexToRgb(hex)}>
         <RowProfile>
           <UserTitle>
             <WelcomeTitle>Olá, Fulano de tal!</WelcomeTitle>
             <Subtitle>Acompanhe aqui a situação da sua conta</Subtitle>
           </UserTitle>
         </RowProfile>
-        <FinancialControlResume>
-          <Image src={Ok} alt="PoupaPig"></Image>
-          <MessageFinancialControl>
-            Parabéns! Suas finanças estão sob controle.
-          </MessageFinancialControl>
+        <FinancialControlResume $hex={hexToRgb(hexBackground)}>
+          <Image src={iconSituation} alt="PoupaPig" />
+          <MessageFinancialControl>{messageSituation}</MessageFinancialControl>
         </FinancialControlResume>
         <SocialSituation>
           <Row>
@@ -174,7 +210,7 @@ export function Profile() {
                     </IconCell>
                   </TableRow>
                 </TableHeader>
-                <tbody>
+                <Tabela>
                   {lancamentos.map((row, index) => (
                     <TableRow key={index} even={index % 2 === 0}>
                       <TableCell>
@@ -191,7 +227,7 @@ export function Profile() {
                       </IconCell>
                     </TableRow>
                   ))}
-                  {/* {Array.from({ length: emptyRows }).map((_, index) => (
+                  {Array.from({ length: emptyRows }).map((_, index) => (
                     <TableRow
                       key={`empty-${index}`}
                       even={(filledRows + index) % 2 === 0}
@@ -201,14 +237,14 @@ export function Profile() {
                       <TableCell />
                       <IconCell />
                     </TableRow>
-                  ))} */}
-                </tbody>
+                  ))}
+                </Tabela>
               </Table>
             </TableContainer>
           </Side>
           <Side>
             <Title>SUAS CATEGORIAS</Title>
-            {CategorySpending}
+            <CategorySpending />
           </Side>
         </Row>
       </ClientData>

@@ -7,7 +7,6 @@ import * as yup from "yup";
 import {
   ContainerBenefits,
   TitleBenefit,
-  NameBenefit,
   ButtonDiv,
   Container,
   Overlay,
@@ -183,6 +182,7 @@ export function DataBenefits({
       try {
         setLoading(true);
         const data = await postUsuarioAssinatura(combinedData);
+        handleCloseModal();
         return data;
       } catch (error: any) {
         console.log("erro");
@@ -200,6 +200,7 @@ export function DataBenefits({
       try {
         setLoading(true);
         const data = await postUsuarioBanco(combinedData);
+        handleCloseModal();
         return data;
       } catch (error: any) {
         console.log("erro");
@@ -217,6 +218,7 @@ export function DataBenefits({
       try {
         setLoading(true);
         const data = await postUsuarioCartao(combinedData);
+        handleCloseModal();
         return data;
       } catch (error: any) {
         console.log("erro");
@@ -268,7 +270,13 @@ export function DataBenefits({
             <Body>
               {" "}
               <CustomSelect
-                name={id}
+                name={
+                  type === "assinatura"
+                    ? "assinatura_id"
+                    : type === "banco"
+                    ? "banco_id"
+                    : "cartao_id"
+                }
                 placeholder={titleButton}
                 data={modalData}
                 error={

@@ -22,6 +22,7 @@ import {
   MoneyTipsContainer,
   Image,
   TitleTips,
+  NoDataMessage,
 } from "./style";
 import theme from "../../styles/theme";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -52,91 +53,8 @@ interface DataResumo {
   nome: string;
   valor: number;
   data: string;
-  tipo_id?: number;
+  tipo?: number;
 }
-
-const dataExemplo: TransactionData[] = [
-  {
-    value: 180,
-    name: "Nome da compra",
-    date: "09/10/2024",
-    type: "in",
-  },
-  {
-    value: 5952.36,
-    name: "Nome da compra",
-    date: "08/10/2024",
-    type: "in",
-  },
-  {
-    value: 54.9,
-    name: "Nome da compra",
-    date: "07/10/2024",
-    type: "out",
-  },
-  {
-    value: 50,
-    name: "Nome da compra",
-    date: "06/10/2024",
-    type: "in",
-  },
-  {
-    value: 1800,
-    name: "Nome da compra",
-    date: "09/10/2024",
-    type: "out",
-  },
-  {
-    value: 595.27,
-    name: "Nome da compra",
-    date: "08/10/2024",
-    type: "out",
-  },
-  {
-    value: 100,
-    name: "Nome da compra",
-    date: "07/10/2024",
-    type: "out",
-  },
-  {
-    value: 49.99,
-    name: "Nome da compra",
-    date: "06/10/2024",
-    type: "out",
-  },
-
-  {
-    value: 200,
-    name: "Nome do orçamento",
-    date: "06/11/2024",
-    type: "budget",
-  },
-  {
-    value: 100,
-    name: "Nome do orçamento",
-    date: "29/10/2024",
-    type: "budget",
-  },
-  {
-    value: 500,
-    name: "Nome do orçamento",
-    date: "01/12/2024",
-    type: "budget",
-  },
-
-  {
-    value: 1000,
-    name: "Nome do investimento",
-    date: "09/09/2024",
-    type: "investment",
-  },
-  {
-    value: 3000,
-    name: "Nome do investimento",
-    date: "08/07/2024",
-    type: "investment",
-  },
-];
 
 const ScrollMenu = ({
   data,
@@ -194,46 +112,58 @@ const ScrollMenu = ({
       }
     };
   }, [data]);
-
+  console.log("data>>>>>>>>>>", data);
   return (
     <ScrollContainer>
-      {showArrows && showLeftArrow && (
-        <ArrowLeft onClick={scrollLeft}>
-          <ArrowBackIosNewIcon
-            style={{ color: theme.colors.blue002, fontSize: "50px" }}
-          />
-        </ArrowLeft>
-      )}
-      <ScrollContent ref={scrollRef}>
-        {data.map((item, index) => (
-          <ContainerElement key={index} $type={type}>
-            <Icon>
-              {type === "lancamento" && item.tipo_id === 1 && (
-                <ArrowDownwardIcon />
-              )}
-              {type === "lancamento" && item.tipo_id === 2 && (
-                <ArrowUpwardIcon />
-              )}
-              {type === "orcamento" && <AccountBalanceWalletIcon />}
-              {type === "investimento" && <MonetizationOnIcon />}
-            </Icon>
-            <MainData>
-              <Value>
-                <DollarSign>R$</DollarSign>
-                <ValueNumber>{numberToCurrency(item.valor)}</ValueNumber>
-              </Value>
-              <Title>{item.nome}</Title>
-            </MainData>
-            <Date>{formatDate(item.data)}</Date>
-          </ContainerElement>
-        ))}
-      </ScrollContent>
-      {showArrows && showRightArrow && (
-        <ArrowRight onClick={scrollRight}>
-          <ArrowForwardIosIcon
-            style={{ color: theme.colors.blue002, fontSize: "50px" }}
-          />
-        </ArrowRight>
+      {data.length === 0 ? (
+        <NoDataMessage>
+          Usuário ainda não possui dados cadastrados.
+        </NoDataMessage>
+      ) : (
+        <>
+          {showArrows && showLeftArrow && (
+            <ArrowLeft onClick={scrollLeft}>
+              <ArrowBackIosNewIcon
+                style={{ color: theme.colors.blue002, fontSize: "50px" }}
+              />
+            </ArrowLeft>
+          )}
+          <ScrollContent ref={scrollRef}>
+            {data.map((item, index) => (
+              <ContainerElement
+                key={index}
+                $type={type}
+                $tipoTran={item.tipo || 0}
+              >
+                <Icon>
+                  {type === "lancamento" && item.tipo === 1 && (
+                    <ArrowDownwardIcon />
+                  )}
+                  {type === "lancamento" && item.tipo === 2 && (
+                    <ArrowUpwardIcon />
+                  )}
+                  {type === "orcamento" && <AccountBalanceWalletIcon />}
+                  {type === "investimento" && <MonetizationOnIcon />}
+                </Icon>
+                <MainData>
+                  <Value>
+                    <DollarSign>R$</DollarSign>
+                    <ValueNumber>{numberToCurrency(item.valor)}</ValueNumber>
+                  </Value>
+                  <Title>{item.nome}</Title>
+                </MainData>
+                <Date>{formatDate(item.data)}</Date>
+              </ContainerElement>
+            ))}
+          </ScrollContent>
+          {showArrows && showRightArrow && (
+            <ArrowRight onClick={scrollRight}>
+              <ArrowForwardIosIcon
+                style={{ color: theme.colors.blue002, fontSize: "50px" }}
+              />
+            </ArrowRight>
+          )}
+        </>
       )}
     </ScrollContainer>
   );
@@ -275,21 +205,6 @@ export function Home() {
     };
     fetchUserData();
   }, [userCode]);
-
-  useEffect(() => {
-    // Separar os dados por tipo
-    const inOutData = dataExemplo.filter(
-      (item) => item.type === "in" || item.type === "out"
-    );
-    const budgetData = dataExemplo.filter((item) => item.type === "budget");
-    const investmentData = dataExemplo.filter(
-      (item) => item.type === "investment"
-    );
-
-    setInOut(inOutData);
-    setBudget(budgetData);
-    setInvestment(investmentData);
-  }, []);
 
   return (
     <Container>
