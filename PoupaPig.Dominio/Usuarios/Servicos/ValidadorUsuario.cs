@@ -13,12 +13,12 @@ public class ValidadorUsuario : AbstractValidator<Usuario>
             .Length(5, 250).WithMessage("O nome completo deve ter entre 5 e 250 caracteres.")
             .Must(NomeEhValido).WithMessage("O nome completo deve conter apenas letras e espaços.");
 
-   
+
         // 3. Validação do E-mail
-        RuleFor(usuario => usuario.email)
-            .NotEmpty().WithMessage("O e-mail é obrigatório.")
-            .EmailAddress().WithMessage("O e-mail deve ser válido.")
-            .Must(email => !repositorioUsuario.EmailDuplicado(email)).WithMessage("O e-mail já está cadastrado no sistema.");
+        RuleFor(usuario => usuario)
+            .Must(usuario => !repositorioUsuario.EmailDuplicado(usuario.email, usuario.id))
+            .WithMessage("O e-mail já está cadastrado no sistema.")
+            .When(usuario => !string.IsNullOrEmpty(usuario.email));
 
         // 4. Validação da Senha
         RuleFor(usuario => usuario.senha)

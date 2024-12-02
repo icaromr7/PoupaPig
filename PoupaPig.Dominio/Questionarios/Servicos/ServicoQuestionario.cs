@@ -42,5 +42,9 @@ namespace PoupaPig.Dominio.Questionarios.Servicos
         {
             return _repositorioQuestionario.ObterTodas();
         }
+        public Questionario ObterPorUsuarioId(int usuario_id)
+        {
+            return _repositorioQuestionario.ObterTodas().Where(u => u.usuario_id == usuario_id).FirstOrDefault();
+        }
     }
 }
