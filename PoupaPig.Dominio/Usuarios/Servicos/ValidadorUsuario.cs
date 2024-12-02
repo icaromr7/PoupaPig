@@ -10,7 +10,7 @@ public class ValidadorUsuario : AbstractValidator<Usuario>
         // 1. Validação do Nome Completo
         RuleFor(usuario => usuario.nome_completo)
             .NotEmpty().WithMessage("O nome completo é obrigatório.")
-            .Length(5, 250).WithMessage("O nome completo deve ter entre 5 e 250 caracteres.")
+            .Length(2, 250).WithMessage("O nome completo deve ter entre 5 e 250 caracteres.")
             .Must(NomeEhValido).WithMessage("O nome completo deve conter apenas letras e espaços.");
 
 

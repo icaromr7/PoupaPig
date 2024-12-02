@@ -9,7 +9,7 @@ namespace PoupaPig.Dominio.Metas.Servicos
             // Validação do nome do objetivo
             RuleFor(meta => meta.nome)
                 .NotEmpty().WithMessage("O nome do objetivo é obrigatório.")
-                .Length(5, 100).WithMessage("O nome do objetivo deve ter entre 5 e 100 caracteres.");
+                .Length(2, 100).WithMessage("O nome do objetivo deve ter entre 5 e 100 caracteres.");
 
             // Validação do valor final do objetivo
             RuleFor(meta => meta.valor_desejado)

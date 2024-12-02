@@ -14,7 +14,7 @@ namespace PoupaPig.Dominio.Transacoes.Servicos
             // 1. Validação do Nome
             RuleFor(transacao => transacao.nome)
                 .NotEmpty().WithMessage("O nome da transação é obrigatório.")
-                .Length(5, 100).WithMessage("O nome da transação deve ter entre 5 e 100 caracteres.");
+                .Length(2, 100).WithMessage("O nome da transação deve ter entre 5 e 100 caracteres.");
 
             // 2. Validação do Valor
             RuleFor(transacao => transacao.valor)
