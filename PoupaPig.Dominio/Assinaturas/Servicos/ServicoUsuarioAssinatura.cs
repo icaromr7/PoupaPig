@@ -38,5 +38,10 @@ namespace PoupaPig.Dominio.Assinaturas.Servicos
         {
             return _repositorio.ObterTodas();
         }
+
+        public List<UsuarioAssinatura> ObterPorUsuario(int usuario_id)
+        {
+            return _repositorio.ObterTodas().Where(u => u.usuario_id == usuario_id).ToList();
+        }
     }
 }

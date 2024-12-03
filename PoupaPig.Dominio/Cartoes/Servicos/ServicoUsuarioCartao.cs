@@ -38,5 +38,9 @@ namespace PoupaPig.Dominio.Cartoes.Servicos
         {
             return _repositorio.ObterTodas();
         }
+        public List<UsuarioCartao> ObterPorUsuario(int usuario_id)
+        {
+            return _repositorio.ObterTodas().Where(u => u.usuario_id == usuario_id).ToList();
+        }
     }
 }
