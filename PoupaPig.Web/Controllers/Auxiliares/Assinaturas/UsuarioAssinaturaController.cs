@@ -54,5 +54,15 @@ namespace PoupaPig.Web.Controllers.Auxiliares.Assinaturas
         {
             return Ok(_servico.ObterTodas());
         }
+
+        [HttpGet("usuario/{id}")]
+        public ActionResult<UsuarioAssinatura> ObterPorUsuario(int id)
+        {
+            var usuarioAssinatura = _servico.ObterPorUsuario(id);
+            if (usuarioAssinatura == null)
+                return NotFound("Usuário Assinatura não encontrado");
+
+            return Ok(usuarioAssinatura);
+        }
     }
 }

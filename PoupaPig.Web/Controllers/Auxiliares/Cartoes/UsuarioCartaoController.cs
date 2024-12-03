@@ -55,5 +55,16 @@ namespace PoupaPig.Web.Controllers.Auxiliares.Cartoes
             var usuariosCartao = _servico.ObterTodas();
             return Ok(usuariosCartao);
         }
+
+        [HttpGet("usuario/{id}")]
+        public ActionResult<UsuarioCartao> ObterPorUsuario(int id)
+        {
+            var usuarioCartao = _servico.ObterPorUsuario(id);
+            if (usuarioCartao == null)
+            {
+                return NotFound();
+            }
+            return Ok(usuarioCartao);
+        }
     }
 }
