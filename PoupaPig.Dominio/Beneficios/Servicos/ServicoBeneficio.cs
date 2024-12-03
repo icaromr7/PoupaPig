@@ -30,6 +30,7 @@
         private const int Tim_Id = 1;
         private const int AmazonPrime_Id = 2;
         private const int SamsClub_Id = 3;
+        private const int Meli_Id = 5;
         public Beneficio ObterBeneficioBanco(int banco_id)
         {
             var beneficio = new Beneficio();
@@ -165,6 +166,10 @@
                 case SamsClub_Id:
                     beneficio.LinkInfo = "https://sejasocio.samsclub.com.br/index.php/cadastro-de-socio/?gad_source=1&gclid=Cj0KCQiAr7C6BhDRARIsAOUKifiBumjZgqFGhB9VIjYrqCdvVdipXHmCTScOrzPljpxxgRiu7QDC6k4aAmlVEALw_wcB";
                     beneficio.Beneficios = "Produtos Importados\r\nProdutos Members Mark\r\nCashback\r\nEdição limitadas de produtos\r\n+1 Pessoa Gratuitamente\r\nDesconto em parceiros";
+                    break;
+                case Meli_Id:
+                    beneficio.LinkInfo = "https://www.mercadolivre.com.br/assinaturas/melimais";
+                    beneficio.Beneficios = "ESSENCIAL\r\nFrete grátis \r\nAté 5,6% de cashback em compras e pagamentos\r\nAté 3 parcelas extras sem juros nas compras do Mercado Livre\r\nDinheiro rende 105% do CDI no Mercado Pago\r\n\r\nTOTAL\r\nFrete grátis\r\nAté 5,6% de cashback em compras e pagamentos\r\nAté 3 parcelas extras sem juros nas compras do Mercado Livre\r\nDinheiro rende 105% do CDI no Mercado Pago\r\nDisney+ Padrão com anúncios\r\nDeezer Premium por 12 meses\r\n70% OFF na Max por 6 meses e 30% OFF no Paramount+";
                     break;
 
             }

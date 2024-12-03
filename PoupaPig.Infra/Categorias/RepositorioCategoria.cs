@@ -51,7 +51,7 @@ namespace PoupaPig.Infra.Categorias
         }
         public Categoria ObterPorNome(string nome, int usuarioId)
         {
-            return _dataConnection.GetTable<Categoria>().FirstOrDefault(c => c.nome == nome && c.usuario_id != usuarioId);
+            return _dataConnection.GetTable<Categoria>().FirstOrDefault(c => c.nome == nome && c.usuario_id == usuarioId);
         }
     }
 }

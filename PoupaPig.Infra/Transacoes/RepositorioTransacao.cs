@@ -47,12 +47,33 @@ namespace PoupaPig.Infra.Transacoes
 
         // Novo método para obter o saldo por usuario_id
         public decimal ObterSaldoPorUsuario(int usuario_id)
-        {         
-            var saidas = _dataConnection.GetTable<Transacao>()
-                .Where(t => t.usuario_id == usuario_id && t.tipo_id == 2 && t.situacao_id == 1 && t.data_transacao > DateTime.Now) // Tipo 2 = Saída
+        {
+            var inicioDoMes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var fimDoMes = inicioDoMes.AddMonths(1).AddTicks(-1);
+
+            // Calcula o total de entradas
+            var entradas = _dataConnection.GetTable<Transacao>()
+                .Where(t =>
+                    t.usuario_id == usuario_id &&
+                    t.tipo_id == 1 && // Tipo 1 = Entrada
+                    t.situacao_id == 1 && // Apenas transações confirmadas
+                    t.data_transacao >= inicioDoMes &&
+                    t.data_transacao <= fimDoMes)
                 .Sum(t => (decimal?)t.valor) ?? 0;
 
-            return saidas;
+            // Calcula o total de saídas
+            var saidas = _dataConnection.GetTable<Transacao>()
+                .Where(t =>
+                    t.usuario_id == usuario_id &&
+                    t.tipo_id == 2 && // Tipo 2 = Saída
+                    t.situacao_id == 1 && // Apenas transações confirmadas
+                    t.data_transacao >= inicioDoMes &&
+                    t.data_transacao <= fimDoMes)
+                .Sum(t => (decimal?)t.valor) ?? 0;
+
+            var total = entradas - saidas;
+            // Calcula o saldo (entradas - saídas)
+            return total >= 0 ? 0 : Math.Abs(total);
         }
 
         public List<Transacao> ObterTransacoesPorMetaInvestimento(int idMetaInvestimento)
