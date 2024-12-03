@@ -39,9 +39,9 @@ namespace PoupaPig.Infra.Bancos
         }
 
         // Método para obter um usuário banco pelo ID
-        public UsuarioBanco ObterPorId(int id)
+        public List<UsuarioBanco> ObterPorId(int id)
         {
-            return _dataConnection.GetTable<UsuarioBanco>().FirstOrDefault(u => u.id == id);
+            return _dataConnection.GetTable<UsuarioBanco>().Where(u => u.usuario_id == id).ToList();
         }
 
         // Método para obter todos os usuários banco

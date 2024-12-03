@@ -29,7 +29,7 @@ namespace PoupaPig.Dominio.Bancos.Servicos
             _repositorio.Excluir(id);
         }
 
-        public UsuarioBanco ObterPorId(int id)
+        public List<UsuarioBanco> ObterPorId(int id)
         {
             return _repositorio.ObterPorId(id);
         }
@@ -38,5 +38,6 @@ namespace PoupaPig.Dominio.Bancos.Servicos
         {
             return _repositorio.ObterTodas();
         }
+        
     }
 }
