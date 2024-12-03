@@ -6,10 +6,9 @@ namespace PoupaPig.Dominio.Categorias.Servicos
     {
         private readonly IRepositorioCategoria _repositorioCategoria;
 
-        public ValidadorCategoria(
-            IRepositorioCategoria repositorioCategoria)
+        public ValidadorCategoria(IRepositorioCategoria repositorioCategoria)
         {
-            _repositorioCategoria= repositorioCategoria;
+            _repositorioCategoria = repositorioCategoria;
 
             // Validação do nome da categoria personalizada
             RuleFor(categoria => categoria.nome)
@@ -19,12 +18,14 @@ namespace PoupaPig.Dominio.Categorias.Servicos
                 .WithMessage("O nome da categoria personalizada já está em uso. Escolha outro nome.");
         }
 
-        // Método para verificar se o nome da categoria já existe em qualquer categoria (padrão ou personalizada)
-        private bool NomeNaoExistente(Categoria categoriaPersonalizada, string nome)
+        // Método para verificar se o nome da categoria já existe
+        private bool NomeNaoExistente(Categoria categoria, string nome)
         {
-            var categoriaExistente = _repositorioCategoria.ObterPorNome(nome, categoriaPersonalizada.id == 0 ? 0 : categoriaPersonalizada.usuario_id );
+            // Obtém uma categoria com o mesmo nome e verifica se não pertence à mesma entidade
+            var categoriaExistente = _repositorioCategoria.ObterPorNome(nome, categoria.usuario_id);
 
-            return  categoriaExistente == null;
+            // Retorna true apenas se não houver categoria ou se a categoria encontrada for do mesmo ID
+            return categoriaExistente == null || categoriaExistente.id == categoria.id;
         }
     }
 }
