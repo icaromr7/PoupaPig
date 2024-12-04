@@ -80,11 +80,16 @@ namespace PoupaPig.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Atualizar(int id, [FromBody] Questionario dados)
         {
-            if (dados == null || dados.id != id)
+            if (dados == null)
             {
                 return BadRequest("Dados do questionário são inválidos.");
             }
-
+            if(dados.id == 0 || dados.id == null)
+            {
+                _servicoQuestionario.Criar(dados);
+                _servico.DefinirClasseSocial(dados);
+                return Ok("Questionário atualizado com sucesso!");
+            }
             try
             {
                 _servicoQuestionario.Atualizar(dados);
