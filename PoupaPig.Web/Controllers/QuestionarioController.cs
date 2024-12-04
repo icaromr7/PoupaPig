@@ -87,10 +87,6 @@ namespace PoupaPig.API.Controllers
 
             try
             {
-                var existente = _servicoQuestionario.ObterPorId(id);
-                if (existente == null)
-                    return NotFound("Questionário não encontrado para atualização.");
-
                 _servicoQuestionario.Atualizar(dados);
                 _servico.DefinirClasseSocial(dados);
                 return Ok("Questionário atualizado com sucesso!");
