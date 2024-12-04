@@ -113,7 +113,11 @@ export function Login() {
       login(usuario.id);
       navigate("/home");
     } catch (error: any) {
-      addToast({ message: error.message, type: "error" });
+      addToast({
+        message: error.message,
+        type: "error",
+        title: "Erro ao obter dados do login",
+      });
       console.error("Erro ao obter dados do login:", error);
     } finally {
       setLoading(false);
@@ -121,17 +125,14 @@ export function Login() {
   };
 
   const onSubmitEmailPassword = (data: any) => {
-    console.log("Dados do formulário (emailPassword):", data);
     setCurrentBody("codePassword");
   };
 
   const onSubmitCodePassword = (data: any) => {
-    console.log("Dados do formulário:", data);
     setCurrentBody("newPassword");
   };
 
   const onSubmitNewPassword = (data: any) => {
-    console.log("Dados do formulário:", data);
     setCurrentBody("login");
   };
 
@@ -152,7 +153,11 @@ export function Login() {
       // const user = await getLogin();
       navigate("/sign-in");
     } catch (error: any) {
-      addToast({ message: error.message, type: "error" });
+      addToast({
+        message: error.message,
+        type: "error",
+        title: "Erro ao fazer login",
+      });
       console.error("Erro ao fazer login:", error);
     }
   };

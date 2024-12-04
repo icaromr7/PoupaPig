@@ -112,7 +112,6 @@ const ScrollMenu = ({
       }
     };
   }, [data]);
-  console.log("data>>>>>>>>>>", data);
   return (
     <ScrollContainer>
       {data.length === 0 ? (
@@ -183,7 +182,6 @@ export function Home() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log("oii fetchUserData", userCode);
       if (userCode) {
         try {
           setLoading(true);
@@ -194,9 +192,12 @@ export function Home() {
           setTodosOrcamentos(total_orcamentos);
           const total_investimentos = await getInvestimentos(Number(userCode));
           setTodosInvestimentos(total_investimentos);
-          console.log("total:", total_lancamentos);
         } catch (error: any) {
-          addToast({ message: error.message, type: "error" });
+          addToast({
+            message: error.message,
+            type: "error",
+            title: "Erro ao obter dados financeiros do usuário",
+          });
           console.error("Erro ao obter dados financeiros do usuário", error);
         } finally {
           setLoading(false);

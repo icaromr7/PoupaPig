@@ -7,6 +7,7 @@ import * as yup from "yup";
 import {
   ContainerBenefits,
   TitleBenefit,
+  NameBenefit,
   ButtonDiv,
   Container,
   Overlay,
@@ -22,14 +23,18 @@ import theme from "../../styles/theme";
 import CustomSelect from "../CustomSelect";
 import { Button } from "../Button";
 import {
+  getAssinaturaByUsuarioId,
   getAssinaturas,
+  getBancoByUsuarioId,
   getBancos,
+  getCartaoByUsuarioId,
   getCartoes,
   postUsuarioAssinatura,
   postUsuarioBanco,
   postUsuarioCartao,
 } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
+import { GenericData } from "../../interfaces";
 
 const schemaCartao = yup.object().shape({
   cartao_id: yup.number().required("Campo obrigatório"),
@@ -59,6 +64,10 @@ export function DataBenefits({
   const { addToast, setLoading, userCode } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState<any>(null);
+  const [assinaturasUser, setAssinaturasUser] = useState<GenericData[]>([]);
+  const [bancosUser, setBancosUser] = useState<GenericData[]>([]);
+  const [cartoesUser, setCartoesUser] = useState<GenericData[]>([]);
+  const [chunkedData, setChunkedData] = useState<any[]>([]);
 
   const {
     register: registerCartao,
@@ -88,7 +97,6 @@ export function DataBenefits({
   });
 
   const handleCloseModal = () => {
-    console.log("fechei");
     setModalOpen(false);
   };
 
@@ -103,7 +111,6 @@ export function DataBenefits({
       const data = await getCartoes();
       return data;
     } catch (error: any) {
-      console.log("erro");
       addToast({
         message: error.message,
         title: "Erro ao buscar itens",
@@ -121,7 +128,6 @@ export function DataBenefits({
       const data = await getAssinaturas();
       return data;
     } catch (error: any) {
-      console.log("erro");
       addToast({
         message: error.message,
         title: "Erro ao buscar itens",
@@ -139,7 +145,6 @@ export function DataBenefits({
       const data = await getBancos();
       return data;
     } catch (error: any) {
-      console.log("erro");
       addToast({
         message: error.message,
         title: "Erro ao buscar itens",
@@ -172,20 +177,41 @@ export function DataBenefits({
     }
   };
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const assinatura = await getAssinaturaByUsuarioId(Number(userCode));
+      setAssinaturasUser(assinatura);
+      const banco = await getBancoByUsuarioId(Number(userCode));
+      setBancosUser(banco);
+      const cartao = await getCartaoByUsuarioId(Number(userCode));
+      console.log("aqui", assinatura, banco, cartao);
+      setCartoesUser(cartao);
+    } catch (error: any) {
+      addToast({
+        message: error.message,
+        title: "Erro ao buscar dados",
+        type: "error",
+      });
+      console.error("Erro ao buscar itens:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmitDataBenefits = async (data: any) => {
     const combinedData = {
       ...data,
       usuario_id: Number(userCode),
     };
-    console.log("data", combinedData);
     if (type === "assinatura") {
       try {
         setLoading(true);
         const data = await postUsuarioAssinatura(combinedData);
         handleCloseModal();
+        fetchData();
         return data;
       } catch (error: any) {
-        console.log("erro");
         addToast({
           message: error.message,
           title: "Erro ao buscar itens",
@@ -201,9 +227,9 @@ export function DataBenefits({
         setLoading(true);
         const data = await postUsuarioBanco(combinedData);
         handleCloseModal();
+        fetchData();
         return data;
       } catch (error: any) {
-        console.log("erro");
         addToast({
           message: error.message,
           title: "Erro ao buscar itens",
@@ -219,9 +245,9 @@ export function DataBenefits({
         setLoading(true);
         const data = await postUsuarioCartao(combinedData);
         handleCloseModal();
+        fetchData();
         return data;
       } catch (error: any) {
-        console.log("erro");
         addToast({
           message: error.message,
           title: "Erro ao buscar itens",
@@ -234,29 +260,58 @@ export function DataBenefits({
     }
   };
 
-  const chunkedData = [];
   useEffect(() => {
-    //pegar os cartões cadastrados pelo usuário e inserir no chuncked data, mantendo a lógica
-  }, []);
-  //   for (let i = 0; i < modalData.length; i += 3) {
-  //     chunkedData.push(modalData.slice(i, i + 3));
-  //   }
+    fetchData();
+  }, [userCode]);
+
+  useEffect(() => {
+    let dataToChunk: any[] = [];
+
+    switch (type) {
+      case "cartao":
+        dataToChunk = cartoesUser.map((item) => item.nome);
+        break;
+      case "banco":
+        dataToChunk = bancosUser.map((item) => item.nome);
+        break;
+      case "assinatura":
+        dataToChunk = assinaturasUser.map((item) => item.nome);
+        break;
+      default:
+        dataToChunk = [];
+    }
+
+    // Chunk the data into groups of 3
+    const chunks = [];
+    for (let i = 0; i < dataToChunk.length; i += 3) {
+      chunks.push(dataToChunk.slice(i, i + 3));
+    }
+    setChunkedData(chunks);
+  }, [cartoesUser, bancosUser, assinaturasUser]);
 
   return (
     <ContainerBenefits onClick={handleButtonClick}>
       <TitleBenefit>{title}</TitleBenefit>
-      {/* {chunkedData.map((group, index) => (
-        <div key={index} style={{ display: "flex", alignItems: "center" }}>
-          {group.map((x: any, idx: any) => (
+      {chunkedData.map((group, index) => (
+        <div
+          key={index}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            maxWidth: 200,
+            whiteSpace: "wrap",
+          }}
+        >
+          {group.map((name: string, idx: number) => (
             <React.Fragment key={idx}>
-              <NameBenefit>{x}</NameBenefit>
+              <NameBenefit>{name}</NameBenefit>
               {idx < group.length - 1 && (
                 <span style={{ margin: "0 8px" }}>|</span>
               )}
             </React.Fragment>
           ))}
         </div>
-      ))} */}
+      ))}
       <ButtonDiv>
         <Button title={titleButton} minWidth="100%" onClick={handleModalOpen} />
       </ButtonDiv>

@@ -155,7 +155,11 @@ export function InputOutputForm() {
         navigate("/input-output-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao enviar dados",
+        });
       } finally {
         setLoading(false);
       }
@@ -166,7 +170,11 @@ export function InputOutputForm() {
         navigate("/input-output-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao enviar dados",
+        });
       } finally {
         setLoading(false);
       }
@@ -225,11 +233,8 @@ export function InputOutputForm() {
         const investimento = await fetchInvestimentos();
         setMetasInvestimentos(investimento);
         const dataaaaa = await getPeriodicidadeTransacao();
-        console.log("dataaa", dataaaaa);
         const tipo = await getTipoTransacao();
         const situ = await getSituacaoTransacao();
-
-        console.log("situ", situ);
       } catch (error) {
         console.error("Erro ao buscar itens:", error);
       } finally {
@@ -304,7 +309,11 @@ export function InputOutputForm() {
           nome,
         }));
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao obter categorias",
+        });
         console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
@@ -322,7 +331,11 @@ export function InputOutputForm() {
           nome: categoria.nome,
         };
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao obter categorias",
+        });
         console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
@@ -426,8 +439,12 @@ export function InputOutputForm() {
           nome,
         }));
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
-        console.error("Erro ao obter as categorias padrões", error);
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao obter as categorias",
+        });
+        console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
       }
@@ -444,8 +461,12 @@ export function InputOutputForm() {
           nome: metaInvestimento.nome,
         };
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
-        console.error("Erro ao obter as categorias padrões", error);
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao obter as categorias",
+        });
+        console.error("Erro ao obter as categorias ", error);
       } finally {
         setLoading(false);
       }

@@ -35,15 +35,6 @@ interface FinancialControlProfileProps {
   situation: "ok" | "attention" | "emergency";
 }
 
-interface ClientSituationProps {
-  valor_livre: number;
-  valor_gastos: number;
-  valor_devendo: number;
-  valor_orcado: number;
-  valor_livre_sem_devedor: number;
-  valor_investido: number;
-}
-
 export function FinancialControlProfile() {
   const { addToast, setLoading, userCode, login } = useAuth();
   const navigate = useNavigate();
@@ -76,11 +67,14 @@ export function FinancialControlProfile() {
           const orcados = await getValorOrcado(Number(userCode));
           setOrcado(orcados);
           const investimento = await getRetornoInvestimentos(Number(userCode));
-          console.log("dados:", lancamentos.ganhos, orcados);
           setLivreSemOrcado(lancamentos.ganhos - orcados);
           setInvestido(investimento);
         } catch (error: any) {
-          addToast({ message: error.message, type: "error" });
+          addToast({
+            message: error.message,
+            type: "error",
+            title: "Erro ao obter dados financeiros do usuário",
+          });
           console.error("Erro ao obter dados financeiros do usuário", error);
         }
       }
@@ -94,7 +88,6 @@ export function FinancialControlProfile() {
 
   useEffect(() => {
     const calculo = livreSemOrcado - devendo;
-    console.log("calculo", calculo);
 
     if (calculo > 0) {
       setSituation("ok");
@@ -156,7 +149,7 @@ export function FinancialControlProfile() {
         </SituationMessage>
       </ResumeContainer>
       {valueSign("gasto", gastos, theme.colors.redF63)}
-      {valueSign("devendo", devendo, theme.colors.yellowDAD)}
+      {valueSign("lançamentos próximos", devendo, theme.colors.yellowDAD)}
       {valueSign("orçado", orcado, theme.colors.orangeEE7)}
       {valueSign(
         "livre sem valor dos orçamentos",

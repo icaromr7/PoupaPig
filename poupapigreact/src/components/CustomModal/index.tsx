@@ -16,8 +16,8 @@ interface CustomModalProps {
   title?: string;
   message: React.ReactNode | string;
   titleButtonCancel: string;
-  action: () => void;
-  titleButtonGo: string;
+  action?: () => void;
+  titleButtonGo?: string;
   onClose: () => void;
 }
 
@@ -44,12 +44,14 @@ export function CustomModal({
             borderColor={theme.colors.grey6F7}
             onClick={onClose}
           />
-          <Button
-            title={titleButtonGo}
-            onClick={() => {
-              action();
-            }}
-          />
+          {titleButtonGo && action && (
+            <Button
+              title={titleButtonGo}
+              onClick={() => {
+                action();
+              }}
+            />
+          )}
         </Footer>
       </Container>
     </Overlay>

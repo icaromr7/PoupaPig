@@ -73,12 +73,10 @@ export function CategoryForm() {
   };
 
   const handleCategoryList = (data: any) => {
-    console.log("data", data);
     navigate("/category-list");
   };
 
   const handleIconSelect = (iconName: string) => {
-    console.log("Ícone selecionado:", iconName);
     setValue("icone", iconName);
   };
 
@@ -94,29 +92,34 @@ export function CategoryForm() {
       usuario_id: Number(userCode),
       ...(categoryData && { id: categoryData.id }),
     };
-    console.log("Dados combinados:", combinedData);
 
     if (isEditing) {
-      console.log("entrei no put");
       try {
         setLoading(true);
         await putCategoria(combinedData);
         navigate("/category-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao postar dados",
+        });
       } finally {
         setLoading(false);
       }
     } else {
-      console.log("entrei no post");
       try {
         setLoading(true);
         await postCategoria(combinedData);
         navigate("/category-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao postar dados",
+        });
       } finally {
         setLoading(false);
       }

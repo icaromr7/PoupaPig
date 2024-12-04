@@ -59,7 +59,11 @@ export function InputOutputList() {
         await deleteTransacao(selectedToDelete.id);
         await fetchUserData();
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao apagar dado",
+        });
         console.error("Erro ao apagar dado", error);
       } finally {
         setLoading(false);
@@ -77,11 +81,14 @@ export function InputOutputList() {
       try {
         setLoading(true);
         const transacao = await getLancamentosCompletos(Number(userCode));
-        console.log("transação", transacao);
         setTransacoes(transacao);
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
-        console.error("Erro ao obter as categorias padrões", error);
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao obter as categorias",
+        });
+        console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
       }

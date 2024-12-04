@@ -48,8 +48,12 @@ export function InvestmentGoalList() {
         const metaInvestimento = await getMetaInvestimento();
         setMetasInvestimentos(metaInvestimento);
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
-        console.error("Erro ao obter as categorias padrões", error);
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao obter as categorias",
+        });
+        console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
       }
@@ -78,7 +82,11 @@ export function InvestmentGoalList() {
         await deleteMetaInvestimento(selectedToDelete.id);
         await fetchUserData();
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao apagar dado",
+        });
         console.error("Erro ao apagar dado", error);
       } finally {
         setLoading(false);

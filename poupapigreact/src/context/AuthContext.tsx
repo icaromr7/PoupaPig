@@ -78,7 +78,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     onClose,
     closeOnClick,
   }: ToastInterface) => {
-    console.log("oi", message);
     if (message) {
       toast(
         <ErroToast

@@ -135,7 +135,7 @@ export function Landpage() {
         <SectionColumn>
           <Text>
             Venha ter poder sobre o seu próprio dinheiro, crie sua conta no
-            piggyBuddget agora!
+            Poupa Pig agora!
           </Text>
           <Button
             title="Criar conta"

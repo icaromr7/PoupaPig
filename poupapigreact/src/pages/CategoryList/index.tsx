@@ -47,7 +47,11 @@ export function CategoryList() {
         const categorias = await getCategoriasUsuario(Number(userCode));
         setCategorias(categorias);
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao buscar dados",
+        });
         console.error("Erro ao obter as categorias", error);
       } finally {
         setLoading(false);
@@ -71,7 +75,11 @@ export function CategoryList() {
         await deleteCategoria(selectedToDelete.id);
         await fetchUserData();
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao apagar dado",
+        });
         console.error("Erro ao apagar dado", error);
       } finally {
         setLoading(false);
@@ -87,7 +95,6 @@ export function CategoryList() {
   useEffect(() => {
     if (flag.current) {
       fetchUserData();
-      console.log("passei");
       setTimeout(() => {
         flag.current = false;
       }, 1000);

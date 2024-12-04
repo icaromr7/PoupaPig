@@ -22,7 +22,6 @@ export function ButtonHeader({
 }: ButtonHeaderProps) {
   const handleClick = (e: any) => {
     if (onClick) {
-      console.log("entrei no on click");
       onClick(e);
     }
   };

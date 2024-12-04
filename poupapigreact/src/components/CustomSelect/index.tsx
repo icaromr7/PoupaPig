@@ -60,13 +60,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   };
 
   const handleSelectOption = (option: SelectData) => {
-    console.log("option", option);
     setSelectedOption(option);
     setIsOpen(false);
     setValue(name, minus ? option.id - 1 : option.id, { shouldValidate: true });
 
     if (onSelect) {
-      console.log("entrei");
       onSelect(option);
     }
   };

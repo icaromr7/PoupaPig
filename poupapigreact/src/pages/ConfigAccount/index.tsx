@@ -90,8 +90,6 @@ export function ConfigAccount() {
   const { addToast, setLoading, userCode } = useAuth();
   const [user, setUser] = useState<UserInt>();
 
-  console.log("user code", userCode);
-
   const {
     register: registerSignIn,
     handleSubmit: handleSubmitSignIn,
@@ -111,14 +109,18 @@ export function ConfigAccount() {
 
   const handleChangeQuestions = async (data: any) => {
     const combinedData = { ...data, usuario_id: userCode };
-    console.log("Dados combinados:", combinedData);
+    console.log("combined data", combinedData);
 
     try {
       setLoading(true);
-      await putQuestionario(combinedData);
+      await putQuestionario(combinedData, 0);
       navigate("/profile");
     } catch (error: any) {
-      addToast({ message: error.message, type: "error" });
+      addToast({
+        message: error.message,
+        type: "error",
+        title: "Erro ao postar dados do questionário",
+      });
       console.error("Erro ao postar dados do questionário:", error);
     } finally {
       setLoading(false);
@@ -127,14 +129,17 @@ export function ConfigAccount() {
 
   const handleUserData = async (data: any) => {
     const combinedData = { ...data, id: userCode };
-    console.log("Dados combinados:", combinedData);
 
     try {
       setLoading(true);
       await putUsuario(combinedData, Number(userCode));
       navigate("/profile");
     } catch (error: any) {
-      addToast({ message: error.message, type: "error" });
+      addToast({
+        message: error.message,
+        type: "error",
+        title: "Erro ao postar dados do usuário",
+      });
       console.error("Erro ao postar dados do usuário:", error);
     } finally {
       setLoading(false);
@@ -145,12 +150,16 @@ export function ConfigAccount() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // const questionarioData = await getQuestionarioById(Number(userCode));
+        const questionarioData = await getQuestionarioById(Number(userCode));
+        console.log("questionarioData", questionarioData);
         const usuario = await getUsuarioById(Number(userCode));
         setUser(usuario);
-        console.log("usuario", usuario);
       } catch (error: any) {
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao buscar dados do usuário",
+        });
         console.error("Erro ao buscar dados do usuário:", error);
       } finally {
         setLoading(false);
@@ -163,7 +172,7 @@ export function ConfigAccount() {
     <Container>
       <Row>
         <UserTitle>
-          <WelcomeTitle>Olá, Fulano de tal!</WelcomeTitle>
+          <WelcomeTitle>Olá!</WelcomeTitle>
           <Subtitle>Faça as edições necessárias no seu perfil</Subtitle>
         </UserTitle>
       </Row>

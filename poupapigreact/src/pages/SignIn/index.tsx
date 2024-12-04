@@ -127,16 +127,18 @@ export function SignIn() {
   };
 
   const handleLogin = async (data: any) => {
-    console.log("data", data);
     const combinedData = { ...formData, ...data, usuario_id: userCode };
-    console.log("Dados combinados:", combinedData);
 
     try {
       setLoading(true);
       await postQuestionario(combinedData);
       navigate("/home");
     } catch (error: any) {
-      addToast({ message: error.message, type: "error" });
+      addToast({
+        message: error.message,
+        type: "error",
+        title: "Erro ao postar dados do questionário",
+      });
       console.error("Erro ao postar dados do questionário:", error);
     } finally {
       setLoading(false);
@@ -144,7 +146,6 @@ export function SignIn() {
   };
 
   const handleQuestionsSecondPart = (data: any) => {
-    console.log("Dados do formulário:", data);
     setFormData((prev) => ({ ...prev, ...data }));
     setCurrentBody("questions2");
   };
@@ -161,7 +162,11 @@ export function SignIn() {
       setSenhaUser(data.senha);
       setCurrentBody("questions1");
     } catch (error: any) {
-      addToast({ message: error.message, type: "error" });
+      addToast({
+        message: error.message,
+        type: "error",
+        title: "Erro ao fazer sign-in",
+      });
       console.error("Erro ao fazer sign-in:", error);
     } finally {
       setLoading(false);
@@ -176,7 +181,11 @@ export function SignIn() {
           const usuario: UserInt = await getLogin(dados);
           login(usuario.id);
         } catch (error: any) {
-          addToast({ message: error.message, type: "error" });
+          addToast({
+            message: error.message,
+            type: "error",
+            title: "Erro ao obter dados do login",
+          });
           console.error("Erro ao obter dados do login:", error);
         }
       }

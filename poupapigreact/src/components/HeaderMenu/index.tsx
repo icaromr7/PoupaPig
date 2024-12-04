@@ -1,3 +1,4 @@
+import { useAuth } from "../../context/AuthContext";
 import { Container, Line } from "./style";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +8,7 @@ interface HeaderMenuProps {
 }
 
 export function HeaderMenu({ notification, config }: HeaderMenuProps) {
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleAccountConfig = () => {
@@ -14,6 +16,7 @@ export function HeaderMenu({ notification, config }: HeaderMenuProps) {
   };
 
   const handleLogout = () => {
+    logout();
     navigate("/login");
   };
 
@@ -21,10 +24,10 @@ export function HeaderMenu({ notification, config }: HeaderMenuProps) {
     <Container>
       {notification && (
         <>
-          <Line>Hoje é dia de pagar a conta xxxx</Line>
+          <Line>Hoje é dia de pagar a conta</Line>
           <Line>Hoje é dia de pagar </Line>
-          <Line>Hoje é dia de pagar a conta xxxx</Line>
-          <Line>Hoje é dia de pagar a conta xxxx</Line>
+          <Line>Hoje é dia de pagar a conta</Line>
+          <Line>Hoje é dia de pagar a conta</Line>
         </>
       )}
       {config && (

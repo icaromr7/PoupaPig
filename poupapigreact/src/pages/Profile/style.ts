@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface RgbStyleProps {
   r?: number;
@@ -91,6 +92,10 @@ export const SocialSituation = styled.div`
   border: 3px solid ${theme.colors.blue038};
   border-radius: 20px;
   padding: 10px;
+  /* 
+  max-height: 420px;
+
+  overflow-y: auto; */
 `;
 
 export const Column = styled.div`
@@ -264,4 +269,125 @@ export const RowProfile = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+`;
+
+export const TitleBenefit = styled.div`
+  font-family: ${theme.fonts.fontMontserrat};
+  font-size: 15px;
+  font-weight: ${theme.fonts.fontWeight600};
+  color: ${theme.colors.blue002};
+`;
+
+export const NameBenefit = styled.div`
+  font-family: ${theme.fonts.fontMontserrat};
+  font-size: 12px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.black171};
+
+  max-width: 4000px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+`;
+export const BenefitsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 480px) {
+    align-items: end;
+  }
+`;
+
+export const ContainerModal = styled.div`
+  min-width: 600px;
+  max-width: 1000px;
+  height: 500px;
+  background-color: ${theme.colors.whiteF2F};
+  border: 5px solid ${theme.colors.blue002};
+  border-radius: 20px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  overflow-y: auto;
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${theme.colors.blueE5F};
+    border-radius: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${theme.colors.blue93C};
+    border-radius: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${theme.colors.blue038};
+  }
+
+  /* Para Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: ${theme.colors.blue93C} ${theme.colors.blueE5F};
+`;
+
+export const Header = styled.div`
+  height: 30px;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const TitleModal = styled.div`
+  font-family: ${theme.fonts.fontMontserrat};
+  font-size: 16px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.black171};
+`;
+
+export const Close = styled(CloseIcon)`
+  font-size: 2rem !important;
+  color: ${theme.colors.blue002};
+  margin-right: 0.87rem;
+  cursor: pointer;
+`;
+
+export const Body = styled.div`
+  width: 80%;
+  align-self: center;
+  font-family: ${theme.fonts.fontOpenSans};
+  font-size: 12px;
+  font-weight: ${theme.fonts.fontWeightRegular};
+  color: ${theme.colors.black171};
+  text-align: center;
+`;
+
+export const Footer = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
 `;

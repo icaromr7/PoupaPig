@@ -84,7 +84,6 @@ export function Header({ type }: HeaderProps) {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log("menuRef.current", menuRef.current);
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
         setShowConfig(false);

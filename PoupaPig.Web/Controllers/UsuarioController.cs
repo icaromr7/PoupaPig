@@ -28,7 +28,7 @@ public class UsuarioController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest($"Erro na execucação. {ex.Message}");
+            return BadRequest($"Erro na execução. {ex.Message}");
         }
         
         

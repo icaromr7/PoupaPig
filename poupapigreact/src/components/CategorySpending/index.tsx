@@ -32,9 +32,12 @@ export function CategorySpending() {
           setLancamentos(lancamentos);
           const categorias = await getCategoriasUsuario(Number(userCode));
           setCategorias(categorias);
-          console.log("lancamentos", lancamentos, categorias);
         } catch (error: any) {
-          addToast({ message: error.message, type: "error" });
+          addToast({
+            message: error.message,
+            type: "error",
+            title: "Erro ao obter lancamentos",
+          });
           console.error("Erro ao obter lancamentos", error);
         } finally {
           setLoading(false);

@@ -18,10 +18,15 @@ export const getAssinaturas = async () => {
     throw error;
   }
 };
-// export const getAssinaturaById = async (id: string | number) => {
-//   const response = await api.get(`/Assinatura/${id}`);
-//   return response.data;
-// };
+export const getAssinaturaByUsuarioId = async (id: number) => {
+  try {
+    const response = await api.get(`/Assinatura/usuario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar assinaturas:", error);
+    throw error;
+  }
+};
 
 //BANCOS:
 export const getBancos = async () => {
@@ -42,6 +47,45 @@ export const getBancoById = async (id: number) => {
     throw error;
   }
 };
+export const getBancoByUsuarioId = async (id: number) => {
+  try {
+    const response = await api.get(`/Banco/usuario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar banco:", error);
+    throw error;
+  }
+};
+
+//BENEFICIO
+export const getBeneficioBancoById = async (id: number) => {
+  try {
+    const response = await api.get(`/Beneficio/banco?id=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar benefícios:", error);
+    throw error;
+  }
+};
+export const getBeneficioCartaoById = async (id: number) => {
+  try {
+    const response = await api.get(`/Beneficio/cartao?id=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar benefícios:", error);
+    throw error;
+  }
+};
+
+export const getBeneficioBAssinaturaById = async (id: number) => {
+  try {
+    const response = await api.get(`/Beneficio/assinatura?id=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar benefícios:", error);
+    throw error;
+  }
+};
 
 //CARTÕES:
 export const getCartoes = async () => {
@@ -52,6 +96,15 @@ export const getCartoes = async () => {
 //   const response = await api.get(`/Cartao/${id}`);
 //   return response.data;
 // };
+export const getCartaoByUsuarioId = async (id: number) => {
+  try {
+    const response = await api.get(`/Cartao/usuario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar cartão:", error);
+    throw error;
+  }
+};
 
 //CATEGORIA:
 export const postCategoria = async (dados: any) => {
@@ -68,7 +121,6 @@ export const postCategoria = async (dados: any) => {
   }
 };
 export const putCategoria = async (dados: any) => {
-  console.log("dados", dados);
   try {
     const response = await api.put("/Categoria", dados, {
       headers: {
@@ -110,19 +162,23 @@ export const getCategoriasUsuario = async (id: number) => {
 };
 
 //CLASSE:
-// export const getClasse = async () => {
+// export const getClasseByUsuarioId = async (id: number) => {
 //   const response = await api.get("/Classe");
 //   return response.data;
 // };
-// export const getClasseById = async (id: string | number) => {
-//   const response = await api.get(`/Classe/${id}`);
-//   return response.data;
-// };
+export const getClasseByUsuarioId = async (usuarioid: number) => {
+  try {
+    const response = await api.get(`/Classe/usuario/${usuarioid}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar classe:", error);
+    throw error;
+  }
+};
 
 //LOGIN:
 export const getLogin = async (dados: { email: string; senha: string }) => {
   try {
-    console.log("entrei", dados);
     const response = await api.post("/login", dados);
     return response.data;
   } catch (error) {
@@ -269,9 +325,9 @@ export const postQuestionario = async (dados: any) => {
     throw error;
   }
 };
-export const putQuestionario = async (dados: any) => {
+export const putQuestionario = async (dados: any, id: number) => {
   try {
-    const response = await api.put("/Questionario", dados, {
+    const response = await api.put(`/Questionario/${id}`, dados, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -587,7 +643,7 @@ export const getInvestimentos = async (id: number) => {
 };
 export const getRetornoInvestimentos = async (id: number) => {
   try {
-    const response = await api.get(`/Transacao/retornos-investimentos/${id}`);
+    const response = await api.get(`/Transacao/valor-investido/${id}`);
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar dados:", error);
@@ -626,7 +682,6 @@ export const postUsuario = async (dados: {
 }) => {
   try {
     const response = await api.post("/Usuario", dados);
-    console.log("response.data", response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
@@ -690,10 +745,15 @@ export const postUsuarioAssinatura = async (dados: any) => {
 //   const response = await api.delete(`/UsuarioAssinatura/${id}`);
 //   return response.data;
 // };
-// export const getUsuarioAssinaturaById = async (id: string | number) => {
-//   const response = await api.get(`/UsuarioAssinatura/${id}`);
-//   return response.data;
-// };
+export const getUsuarioAssinaturaById = async (id: number) => {
+  try {
+    const response = await api.get(`/UsuarioAssinatura/usuario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao mostrar assinaturas", error);
+    throw error;
+  }
+};
 
 //USUARIO BANCO
 export const postUsuarioBanco = async (dados: any) => {
@@ -721,10 +781,15 @@ export const postUsuarioBanco = async (dados: any) => {
 //   const response = await api.delete(`/UsuarioBanco/${id}`);
 //   return response.data;
 // };
-// export const getUsuarioBancoById = async (id: string | number) => {
-//   const response = await api.get(`/UsuarioBanco/${id}`);
-//   return response.data;
-// };
+export const getUsuarioBancoById = async (id: number) => {
+  try {
+    const response = await api.get(`/UsuarioBanco/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao mostrar cartões", error);
+    throw error;
+  }
+};
 
 //USUARIO CARTAO
 export const postUsuarioCartao = async (dados: any) => {
@@ -756,6 +821,15 @@ export const postUsuarioCartao = async (dados: any) => {
 //   const response = await api.get(`/UsuarioCartao/${id}`);
 //   return response.data;
 // };
+export const getUsuarioCartaoById = async (id: number) => {
+  try {
+    const response = await api.get(`/UsuarioCartao/usuario/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao mostrar cartões", error);
+    throw error;
+  }
+};
 
 //USUÁRIO CLASSE
 export const getUsuarioClasse = async (id: number) => {

@@ -614,6 +614,3 @@ export const formatDate = (dateString: string) => {
 
   return `${day}/${month}/${year}`;
 };
-
-const formattedDate = formatDate("2024-11-29T00:00:00");
-console.log(formattedDate);

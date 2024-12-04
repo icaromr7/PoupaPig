@@ -111,7 +111,11 @@ export function InvestmentGoalForm() {
         navigate("/investment-goal-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao enviar dados",
+        });
       } finally {
         setLoading(false);
       }
@@ -122,7 +126,11 @@ export function InvestmentGoalForm() {
         navigate("/investment-goal-list");
       } catch (error: any) {
         console.error("Erro da API:", error.response.data);
-        addToast({ message: error.message, type: "error" });
+        addToast({
+          message: error.message,
+          type: "error",
+          title: "Erro ao enviar dados",
+        });
       } finally {
         setLoading(false);
       }
